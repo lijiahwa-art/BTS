@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>高中生集合！Ltrust 開學任務啟動 🧋</title>
+  <title>高中限定｜開學小島物資站🧋</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -35,11 +35,13 @@
       --ac-goose-yellow: #fefae0; 
       --ac-border-tan: #d6b484; 
       
-      /* 小標題與備註配色 */
+      /* 小標題配色 */
       --subtitle-pink: #d46d78;
+
+      /* ✅ 統一備註配色 (淡綠底+深綠字) */
       --remark-bg-green: #f0fdf4;
       --remark-border-green: #86efac;
-      --remark-text-green: #15803d;
+      --remark-text-green: #166534; /* 深綠色 */
       
       /* CTA 按鈕顏色 */
       --btn-primary-bg: var(--ac-dark-brown);
@@ -253,7 +255,9 @@
     const { useState, useEffect } = React;
 
     const data = {
-      bannerImage: "./banner.jpg", 
+      bannerImage: "./banner.jpg",
+      // ✅ QR Code 圖片路徑 - 預留給您放 QR Code 圖片的位置
+      lineQRCode: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://line.me/ti/p/@173eprbj", 
       ctaLinks: { register: "https://example.com/register", host: "https://example.com/host" },
       hostBonuses: [
         { people: 10, money: "NT$ 1,000" },
@@ -321,23 +325,21 @@
       useEffect(() => {
         const timer = setInterval(() => {
           const now = new Date();
+          const target = new Date(now);
           const currentDay = now.getDay(); 
           
           let daysUntilWed = (3 + 7 - currentDay) % 7;
           if (daysUntilWed === 0) daysUntilWed = 7;
           
-          const target = new Date(now);
-          // ✅ 邏輯更新：倒數至「下下個」週三（模擬跳過 42 天這種情況，直接展示最近的倒數）
-          // 為了展示效果，我們設定為距離下一個週三 (不含本週)
-          target.setDate(now.getDate() + daysUntilWed); 
+          // 鎖定下下個週三
+          target.setDate(now.getDate() + daysUntilWed + 7); 
           target.setHours(0, 0, 0, 0);
 
-          // 若目標時間太近（例如今天就是週三），則再加 7 天，確保有倒數感
-          if (target.getTime() - now.getTime() < 1000 * 60 * 60 * 24) {
-             target.setDate(target.getDate() + 7);
-          }
+          // 首發日判斷
+          const firstDropDate = new Date("2026-03-11T00:00:00");
+          const finalTarget = target < firstDropDate ? firstDropDate : target;
 
-          const diff = target.getTime() - now.getTime();
+          const diff = finalTarget.getTime() - now.getTime();
           
           if (diff <= 0) {
              setTimeLeft({ d: '0', h: '0', m: '0', s: '0' });
@@ -354,7 +356,7 @@
       }, []);
       return (
         <div className="flex flex-col items-center mb-8">
-          <p className="text-base md:text-xl font-black text-[var(--ac-dark-brown)] mb-3 drop-shadow-sm">距離下一波手搖投放日還有：</p>
+          <p className="text-base md:text-xl font-black text-[var(--ac-dark-brown)] mb-3 drop-shadow-sm">距離下一波手搖投放日：</p>
           <div className="countdown-box">
             <div className="countdown-item">{timeLeft.d}<span>DAYS</span></div>
             <div className="countdown-item">{timeLeft.h}<span>HOURS</span></div>
@@ -423,6 +425,16 @@
             <div className={`task-checkbox flex-shrink-0 mt-1 ${checked ? 'checked' : ''}`}></div>
             <div className="font-bold text-[#594d40] leading-relaxed">{step.text}{step.sub && <div className="text-[#ea6558] font-black text-sm mt-1">{step.sub}</div>}</div>
           </div>
+          
+          {step.showQR && (
+            <div className="mt-4 bg-white rounded-xl p-3 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer transition transform hover:scale-105 active:scale-95 group">
+              <a href={data.lineLink} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center w-full h-full">
+                {/* ✅ 放大文字與 QR Code */}
+                <span className="text-gray-400 font-bold text-lg md:text-xl mb-2 group-hover:text-[#53bf9d]">👇 點擊或掃描加入 👇</span>
+                <img src={data.lineQRCode} alt="QR Code" className="w-56 h-56 object-contain" />
+              </a>
+            </div>
+          )}
         </div>
       );
     };
@@ -495,7 +507,16 @@
                               <div className="w-12 h-12 bg-[#78b159] text-white rounded-full border-4 border-white shadow-md flex items-center justify-center text-xl font-black mx-auto mb-4 absolute -top-6 left-1/2 -translate-x-1/2">{step.num}</div>
                               <h3 className="mt-4 text-lg md:text-xl font-black text-[#594d40] mb-3 text-center">{step.title}</h3>
                               <div className="text-[#7c7c7c] font-bold leading-relaxed">{step.lines.map((l, i) => (<p key={i} className="mb-1">🍃 {l}</p>))}</div>
-                              {step.showQR && <div className="mt-4 bg-gray-100 rounded-xl p-4 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center h-32 text-gray-400 font-bold text-sm">📲 此處放 QR</div>}
+                              
+                              {step.showQR && (
+                                <div className="mt-4 bg-white rounded-xl p-3 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer transition transform hover:scale-105 active:scale-95 group">
+                                  <a href={data.lineLink} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center w-full h-full">
+                                    {/* ✅ QR Code 文案與圖片都已放大 */}
+                                    <span className="text-gray-400 font-bold text-lg md:text-xl mb-2 group-hover:text-[#53bf9d]">👇 點擊或掃描加入 👇</span>
+                                    <img src={data.lineQRCode} alt="QR Code" className="w-56 h-56 object-contain" />
+                                  </a>
+                                </div>
+                              )}
                             </div>
                           ))}
                         </div>
@@ -508,7 +529,7 @@
                            <div className="section-title pt-8 md:pt-0">💰 團長揪團基金</div>
                            <div className="flex flex-col items-center gap-1">
                              <p className="section-subtitle">免抽獎！達標直接領獎金</p>
-                             {/* ✅ 修正備註框配色：淡綠色統一 */}
+                             {/* ✅ 統一備註框：淡綠底 */}
                              <div className="remark-box">依最高達標門檻，限領取一次</div>
                            </div>
                         </div>
@@ -547,7 +568,7 @@
                               <div className="section-title">🎁 抽獎池目錄</div>
                               <div className="flex flex-col items-center gap-2">
                                  <p className="section-subtitle">揪到 5 人就有抽獎資格 → 15 人升級中獎池 → 30 人豪華池</p>
-                                 {/* ✅ 統一備註框 */}
+                                 {/* ✅ 統一備註框：淡綠底 */}
                                  <div className="remark-box max-w-2xl leading-relaxed text-left">
                                    團長注意！每揪一位隊友都要領一組新代碼！團員用專屬碼完成註冊才算同團，集滿人數全團均可參加抽獎。
                                  </div>
@@ -565,7 +586,6 @@
                                         <div key={i} className="bg-gray-50 rounded-xl p-3 flex flex-col items-center text-center border-2 border-transparent hover:border-[#78b159] transition">
                                            <div className="w-20 h-20 bg-white rounded-xl flex items-center justify-center mb-2 shadow-sm overflow-hidden">{item.imgSrc ? <img src={item.imgSrc} className="w-full h-full object-cover" /> : <i className={item.iconClass}></i>}</div>
                                            <div className="font-bold text-[#594d40] text-base leading-tight mb-1">{item.name}</div>
-                                           {/* ✅ 增加換行空白 (h-6) */}
                                            <div className="text-sm text-gray-500 font-bold mb-0">{item.price}</div>
                                            <div className="h-6"></div>
                                            <span className="text-sm bg-gray-200 px-2 py-0.5 rounded-md font-bold text-gray-500">{item.quantity}</span>
@@ -606,7 +626,7 @@
                                   <div className="flex gap-3 items-center text-left"><span className="bg-[#53bf9d] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">Q</span><span>{f.q}</span></div>
                                   <i className="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition"></i>
                                 </summary>
-                               <div className="p-4 pt-0 text-gray-600 font-medium pl-14 border-t-0 leading-relaxed text-left">{f.a}</div>
+                                <div className="p-4 pt-0 text-gray-600 font-medium pl-14 border-t-0 leading-relaxed text-left">{f.a}</div>
                              </details>))}</div>
                         )}
                       </div>
