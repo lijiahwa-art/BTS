@@ -394,10 +394,13 @@
           target={href ? "_blank" : "_self"}
           rel="noopener noreferrer" 
           onClick={handleClick}
-          // ✅ 優化：手機版 px-4 py-3 text-sm (縮小一點)，電腦版維持大尺寸 px-8 py-4 text-xl
-          className={`ac-btn-new px-4 py-3 md:px-8 md:py-4 text-sm md:text-xl flex items-center justify-center gap-2 md:gap-3 min-w-[120px] md:min-w-[180px] shadow-lg ${colorClass}`}
+          // ✅ 優化 LinkButton 尺寸：
+          // 1. 手機: px-4 py-3 text-sm
+          // 2. 平板 (md): px-6 py-3 text-lg (稍微縮小，避免在 iPad 上太大擋到字)
+          // 3. 電腦 (lg): px-8 py-4 text-xl (維持原本的大尺寸)
+          className={`ac-btn-new px-4 py-3 md:px-6 md:py-3 lg:px-8 lg:py-4 text-sm md:text-lg lg:text-xl flex items-center justify-center gap-2 md:gap-3 min-w-[120px] md:min-w-[150px] lg:min-w-[180px] shadow-lg ${colorClass}`}
         >
-          {icon && <span className="text-base md:text-xl">{icon}</span>}
+          {icon && <span className="text-base md:text-lg lg:text-xl">{icon}</span>}
           {children}
         </a>
       );
@@ -526,12 +529,12 @@
                 />
 
                 <div className="absolute inset-0 pointer-events-none">
-                    {/* ✅ 按鈕位置微調：
-                        修復「斷層」問題：
-                        1. 將 bottom-8 改為 bottom-0，讓漸層背景直達底部，消除色差斷層。
-                        2. 將 pb-6 改為 pb-14，用內距把按鈕「頂」回原本的高度，保持按鈕位置不變。
+                    {/* ✅ Banner 按鈕容器位置優化：
+                        1. 手機 (預設): bottom-0 + pb-14 (維持之前的修復)
+                        2. 平板 (md): left-8 bottom-10 (新增！從 bottom-20 降到 bottom-10，避開圖片上的文案)
+                        3. 電腦 (lg): left-14 bottom-20 (螢幕夠大，維持原本較高的位置)
                     */}
-                    <div className="pointer-events-auto absolute w-full md:w-auto left-0 md:left-14 bottom-0 md:bottom-20 flex justify-center md:justify-start gap-4 md:gap-10 px-4 md:px-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-none pb-14 pt-10 md:pb-0 md:pt-0">
+                    <div className="pointer-events-auto absolute w-full md:w-auto left-0 md:left-8 lg:left-14 bottom-0 md:bottom-10 lg:bottom-20 flex justify-center md:justify-start gap-4 md:gap-6 lg:gap-10 px-4 md:px-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-none pb-14 pt-10 md:pb-0 md:pt-0">
                         <LinkButton onClick={() => scrollToContent('methods')} colorClass="btn-primary" icon={<i className="fa-solid fa-mug-hot"></i>}>我要領手搖</LinkButton>
                         <LinkButton onClick={() => scrollToContent('prizes')} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>}>我要揪團</LinkButton>
                     </div>
