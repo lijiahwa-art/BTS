@@ -26,26 +26,24 @@
   <style>
     :root{
       /* ✅ LTrust/動森色票 */
-      --ac-nook: #53bf9d;       
-      --ac-paper: #fffdf0;      
-      --ac-yellow: #f8e67e;     
-      --ac-text: #594d40;       
-      --ac-red: #ea6558;        
-      --ac-dark-brown: #583e26; 
+      --ac-nook: #53bf9d;        
+      --ac-paper: #fffdf0;       
+      --ac-yellow: #f8e67e;      
+      --ac-text: #594d40;        
+      --ac-red: #ea6558;         
+      --ac-dark-brown: #583e26;  
       --ac-goose-yellow: #fefae0; 
-      --ac-border-tan: #d6b484; 
+      --ac-border-tan: #d6b484;  
       
-      /* 小標題配色 */
+      /* 小標題與備註配色 */
       --subtitle-pink: #d46d78;
-
-      /* ✅ 統一備註配色 (淡綠底+深綠字) */
       --remark-bg-green: #f0fdf4;
       --remark-border-green: #86efac;
-      --remark-text-green: #166534; /* 深綠色 */
+      --remark-text-green: #15803d;
       
       /* CTA 按鈕顏色 */
       --btn-primary-bg: var(--ac-dark-brown);
-      --btn-primary-text: #ffffff;  
+      --btn-primary-text: #ffffff;   
       --btn-secondary-bg: var(--ac-yellow);
       --btn-secondary-text: var(--ac-dark-brown); 
     }
@@ -162,11 +160,15 @@
     }
 
     /* 頁籤 */
+    /* ✅ 手機版頁籤樣式優化：改為全圓角按鈕 */
     .ac-tab {
       background: rgba(253, 251, 247, 0.9); color: #8b6a4f; border: 3px solid var(--ac-text);
-      transition: all 0.2s; position: relative; border-radius: 16px; margin-bottom: 0; backdrop-filter: blur(5px);
+      transition: all 0.2s; position: relative; border-radius: 12px; margin-bottom: 0.5rem; backdrop-filter: blur(5px);
     }
-    @media (min-width: 768px) { .ac-tab { border-radius: 20px 20px 0 0; border-bottom: none; margin-bottom: -3px; } }
+    /* ✅ 電腦版還原為上方圓角的頁籤樣式 */
+    @media (min-width: 768px) { 
+      .ac-tab { border-radius: 20px 20px 0 0; border-bottom: none; margin-bottom: -3px; } 
+    }
     .ac-tab.active { background: var(--ac-yellow); color: var(--ac-text); z-index: 20; }
     @media (min-width: 768px) { .ac-tab.active { transform: translateY(-4px); padding-bottom: 8px; } }
 
@@ -207,9 +209,6 @@
     }
     @keyframes shine { 0% { left: -100%; opacity: 0; } 20% { left: 100%; opacity: 0.6; } 100% { left: 100%; opacity: 0; } }
 
-    .swing-tag { transform-origin: top center; animation: swing 3s ease-in-out infinite; }
-    @keyframes swing { 0% { transform: rotate(0deg); } 20% { transform: rotate(5deg); } 40% { transform: rotate(-5deg); } 60% { transform: rotate(3deg); } 80% { transform: rotate(-3deg); } 100% { transform: rotate(0deg); } }
-
     .ticker-container {
       background: rgba(255, 255, 255, 0.85); border: 3px solid var(--ac-text);
       border-radius: 999px; overflow: hidden; white-space: nowrap; position: relative;
@@ -238,6 +237,8 @@
 
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    /* FAQ 答案保留換行 */
+    .faq-a { white-space: pre-line; }  
   </style>
 </head>
 
@@ -255,9 +256,13 @@
     const { useState, useEffect } = React;
 
     const data = {
-      bannerImage: "./banner.jpg",
-      // ✅ QR Code 圖片路徑 - 預留給您放 QR Code 圖片的位置
-      lineQRCode: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://line.me/ti/p/@173eprbj", 
+      // ✅ 電腦版主視覺 (建議尺寸: 1920x600 或 1200x400)
+      bannerImage: "banner.png",
+      // ✅ 手機版主視覺 (建議尺寸: 1080x1350 直式 或 1080x1080 方形)
+      bannerImageMobile: "mobile_banner.png",
+      
+      lineQRCode: "qrcode.png",
+      lineLink: "https://line.me/ti/p/@173eprbj",
       ctaLinks: { register: "https://example.com/register", host: "https://example.com/host" },
       hostBonuses: [
         { people: 10, money: "NT$ 1,000" },
@@ -267,13 +272,13 @@
       ],
       hostBonusMax: { people: 30, original: "NT$ 3,500", money: "NT$ 4,000" },
       hostGuideSteps: [
-        { id: 1, text: "成為 LTrust 島民（會員），無論新、舊島民，均可開團成為團長。" },
-        { id: 2, text: "立志成為團長後，進入 LTrust 本島「熱門服務區」領取「入島推薦碼」。" },
-        { id: 3, text: "將該碼發給同學，對方使用該碼完成入島（註冊），系統將自動納入團員。", sub: "*團長每揪一位，需領取一組新代碼。" },
+        { id: 1, title: "取得島民（會員）資格", text: " 無論是新舊島民，只要是 LTrust 島民，都有資格成為「團長」，開啟你的揪團計畫！" },
+        { id: 2, title: "前往服務中心領推薦碼", text: "立志成為團長後，請前往 LTrust 本島的「熱門服務區」，領取專屬的 「入島推薦碼」", showImage: true },
+        { id: 3, title: "發送推薦碼", text: "將邀請碼發給同學，對方輸入並成功註冊，系統將自動把他納入你的團隊！", sub: "● 一個推薦碼限一人使用！若你要揪第 2 位同學，請再次回到熱門服務區，領取一組新的邀請碼。揪 10 人就要領 10 次碼，勤勞的團長有糖吃！", showImage: true },
       ],
       prizePools: [
         { 
-          title: "🎉 無人之境 豪華池", people: "30", descSuffix: "人｜整團皆可抽", borderColor: "border-[#fcd34d]", 
+          title: "🎉 無人之境 豪華池", people: "30", descSuffix: "人｜整團皆可抽", borderColor: "border-[#fcd34d]", headerBg: "bg-yellow-200", 
           items: [
             { name: "Switch 2", price: "$14,800", quantity: "1 台", imgSrc: "https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=200" }, 
             { name: "Apple iPad 11", price: "$10,900", quantity: "1 台", imgSrc: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200" }, 
@@ -281,7 +286,7 @@
           ] 
         },
         { 
-          title: "🎧 歡樂中獎池", people: "15", descSuffix: "人｜整團皆可抽", borderColor: "border-blue-400", 
+          title: "🎧 歡樂中獎池", people: "15", descSuffix: "人｜整團皆可抽", borderColor: "border-blue-400", headerBg: "bg-blue-200",
           items: [
             { name: "Apple AirPods 4", price: "$4,990", quantity: "2 台", imgSrc: "https://images.unsplash.com/photo-1588423771073-b8903fbb85b5?w=200" }, 
             { name: "Apple HomePod mini", price: "$3,000", quantity: "3 台", imgSrc: "https://images.unsplash.com/photo-1616423640778-28d1b53229bd?w=200" }, 
@@ -289,34 +294,42 @@
           ] 
         },
         { 
-          title: "☕ 小團也有獎", people: "5", descSuffix: "人｜整團皆可抽", borderColor: "border-orange-400", 
+          title: "☕ 小團也有獎", people: "5", descSuffix: "人｜整團皆可抽", borderColor: "border-orange-400", headerBg: "bg-orange-200", 
           items: [
-            { name: "星巴克 即享券", price: "$175", quantity: "20 份", iconClass: "fa-solid fa-mug-hot text-green-700 text-4xl" }, 
-            { name: "Uber Eats 即享券", price: "$200", quantity: "20 份", iconClass: "fa-solid fa-burger text-black text-4xl" }, 
-            { name: "LTrust 紅利 10 萬點", price: "$1,000", quantity: "20 份", iconClass: "fa-solid fa-graduation-cap text-blue-600 text-4xl" }
+            { name: "星巴克 星享飲料券", price: "$175", quantity: "20 份", iconClass: "fa-solid fa-mug-hot text-green-700 text-4xl" }, 
+            { name: "Uber Eats 好禮即享券", price: "$200", quantity: "20 份", iconClass: "fa-solid fa-burger text-black text-4xl" }, 
+            { name: "LTrust 紅利 10 萬點", price: "價值台幣 $1,000", quantity: "20 份", iconClass: "fa-solid fa-graduation-cap text-blue-600 text-4xl" }
           ] 
         }
       ],
       notices: [
-        "本活動限定「全台高中生」參與，中獎者若資訊不符將取消領獎資格。",
-        "🛑 島務所會抓分身/灌水：被判定異常會直接取消資格。",
-        "客服聯繫：請來信 support@ltrust.tw 或洽官方 LINE 帳號 @173eprbj。"
+        "身分限定：僅開放 「全台高中職在校生」 參加。請務必填寫學校類型、名稱、年級與入學年度，中獎時將核對 「學生證/身分證」，若資料造假或無法證明是高中生，將被取消領獎資格喔！",
+        "揪團規則：團長揪團獎勵屬於額外加碼，不影響抽獎權益！",
+        "帳號規範：為確保公平，一人限註冊一組帳號。 本島設有 「IP 偵測系統」，禁止多重分身，若發現惡意洗帳號、大量異常註冊，系統將自動凍結帳號並取消所有獎勵🔥",
+        "活動變更權：若遇不可抗力因素（如獎品缺貨），LTrust 保有隨時調整活動內容、或更換等值獎品或禮券之權利，最新公告請以此活動網頁為主。",
+        "參加活動即代表同意 LTrust 的隱私權政策，你的資料僅供本次活動身分核對、寄送獎勵使用，絕不外洩。",
+        "若有有任何疑問，歡迎隨時聯繫我們！服務信箱：support@ltrust.tw、官方 LINE：@173eprbj (記得加 @)"
       ],
       faqs: [
-        { q: "每個人可以領幾次？", a: "每個手機號碼限入島一次，每位新島民限領一杯。" },
-        { q: "有哪些合作飲料店？", a: "包含 50嵐、迷客夏、可不可、五桐號等門市皆可兌換。" },
-        { q: "獎品什麼時候發放？", a: "活動結束後將公告中獎名單，並以簡訊/Email 通知。" }
+        { q: "註冊完也加LINE了，飲料券什麼時候會來？", a: "會在 「次週三」 統一空投！ 例如：你在 3/2 (日) - 3/8 (六) 期間完成任務，就會在 3/12 (三) 收到飲料券。請耐心期待！" },
+        { q: "領了手搖飲，還可以參加揪團抽獎嗎？ ", a: " 當然可以！這兩個活動完全不衝突\n ◆ 只要你是前 1,000 名完成註冊 + LINE 留言的同學 ➡️ 獲得手搖飲 \n ◆ 團員身分：如果你是用朋友推薦碼註冊 ➡️ 達到成團門檻(最低 5 人)將自動獲得抽獎資格\n ◆ 團長身分：如果你是自己直接註冊 ➡️ 去領推薦碼揪人 ➡️ 成功達成團門檻後獲得抽獎資格&團長獎金" },
+        { q: "如果填錯 Email 怎麼辦？可以補發嗎？", a: "抱歉！因為是自動化空投，Email 填錯就真的收不到了😭請在註冊時務必檢查三次！" },
+        { q: "為什麼可以同時是「團長」又是「團員」？", a: " 只要你「使用他人代碼註冊的新會員」，並在註冊後「成功邀請其他人」，你就同時擁有兩種身分，達成門檻後享有雙倍抽獎機會！" },
+        { q: "為什麼我的推薦碼不能一次傳全班？", a: "為了確保每位同學的身份與獎勵計算準確，我們採用「一碼一用」實名制。\n💡團長可以採用一次性先把碼領好，存在記事本或表單，再分享給同學使用喔。" },
+        { q: "抽到大獎需要付錢嗎？", a: " 不用付錢！但依照法律規定，價值超過 $1,000 的獎品需要 「申報所得」。 所以中獎後需要請你填寫資料並提供身分證及收件資料，我們才能幫你把獎品寄回家！" },
+        { q: "揪團獎金什麼時候發？是直接匯款嗎？", a: " 沒錯！活動結束後，我們會結算你的總戰績（揪了多少人）。 確認無違規後，將會寄發「領獎確認書」 給你填寫帳戶資料，獎金會直接匯入你的戶頭。" }
       ],
+
       tickerNews: [
         "🌸 恭喜「建國中學」陳O明 同學揪團成功，全團獲得抽獎資格！",
         "🧋 累積入島人數已突破 800 位！剩餘手搖飲額度倒數中...",
-        "🎁 5/7 島內佈告欄貼榜，記得回來查看中獎資訊喔！",
+        "🎁 5/6 島內佈告欄貼榜，記得回來查看中獎資訊喔！",
         "✈️ Nook 旅行券領取步驟：註冊後加入 LINE@ 留言即可獲得。"
       ],
       steps: [
-        { num: "01", title: "入島成為 LTrust 島民", lines: ["填寫 Email 與手機號碼", "基本資料請如實填寫"], showQR: false },
-        { num: "02", title: "加入 LINE@ 物資站", lines: ["掃描 QR Code 加好友", "留言：「規我要領手搖」"], showQR: true },
-        { num: "03", title: "收券 → 門市兌換", lines: ["每週三統一寄發電子飲品券", "出示券面即可兌換"], showQR: false }
+        { num: "01", title: "註冊成為 LTrust 島民", lines: ["「學校類型、名稱、年級與入學年度」為必填資料，並確保 Email 正確無誤（填錯就無法補發囉！）"], showQR: false },
+        { num: "02", title: "加入LINE @ 龍騰高中聲", lines: ["傳送通關密語： 「我要領手搖＋你的註冊信箱」\n\n ● 範例：我要領手搖+ltisgood@gmail.com"], showQR: true },
+        { num: "03", title: "等待領獎 → 門市兌換", lines: ["註冊後次週三電子手搖兌換券發放至信箱，憑券至全省門市兌換！","如果沒看到信，請先檢查垃圾信件匣或促銷內容，它可能躲起來了！"], showQR: false }
       ]
     };
 
@@ -356,7 +369,7 @@
       }, []);
       return (
         <div className="flex flex-col items-center mb-8">
-          <p className="text-base md:text-xl font-black text-[var(--ac-dark-brown)] mb-3 drop-shadow-sm">距離下一波手搖投放日：</p>
+          <p className="text-base md:text-xl font-black text-[var(--ac-dark-brown)] mb-3 drop-shadow-sm">離下一波手搖券投放日還有：</p>
           <div className="countdown-box">
             <div className="countdown-item">{timeLeft.d}<span>DAYS</span></div>
             <div className="countdown-item">{timeLeft.h}<span>HOURS</span></div>
@@ -367,12 +380,28 @@
       );
     };
 
-    const LinkButton = ({ href, children, colorClass, icon }) => (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={`ac-btn-new px-5 py-3 md:px-8 md:py-4 text-base md:text-lg md:text-xl flex items-center justify-center gap-2 md:gap-3 min-w-[130px] md:min-w-[180px] shadow-lg ${colorClass}`}>
-        {icon && <span className="text-lg md:text-xl">{icon}</span>}
-        {children}
-      </a>
-    );
+    const LinkButton = ({ href, children, colorClass, icon, onClick }) => {
+      const handleClick = (e) => {
+        if (onClick) {
+          e.preventDefault();
+          onClick();
+        }
+      };
+
+      return (
+        <a 
+          href={href || "#"} 
+          target={href ? "_blank" : "_self"}
+          rel="noopener noreferrer" 
+          onClick={handleClick}
+          // ✅ 優化：手機版 px-4 py-3 text-sm (縮小一點)，電腦版維持大尺寸 px-8 py-4 text-xl
+          className={`ac-btn-new px-4 py-3 md:px-8 md:py-4 text-sm md:text-xl flex items-center justify-center gap-2 md:gap-3 min-w-[120px] md:min-w-[180px] shadow-lg ${colorClass}`}
+        >
+          {icon && <span className="text-base md:text-xl">{icon}</span>}
+          {children}
+        </a>
+      );
+    };
 
     const CuteBobaIcon = () => (
       <svg viewBox="0 0 100 120" className="w-20 h-20 md:w-28 md:h-28 drop-shadow-xl">
@@ -403,8 +432,8 @@
                   <span className="font-black text-sm md:text-base text-[#006c64]">新島民限定</span>
                </div>
             </div>
-            <h3 className="text-3xl md:text-4xl font-black tracking-tight mb-2 text-[#006c64] drop-shadow-sm">LTrust 歡迎禮</h3>
-            <p className="text-xl font-bold text-orange-700">人氣手搖 電子飲品券</p>
+            <h3 className="text-3xl md:text-4xl font-black tracking-tight mb-2 text-[#006c64] drop-shadow-sm">LTrust 歡迎你</h3>
+            <p className="text-xl font-bold text-orange-700">人氣手搖品牌 電子飲品券</p>
           </div>
           <div className="w-[2px] ticket-dashed-line-premium my-6"></div>
           <div className="w-[100px] md:w-[150px] p-2 flex items-center justify-center bg-white/10 flex-shrink-0">
@@ -417,23 +446,28 @@
       </div>
     );
 
+    // ✅ TaskItem 元件重製：統一卡片風格 (border-4, rounded-30)，支援標題、說明與圖片
     const TaskItem = ({ step }) => {
-      const [checked, setChecked] = useState(false);
       return (
-        <div onClick={() => setChecked(!checked)} className="bg-[#fffdf0] p-4 rounded-lg border-2 border-[#d6b484] shadow-sm cursor-pointer hover:bg-[#fcf8e3] transition text-left">
-          <div className="flex items-start gap-3">
-            <div className={`task-checkbox flex-shrink-0 mt-1 ${checked ? 'checked' : ''}`}></div>
-            <div className="font-bold text-[#594d40] leading-relaxed">{step.text}{step.sub && <div className="text-[#ea6558] font-black text-sm mt-1">{step.sub}</div>}</div>
+        <div className="bg-white border-4 border-[var(--ac-border-tan)] rounded-[30px] p-6 relative hover:-translate-y-2 transition duration-300 shadow-md flex flex-col items-center">
+          {/* ✅ 統一無框線綠色圓點 */}
+          <div className="w-12 h-12 bg-[#78b159] text-white rounded-full shadow-md flex items-center justify-center text-xl font-black mx-auto mb-4 absolute -top-6 left-1/2 -translate-x-1/2">{step.id}</div>
+          
+          {/* ✅ 新增粗體小標 */}
+          <h3 className="mt-4 text-lg md:text-xl font-black text-[#594d40] mb-3 text-center">{step.title}</h3>
+          
+          {/* ✅ 說明文字 */}
+          <div className="text-[#7c7c7c] font-bold leading-relaxed w-full text-left">
+             <p>{step.text}</p>
+             {step.sub && <p className="text-[#ea6558] text-sm mt-1">{step.sub}</p>}
           </div>
           
-          {step.showQR && (
-            <div className="mt-4 bg-white rounded-xl p-3 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer transition transform hover:scale-105 active:scale-95 group">
-              <a href={data.lineLink} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center w-full h-full">
-                {/* ✅ 放大文字與 QR Code */}
-                <span className="text-gray-400 font-bold text-lg md:text-xl mb-2 group-hover:text-[#53bf9d]">👇 點擊或掃描加入 👇</span>
-                <img src={data.lineQRCode} alt="QR Code" className="w-56 h-56 object-contain" />
-              </a>
-            </div>
+          {/* ✅ 圖片佔位符：虛線框 */}
+          {step.showImage && (
+             <div className="mt-4 bg-gray-50 rounded-xl p-4 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center w-full aspect-square text-gray-400">
+                 <i className="fa-regular fa-image text-4xl mb-2"></i>
+                 <span className="font-bold text-sm">步驟示意圖</span>
+             </div>
           )}
         </div>
       );
@@ -449,6 +483,14 @@
         { id: "faq", label: "服務處FAQ", iconClass: "fa-solid fa-circle-question" },
       ];
 
+      const scrollToContent = (tabId) => {
+          setActiveTab(tabId);
+          const element = document.getElementById("main-content-card");
+          if (element) {
+              element.scrollIntoView({ behavior: 'smooth' });
+          }
+      };
+
       const getTextureClass = () => {
         if (['methods', 'notices', 'faq'].includes(activeTab)) return 'bg-texture-goose';
         if (['prizes', 'winners'].includes(activeTab)) return 'bg-texture-board';
@@ -461,11 +503,37 @@
             {/* Banner Area */}
             <div className="w-full relative">
               <div className="relative overflow-hidden shadow-2xl">
-                <img src={data.bannerImage} onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1974"} alt="活動主視覺" className="w-full h-auto block min-h-[280px] md:min-h-[300px] object-cover object-center" />
-                <div className="absolute inset-0 container mx-auto px-4 md:px-6 pointer-events-none flex items-center justify-start">
-                    <div className="flex flex-row gap-3 md:gap-4 pointer-events-auto transform translate-y-[5rem] md:translate-y-[8.5rem] pl-2 md:pl-0 ml-0 md:ml-20"> 
-                        <LinkButton href={data.ctaLinks.register} colorClass="btn-primary" icon={<i className="fa-solid fa-mug-hot"></i>}>我要領手搖</LinkButton>
-                        <LinkButton href={data.ctaLinks.host} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>}>我要揪團</LinkButton>
+                {/* ✅ Banner 優化：
+                   1. 電腦版 (md:block hidden): 顯示原本的橫式 Banner
+                   2. 手機版 (md:hidden block): 顯示直式 Banner (bannerImageMobile)
+                   3. 使用 object-cover 確保填滿
+                */}
+                
+                {/* 手機版 Banner */}
+                <img 
+                  src={data.bannerImageMobile} 
+                  onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1080"} 
+                  alt="活動主視覺(手機版)" 
+                  className="w-full h-auto block md:hidden object-cover object-center" 
+                />
+
+                {/* 電腦版 Banner */}
+                <img 
+                  src={data.bannerImage} 
+                  onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1974"} 
+                  alt="活動主視覺(電腦版)" 
+                  className="w-full h-auto hidden md:block min-h-[300px] object-cover object-center" 
+                />
+
+                <div className="absolute inset-0 pointer-events-none">
+                    {/* ✅ 按鈕位置微調：
+                        修復「斷層」問題：
+                        1. 將 bottom-8 改為 bottom-0，讓漸層背景直達底部，消除色差斷層。
+                        2. 將 pb-6 改為 pb-14，用內距把按鈕「頂」回原本的高度，保持按鈕位置不變。
+                    */}
+                    <div className="pointer-events-auto absolute w-full md:w-auto left-0 md:left-14 bottom-0 md:bottom-20 flex justify-center md:justify-start gap-4 md:gap-10 px-4 md:px-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-none pb-14 pt-10 md:pb-0 md:pt-0">
+                        <LinkButton onClick={() => scrollToContent('methods')} colorClass="btn-primary" icon={<i className="fa-solid fa-mug-hot"></i>}>我要領手搖</LinkButton>
+                        <LinkButton onClick={() => scrollToContent('prizes')} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>}>我要揪團</LinkButton>
                     </div>
                 </div>
               </div>
@@ -474,7 +542,7 @@
             <div className="container mx-auto px-4 md:px-6 flex flex-col items-center max-w-5xl">
               <div className="w-full mt-10 md:mt-16 z-20 flex flex-col items-center">
                 <Countdown />
-                <div className="ticker-container w-full">
+                <div className="ticker-container w-full max-w-[95%] md:max-w-full">
                   <div className="ticker-content">
                     {data.tickerNews.join(" | ")} | {data.tickerNews.join(" | ")}
                   </div>
@@ -482,38 +550,54 @@
               </div>
 
               <div className="w-full relative mb-20 z-20"> 
-                <div className="grid grid-cols-2 md:flex border-b-0 md:border-b-4 border-[var(--ac-text)] gap-2 md:gap-2 px-1 md:px-4 items-end">
+                {/* ✅ 終極版 Tabs 排版：Flex Wrap + 自動填滿 (flex-1) */}
+                <div className="flex flex-wrap justify-center md:justify-start w-full border-b-0 md:border-b-4 border-[var(--ac-text)] gap-2 px-2 md:px-4 items-end pb-0">
                   {tabs.map((tab) => (
-                    <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`ac-tab px-2 py-3 md:px-5 md:py-3 font-black text-sm md:text-xl flex items-center justify-center md:justify-start gap-1 md:gap-2 ${activeTab === tab.id ? 'active' : 'hover:brightness-95'}`}>
+                    <button 
+                      key={tab.id} 
+                      onClick={() => setActiveTab(tab.id)} 
+                      className={`ac-tab flex-grow md:flex-grow-0 min-w-[45%] md:min-w-0 px-4 py-3 md:px-5 md:py-3 font-black text-sm md:text-xl flex items-center justify-center gap-2 ${activeTab === tab.id ? 'active' : 'hover:brightness-95'}`}
+                    >
                       <i className={tab.iconClass}></i>{tab.label}
                     </button>
                   ))}
                 </div>
 
-                <div className={`ac-card p-4 md:p-12 min-h-[400px] mt-2 md:mt-0 ${getTextureClass()}`}>
+                <div id="main-content-card" className={`ac-card p-4 md:p-12 min-h-[400px] mt-0 md:mt-0 ${getTextureClass()}`}>
                   {['prizes', 'winners'].includes(activeTab) && <div className="board-pin"></div>}
                   <div className="card-content-z">
                     {activeTab === "methods" && (
                       <div className="animate-[fadeIn_0.5s_ease-out] text-center">
                         <div className="section-title">限量登島禮 🎁</div>
-                        {/* ✅ 修正副標：次週三變色 */}
-                        <p className="section-subtitle">歡迎禮：限量 1,000 杯，<span className="text-[#006c64]">次週三</span>統一空投至註冊 Email</p>
+                         <p className="section-subtitle">限量 1,000 杯，<span className="text-[#006c64]">次週三</span>統一空投至註冊 Email，發畢將在此頁公告</p>
 
                         <div className="mb-12"><VoucherTicket /></div>
                         <div className="text-xl md:text-3xl font-black text-[#594d40] mb-8 bg-[var(--ac-yellow)] inline-block px-6 py-2 rounded-lg transform -rotate-1 border-2 border-[#594d40]">領取3步驟</div>
-                        <div className="grid md:grid-cols-3 gap-6 text-left">
+                        {/* ✅ 平板排版修正：
+                            將原本的 md:grid-cols-3 改為 lg:grid-cols-3。
+                            這樣 iPad Mini/Air (md 區間) 就會自動保持單欄 (grid-cols-1)，避免文字被擠壓跑版。
+                            電腦或橫向 iPad Pro (lg 區間) 則維持三欄並排。
+                        */}
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
                           {data.steps.map((step, index) => (
-                            <div key={index} className="bg-white border-4 border-[var(--ac-border-tan)] rounded-[30px] p-6 relative hover:-translate-y-2 transition duration-300 shadow-md">
-                              <div className="w-12 h-12 bg-[#78b159] text-white rounded-full border-4 border-white shadow-md flex items-center justify-center text-xl font-black mx-auto mb-4 absolute -top-6 left-1/2 -translate-x-1/2">{step.num}</div>
+                            <div key={index} className="bg-white border-4 border-[var(--ac-border-tan)] rounded-[30px] p-6 relative hover:-translate-y-2 transition duration-300 shadow-md flex flex-col items-center">
+                              {/* ✅ 統一無框線綠色圓點 */}
+                              <div className="w-12 h-12 bg-[#78b159] text-white rounded-full shadow-md flex items-center justify-center text-xl font-black mx-auto mb-4 absolute -top-6 left-1/2 -translate-x-1/2">{step.num}</div>
+                              
                               <h3 className="mt-4 text-lg md:text-xl font-black text-[#594d40] mb-3 text-center">{step.title}</h3>
-                              <div className="text-[#7c7c7c] font-bold leading-relaxed">{step.lines.map((l, i) => (<p key={i} className="mb-1">🍃 {l}</p>))}</div>
+                              <div className="text-[#7c7c7c] font-bold leading-relaxed w-full">
+                                {step.lines.map((l, i) => (
+                                   <p key={i} className="mb-1 flex items-start"><span className="mr-2">🍃</span>{l}</p>
+                                ))}
+                              </div>
                               
                               {step.showQR && (
-                                <div className="mt-4 bg-white rounded-xl p-3 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer transition transform hover:scale-105 active:scale-95 group">
-                                  <a href={data.lineLink} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center w-full h-full">
-                                    {/* ✅ QR Code 文案與圖片都已放大 */}
-                                    <span className="text-gray-400 font-bold text-lg md:text-xl mb-2 group-hover:text-[#53bf9d]">👇 點擊或掃描加入 👇</span>
-                                    <img src={data.lineQRCode} alt="QR Code" className="w-56 h-56 object-contain" />
+                                <div className="mt-6 flex flex-col items-center justify-center w-full">
+                                  <a href={data.lineLink} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center group">
+                                    <div className="bg-[#ea6558] text-white px-5 py-2 rounded-full font-black text-lg mb-3 shadow-md transform transition group-hover:scale-105 flex items-center gap-2">
+                                       <i className="fa-solid fa-hand-point-down animate-bounce"></i> 點擊或掃描加入
+                                    </div>
+                                    <img src={data.lineQRCode} alt="QR Code" className="w-48 h-48 object-contain drop-shadow-md transform transition group-hover:scale-105" />
                                   </a>
                                 </div>
                               )}
@@ -525,77 +609,96 @@
 
                     {activeTab === "prizes" && (
                       <div className="flex flex-col gap-10 animate-[fadeIn_0.5s_ease-out]">
-                        <div className="text-center mb-6">
-                           <div className="section-title pt-8 md:pt-0">💰 團長揪團基金</div>
-                           <div className="flex flex-col items-center gap-1">
-                             <p className="section-subtitle">免抽獎！達標直接領獎金</p>
-                             {/* ✅ 統一備註框：淡綠底 */}
-                             <div className="remark-box">依最高達標門檻，限領取一次</div>
+                        {/* ✅ 團長專區大外框 */}
+                        <div className="bg-white p-6 rounded-[30px] border-4 border-[#d6cfa8] shadow-xl relative">
+                           <div className="text-center mb-6">
+                             <div className="section-title pt-8 md:pt-0">💰 團長揪團基金</div>
+                             <div className="flex flex-col items-center gap-1">
+                               <p className="section-subtitle">免抽獎！達標直接領獎金</p>
+                               <div className="remark-box">依最高達標門檻，每位同學限領取一次</div>
+                             </div>
                            </div>
-                        </div>
-                        
-                        <div className="bg-white/80 p-4 md:p-8 rounded-xl border-2 border-[#e6dcae] shadow-inner">
-                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-center">
-                              {data.hostBonuses.map((bonus, idx) => (
-                                <div key={idx} className="flex justify-between items-center border-b-2 border-dashed border-[#d6cfa8] pb-2">
-                                   <span className="font-bold text-[#594d40] text-xl">揪 <span className="text-[#ea6558]">{bonus.people}</span> 人</span>
-                                   <span className="font-black text-xl text-[#78b159]">{bonus.money}</span>
-                                </div>
-                              ))}
-                              
-                              <div className="col-span-1 sm:col-span-2 flex justify-center mt-6">
-                                <div className="w-full bg-[#ea6558] text-white py-2 px-4 rounded-xl shadow-xl shine-effect relative flex flex-col md:flex-row justify-center items-center gap-2 md:gap-4 transform transition hover:scale-[1.01]">
-                                   <div className="flex flex-row items-center gap-2 md:gap-4 relative z-10">
-                                     <div className="font-bold text-lg md:text-xl flex items-center gap-2 md:gap-3">
-                                       <span className="text-xl md:text-2xl">🔥</span>
-                                       <span>揪 <span className="text-[#ea6558] bg-white px-2 py-0.5 rounded font-black">30</span> 人</span>
-                                       <span className="text-base line-through opacity-70 decoration-white decoration-2">{data.hostBonusMax.original}</span>
-                                       <span className="text-2xl md:text-4xl font-black text-yellow-200 drop-shadow-sm">{data.hostBonusMax.money}</span>
+                           
+                           <div className="mb-8 flex flex-col gap-4 items-center">
+                                {data.hostBonuses.map((bonus, idx) => (
+                                  <div key={idx} className="w-full max-w-lg bg-[#fffdf0] rounded-2xl p-4 shadow-md border-2 border-[#e6dcae] hover:-translate-y-1 transition duration-200 flex justify-between items-center relative group">
+                                     <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 bg-white border-2 border-[#594d40] rounded-full flex items-center justify-center text-xl shadow-inner text-[#594d40]">👥</div>
+                                        <span className="text-[#594d40] font-black text-xl">揪 <span className="text-2xl">{bonus.people}</span> 人</span>
+                                     </div>
+                                     <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-dashed border-[#53bf9d]">
+                                        <span className="text-2xl">💰</span>
+                                        <span className="text-[#059669] font-black text-2xl">{bonus.money}</span>
+                                     </div>
+                                  </div>
+                                ))}
+                                
+                                <div className="w-full max-w-lg bg-[#ea6558] text-white py-4 px-6 rounded-2xl shadow-2xl shine-effect relative flex flex-col md:flex-row justify-center items-center gap-2 transform transition hover:scale-[1.02] border-4 border-white ring-4 ring-[#ea6558]/30">
+                                   <div className="flex flex-row items-center gap-3 relative z-10 w-full justify-between">
+                                     <div className="flex items-center gap-3">
+                                       <div className="w-12 h-12 bg-white text-[#ea6558] rounded-full flex items-center justify-center text-2xl font-black shadow-md border-2 border-[#ea6558]">🔥</div>
+                                       <div className="text-left">
+                                          <div className="font-bold text-lg leading-none opacity-90">揪滿 30 人</div>
+                                          <div className="text-sm line-through opacity-60 font-medium">{data.hostBonusMax.original}</div>
+                                       </div>
+                                     </div>
+                                     
+                                     <div className="flex flex-col items-end">
+                                        <div className="font-black text-4xl text-yellow-200 drop-shadow-md">{data.hostBonusMax.money}</div>
+                                        <div className="bg-white text-[#ea6558] px-3 py-1 rounded-full text-xs font-black shadow-md mt-1 border-2 border-[#ea6558]">加碼！！</div>
                                      </div>
                                    </div>
-                                   <div className="swing-tag inline-block bg-white text-[#ea6558] px-3 py-0.5 rounded-lg text-sm font-black border border-white shadow-md">加碼！！</div>
                                 </div>
-                              </div>
+                           </div>
+
+                           <div className="border-b-2 border-dashed border-gray-300 my-8 w-full"></div>
+
+                           <div className="text-center mb-6">
+                             <div className="section-title">📖 揪團攻略</div>
+                             <p className="section-subtitle mt-1">團長必看！！</p>
+                           </div>
+                           
+                           {/* ✅ 修正：使用自定義卡片渲染 (TaskItem)，包含標題、說明與圖片 */}
+                           <div className="grid md:grid-cols-3 gap-4">
+                             {data.hostGuideSteps.map((step) => (
+                               <TaskItem key={step.id} step={step} />
+                             ))}
                            </div>
                         </div>
-                        
-                        <div className="text-center mb-4"><div className="section-title">📖 揪團攻略</div></div>
-                        <div className="grid md:grid-cols-3 gap-4">{data.hostGuideSteps.map((step) => (<TaskItem key={step.id} step={step} />))}</div>
 
-                        {/* ✅ 抽獎池目錄背景改為白底，備註框統一 */}
-                        <div className="bg-white p-6 rounded-[30px] border-4 border-[#e6dcae] shadow-lg mt-8 text-center relative">
+                        {/* ✅ 抽獎池目錄背景改為各色系淡色底，備註框統一 */}
+                        <div className="bg-[#fffbeb] p-6 rounded-[30px] border-4 border-[#e6dcae] shadow-lg mt-4 text-center relative">
                            <div className="text-center mb-8 relative z-10">
-                              <div className="section-title">🎁 抽獎池目錄</div>
-                              <div className="flex flex-col items-center gap-2">
+                             <div className="section-title">🎁 抽獎池目錄</div>
+                             <div className="flex flex-col items-center gap-2">
                                  <p className="section-subtitle">揪到 5 人就有抽獎資格 → 15 人升級中獎池 → 30 人豪華池</p>
-                                 {/* ✅ 統一備註框：淡綠底 */}
                                  <div className="remark-box max-w-2xl leading-relaxed text-left">
                                    團長注意！每揪一位隊友都要領一組新代碼！團員用專屬碼完成註冊才算同團，集滿人數全團均可參加抽獎。
                                  </div>
-                              </div>
+                             </div>
                            </div>
                            <div className="flex flex-col gap-6 relative z-10">
-                              {data.prizePools.map((pool, idx) => (
-                                <div key={idx} className={`bg-white rounded-2xl overflow-hidden border-4 ${pool.borderColor} shadow-md`}>
-                                   <div className="bg-gray-50 p-3 text-center border-b-2 border-dashed border-gray-300">
-                                     <h4 className="font-black text-xl text-[#594d40]">{pool.title}</h4>
-                                     <p className="text-base font-bold text-gray-500">揪滿 <span className="text-[#ea6558] text-lg">{pool.people}</span> {pool.descSuffix}</p>
-                                   </div>
-                                   <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-3">
-                                      {pool.items.map((item, i) => (
-                                        <div key={i} className="bg-gray-50 rounded-xl p-3 flex flex-col items-center text-center border-2 border-transparent hover:border-[#78b159] transition">
-                                           <div className="w-20 h-20 bg-white rounded-xl flex items-center justify-center mb-2 shadow-sm overflow-hidden">{item.imgSrc ? <img src={item.imgSrc} className="w-full h-full object-cover" /> : <i className={item.iconClass}></i>}</div>
-                                           <div className="font-bold text-[#594d40] text-base leading-tight mb-1">{item.name}</div>
-                                           <div className="text-sm text-gray-500 font-bold mb-0">{item.price}</div>
-                                           <div className="h-6"></div>
-                                           <span className="text-sm bg-gray-200 px-2 py-0.5 rounded-md font-bold text-gray-500">{item.quantity}</span>
-                                        </div>
-                                      ))}
-                                   </div>
+                             {data.prizePools.map((pool, idx) => (
+                               <div key={idx} className={`bg-white rounded-2xl overflow-hidden border-4 ${pool.borderColor} shadow-md`}>
+                                  <div className={`${pool.headerBg} p-4 text-center border-b-2 border-dashed border-[#e6dcae]`}>
+                                    <h4 className="font-black text-2xl text-[#594d40] mb-1">{pool.title}</h4>
+                                    <p className="text-lg font-bold text-[#8b5e3c]">揪滿 <span className="text-[#ea6558] text-xl font-black">{pool.people}</span> {pool.descSuffix}</p>
+                                  </div>
+                                  <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+                                     {pool.items.map((item, i) => (
+                                       <div key={i} className="bg-gray-50 rounded-xl p-3 flex flex-col items-center text-center border-2 border-transparent hover:border-[#78b159] transition">
+                                            <div className="w-20 h-20 bg-white rounded-xl flex items-center justify-center mb-2 shadow-sm overflow-hidden">{item.imgSrc ? <img src={item.imgSrc} className="w-full h-full object-cover" /> : <i className={item.iconClass}></i>}</div>
+                                            <div className="font-bold text-[#594d40] text-base leading-tight mb-1">{item.name}</div>
+                                            <div className="text-sm text-gray-500 font-bold mb-0">{item.price}</div>
+                                            <div className="h-6"></div>
+                                            <span className="text-sm bg-gray-200 px-2 py-0.5 rounded-md font-bold text-gray-500">{item.quantity}</span>
+                                       </div>
+                                     ))}
+                                  </div>
                                 </div>
-                              ))}
+                             ))}
                            </div>
-                           <div className="mt-8 bg-[#fff7d1] px-6 py-4 rounded-2xl text-center shadow-inner border border-yellow-300 transform rotate-1 text-center relative z-10"><p className="text-[#594d40] font-bold text-base md:text-lg text-center w-full">💡 好康提醒：若同時為兩團的團員與團長，且達到門檻，最多有 <span className="text-[#ea6558] font-black text-2xl">2次</span> 中獎機會！</p></div>
+                           <div className="mt-8 bg-[#fff7d1] px-6 py-4 rounded-2xl text-center shadow-inner border border-yellow-300 transform rotate-1 text-center relative z-10"><p className="text-[#594d40] font-bold text-base md:text-lg text-center w-full">💡 提醒：若同時為兩團的團員與團長，且達到門檻，最多有 <span className="text-[#ea6558] font-black text-2xl">2次</span> 中獎機會！</p></div>
                         </div>
                       </div>
                     )}
@@ -604,8 +707,8 @@
                       <div className="animate-[fadeIn_0.5s_ease-out] text-center min-h-[300px] flex flex-col items-center justify-center">
                         <div className="section-title pt-8 md:pt-0">🏆 中獎名單公告</div>
                         <div className="bg-white/80 p-8 rounded-xl border-2 border-[#d6cfa8] shadow-inner max-w-xl w-full">
-                          <p className="font-bold text-[#594d40] text-xl mb-4 leading-relaxed">📢 5/7 島內佈告欄貼榜</p>
-                          <p className="text-[#8b5e3c] font-medium leading-relaxed">中獎會用簡訊/Email 通知你來領獎！</p>
+                          <p className="font-bold text-[#594d40] text-xl mb-4 leading-relaxed">📢 5/6 島內佈告欄貼中獎榜</p>
+                          <p className="text-[#8b5e3c] font-medium leading-relaxed">為了將獎勵順利空投到你家，價值超過 $1,000 的贈品需要辦理申報。👉請在收到 [領獎確認書]後，7日內回傳確認書，確認資料審核通過後，10 個工作天內安排空投！</p>
                         </div>
                       </div>
                     )}
@@ -626,7 +729,7 @@
                                   <div className="flex gap-3 items-center text-left"><span className="bg-[#53bf9d] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">Q</span><span>{f.q}</span></div>
                                   <i className="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition"></i>
                                 </summary>
-                                <div className="p-4 pt-0 text-gray-600 font-medium pl-14 border-t-0 leading-relaxed text-left">{f.a}</div>
+                                <div className="faq-a p-4 pt-0 text-gray-600 font-medium pl-14 border-t-0 leading-relaxed text-left">{f.a}</div>
                              </details>))}</div>
                         )}
                       </div>
@@ -635,18 +738,20 @@
                 </div>
               </div>
 
-              <div className="w-full flex flex-row justify-center items-center gap-3 md:gap-6 my-16 z-20 px-4">
-                <LinkButton href={data.ctaLinks.register} colorClass="btn-primary" icon={<i className="fa-solid fa-mug-hot"></i>}>
-                  我要領手搖
-                </LinkButton>
-                <LinkButton href={data.ctaLinks.host} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>}>
-                  我要揪團
-                </LinkButton>
+              <div className="w-full mt-4 mb-8 z-20 px-4 md:px-6">
+                <div className="w-full max-w-5xl mx-auto flex flex-row justify-center md:justify-start items-center gap-3 md:gap-6">
+                  <LinkButton href={data.ctaLinks.register} colorClass="btn-primary" icon={<i className="fa-solid fa-mug-hot"></i>}>
+                    我要領手搖
+                  </LinkButton>
+                  <LinkButton href={data.ctaLinks.host} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>}>
+                    我要揪團
+                  </LinkButton>
+                </div>
               </div>
 
-              <footer className="footer-sc w-full max-w-5xl">
-                <div className="flex flex-col items-center gap-2 px-6 opacity-80">
-                  <div className="text-center">
+              <footer className="footer-sc w-full max-w-5xl mx-auto px-4 md:px-6">
+                <div className="flex flex-col items-center md:items-start gap-2 opacity-80">
+                  <div className="text-center md:text-left">
                     <p className="font-black text-xl mb-1">LTrust</p>
                     <p className="text-sm">© 2026 LTrust Inc. All rights reserved.</p>
                   </div>
