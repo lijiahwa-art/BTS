@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>高中限定｜開學小島物資站🧋</title>
+  <title>高中限定｜LTrust入島領手搖🧋揪團抽大獎！</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -273,7 +273,7 @@
       hostBonusMax: { people: 30, original: "NT$ 3,500", money: "NT$ 4,000" },
       hostGuideSteps: [
         { id: 1, title: "取得島民（會員）資格", text: " 無論是新舊島民，只要是 LTrust 島民，都有資格成為「團長」，開啟你的揪團計畫！" },
-        { id: 2, title: "前往服務中心領推薦碼", text: "立志成為團長後，請前往 LTrust 本島的「熱門服務區」，領取專屬的 「入島推薦碼」", showImage: true },
+        { id: 2, title: "前往服務中心領推薦碼", text: "立志成為團長後，請前往 LTrust 本島的「熱門服務區」，領取專屬的 「登島推薦碼」", showImage: true },
         { id: 3, title: "發送推薦碼", text: "將邀請碼發給同學，對方輸入並成功註冊，系統將自動把他納入你的團隊！", sub: "● 一個推薦碼限一人使用！若你要揪第 2 位同學，請再次回到熱門服務區，領取一組新的邀請碼。揪 10 人就要領 10 次碼，勤勞的團長有糖吃！", showImage: true },
       ],
       prizePools: [
@@ -322,7 +322,7 @@
 
       tickerNews: [
         "🌸 恭喜「建國中學」陳O明 同學揪團成功，全團獲得抽獎資格！",
-        "🧋 累積入島人數已突破 800 位！剩餘手搖飲額度倒數中...",
+        "🧋 累積登島人數已突破 800 位！剩餘手搖飲額度倒數中...",
         "🎁 5/6 島內佈告欄貼榜，記得回來查看中獎資訊喔！",
         "✈️ Nook 旅行券領取步驟：註冊後加入 LINE@ 留言即可獲得。"
       ],
@@ -406,22 +406,56 @@
       );
     };
 
+    // ✅ 重繪圖標：CoCo 奶茶三兄弟 (料堆在上面的澎湃版 + 吸管)
     const CuteBobaIcon = () => (
       <svg viewBox="0 0 100 120" className="w-20 h-20 md:w-28 md:h-28 drop-shadow-xl">
-        <path d="M25 25 L75 25 L68 110 Q65 115 60 115 L40 115 Q35 115 32 110 Z" fill="#ffffff" stroke="#006c64" strokeWidth="3" />
-        <path d="M28 40 L72 40 L68 110 Q65 115 60 115 L40 115 Q35 115 32 110 Z" fill="#f0c9a0" />
-        <rect x="20" y="20" width="60" height="12" rx="6" fill="#ffffff" stroke="#006c64" strokeWidth="3" />
-        <rect x="58" y="5" width="8" height="40" rx="4" fill="#a29bfe" stroke="#006c64" strokeWidth="2.5" />
-        <circle cx="40" cy="100" r="4.5" fill="#594d40" />
-        <circle cx="52" cy="104" r="4.5" fill="#594d40" />
-        <circle cx="62" cy="95" r="4.5" fill="#594d40" />
-        <circle cx="45" cy="85" r="4.5" fill="#594d40" />
-        <circle cx="56" cy="88" r="4.5" fill="#594d40" />
-        <circle cx="40" cy="65" r="2" fill="#594d40" />
-        <circle cx="60" cy="65" r="2" fill="#594d40" />
-        <path d="M45 72 Q50 78 55 72" fill="none" stroke="#594d40" strokeWidth="2" strokeLinecap="round" />
-        <circle cx="35" cy="70" r="4" fill="#ff9999" opacity="0.4" />
-        <circle cx="65" cy="70" r="4" fill="#ff9999" opacity="0.4" />
+        {/* 新增：吸管 (插在後方，被配料遮擋，呈現自然插入感) */}
+        {/* 我們將吸管畫在最底層，這樣它就會位於杯身和配料的「後面」 */}
+        <line x1="85" y1="-10" x2="65" y2="60" stroke="#a29bfe" strokeWidth="8" strokeLinecap="round" />
+        {/* 吸管陰影/細節 */}
+        <line x1="85" y1="-10" x2="65" y2="60" stroke="rgba(0,0,0,0.1)" strokeWidth="1" />
+
+        {/* 1. 配料層 (堆高高在杯口上方) */}
+        <g>
+            {/* 布丁：左上大塊黃色，滑嫩感 */}
+            <path d="M25 35 Q30 15 50 25 L55 35 Z" fill="#f9ca24" />
+            <path d="M30 25 Q40 18 48 28" fill="none" stroke="#ffeaa7" strokeWidth="2" opacity="0.8" />
+
+            {/* 仙草：右上大塊黑色，Q彈感 */}
+            <path d="M50 35 Q70 15 75 35 Z" fill="#2d3436" />
+            <path d="M55 30 Q65 20 70 32" fill="none" stroke="#636e72" strokeWidth="2" opacity="0.5" />
+
+            {/* 珍珠：堆疊在中間與縫隙，營造豐富感 */}
+            <circle cx="40" cy="28" r="5" fill="#2d3436" />
+            <circle cx="50" cy="22" r="5" fill="#2d3436" />
+            <circle cx="60" cy="28" r="5" fill="#2d3436" />
+            <circle cx="45" cy="18" r="5" fill="#2d3436" />
+            <circle cx="55" cy="18" r="5" fill="#2d3436" />
+            
+            {/* 珍珠光澤 (Highlihgt) */}
+            <circle cx="48" cy="20" r="1.5" fill="white" opacity="0.4" />
+            <circle cx="53" cy="16" r="1.5" fill="white" opacity="0.4" />
+        </g>
+
+        {/* 2. 杯身 (奶茶色 + 白色杯緣) */}
+        <path d="M20 35 L80 35 L72 110 Q68 115 60 115 L40 115 Q32 115 28 110 Z" fill="#dcb690" stroke="#fff" strokeWidth="2.5" />
+        
+        {/* 3. 杯底微微透出的沉澱配料 (增加真實感) */}
+        <circle cx="35" cy="95" r="4" fill="#2d3436" opacity="0.1" />
+        <circle cx="65" cy="100" r="4" fill="#2d3436" opacity="0.1" />
+        <path d="M30 85 Q40 95 50 85" stroke="#2d3436" strokeWidth="3" opacity="0.05" fill="none" />
+
+        {/* 4. 療癒微笑表情 (維持在杯身中間) */}
+        <g transform="translate(0, 5)">
+            <circle cx="38" cy="65" r="3.5" fill="#594d40" />
+            <circle cx="62" cy="65" r="3.5" fill="#594d40" />
+            <path d="M45 72 Q50 78 55 72" fill="none" stroke="#594d40" strokeWidth="2.5" strokeLinecap="round" />
+            <circle cx="32" cy="70" r="3" fill="#ff9999" opacity="0.5" />
+            <circle cx="68" cy="70" r="3" fill="#ff9999" opacity="0.5" />
+        </g>
+
+        {/* 5. 杯身反光質感 */}
+        <path d="M28 45 L32 105" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" opacity="0.3" />
       </svg>
     );
 
@@ -436,7 +470,8 @@
                </div>
             </div>
             <h3 className="text-3xl md:text-4xl font-black tracking-tight mb-2 text-[#006c64] drop-shadow-sm">LTrust 歡迎你</h3>
-            <p className="text-xl font-bold text-orange-700">人氣手搖品牌 電子飲品券</p>
+            {/* ✅ 更新文案：CoCo都可奶茶三兄弟(大) */}
+            <p className="text-lg md:text-xl font-bold text-orange-700">CoCo都可奶茶三兄弟(大) 好禮即享券</p>
           </div>
           <div className="w-[2px] ticket-dashed-line-premium my-6"></div>
           <div className="w-[100px] md:w-[150px] p-2 flex items-center justify-center bg-white/10 flex-shrink-0">
@@ -479,7 +514,7 @@
     const HomePage = () => {
       const [activeTab, setActiveTab] = useState("methods");
       const tabs = [
-        { id: "methods", label: "入島領手搖", iconClass: "fa-solid fa-plane-departure" },
+        { id: "methods", label: "登島領手搖", iconClass: "fa-solid fa-plane-departure" },
         { id: "prizes", label: "揪團福利社", iconClass: "fa-solid fa-crown" },
         { id: "winners", label: "中獎名單", iconClass: "fa-solid fa-trophy" },
         { id: "notices", label: "登島須知", iconClass: "fa-solid fa-circle-exclamation" },
@@ -574,7 +609,18 @@
                         <div className="section-title">限量登島禮 🎁</div>
                          <p className="section-subtitle">限量 1,000 杯，<span className="text-[#006c64]">次週三</span>統一空投至註冊 Email，發畢將在此頁公告</p>
 
-                        <div className="mb-12"><VoucherTicket /></div>
+                        <div className="mb-12">
+                          <VoucherTicket />
+                          {/* ✅ 新增：統一格式的備註區 (綠色虛線框) */}
+                          {/* 使用 bg-[#f0fdf4], border-[#86efac], text-[#15803d] 打造 Unified Format */}
+                          <div className="mt-6 w-full max-w-[480px] mx-auto">
+                            <div className="bg-[#f0fdf4] border-2 border-dashed border-[#86efac] text-[#15803d] rounded-[24px] px-6 py-4 text-left shadow-sm flex flex-col gap-1">
+                                <span className="font-bold text-sm md:text-base">💡 兌換期間：自發行日起算至3個月底</span>
+                                <span className="font-bold text-sm md:text-base">💡 不適用店點：兌換前請務必確認，請依業者現場說明為準</span>
+                            </div>
+                          </div>
+                        </div>
+
                         <div className="text-xl md:text-3xl font-black text-[#594d40] mb-8 bg-[var(--ac-yellow)] inline-block px-6 py-2 rounded-lg transform -rotate-1 border-2 border-[#594d40]">領取3步驟</div>
                         {/* ✅ 平板排版修正：
                             將原本的 md:grid-cols-3 改為 lg:grid-cols-3。
