@@ -194,7 +194,7 @@
     .btn-cta-primary {
       background: var(--cta-level1-bg);
       color: var(--cta-level1-text);
-      border: 3px solid var(--cta-level1-border); /* 粗邊框 */
+      border: 2px solid var(--cta-level1-border); /* ✅ 修正：統一為 2px，消除權重差異 */
       /* 下方陰影模擬按鈕厚度 */
       box-shadow: 0 4px 0 var(--cta-level1-border), 0 8px 15px rgba(0,0,0,0.15); 
       transform: translateY(0);
@@ -541,7 +541,8 @@
       ]
     };
 
-    const LinkButton = ({ href, children, colorClass, icon, onClick }) => {
+    // ✅ 修改：LinkButton 支援額外的 className 擴充 (例如 width)
+    const LinkButton = ({ href, children, colorClass, icon, onClick, className = "" }) => {
       const handleClick = (e) => {
         if (onClick) {
           e.preventDefault();
@@ -555,8 +556,8 @@
           target={href ? "_blank" : "_self"}
           rel="noopener noreferrer" 
           onClick={handleClick}
-          // ✅ 修改：桌機版字級放大 1.5 倍，手機版字級提升至 text-lg (18px)
-          className={`ac-btn-new px-3 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 text-lg md:text-xl lg:text-2xl flex items-center justify-center gap-2 md:gap-3 min-w-[120px] md:min-w-[150px] lg:min-w-[180px] shadow-lg ${colorClass} font-rounded`}
+          // ✅ 修改：桌機版字級放大，手機版統一為 text-lg
+          className={`ac-btn-new px-3 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 text-lg md:text-xl lg:text-2xl flex items-center justify-center gap-2 md:gap-3 shadow-lg ${colorClass} font-rounded ${className}`}
         >
           {icon && <span className="text-lg md:text-xl lg:text-2xl">{icon}</span>}
           {children}
@@ -1024,13 +1025,13 @@
               {/* ✅ 修正：加入 mb-12 增加與頁籤的間距，並插入虛線分隔線 */}
               <div className="w-full max-w-5xl mx-auto flex flex-col justify-center items-center gap-6 mb-12 px-4 animate-[fadeIn_1s_ease-out]">
                   {/* ✅ 修改：使用 justify-center 讓 CTA 置中平衡，並設定寬度 */}
-                  <div className="flex flex-row flex-wrap gap-4 justify-center w-full">
-                    {/* Level 1: 註冊 - 新沈穩松石綠 A' + 圓潤字體 */}
-                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary" icon={<i className="fa-solid fa-user-plus"></i>}>
+                  <div className="flex flex-wrap gap-4 justify-center w-full">
+                    {/* Level 1: 註冊 - 新沈穩松石綠 A' + 圓潤字體 + 手機版寬度一致 */}
+                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary flex-1 min-w-[140px]" icon={<i className="fa-solid fa-user-plus"></i>}>
                       立即註冊領手搖
                     </LinkButton>
-                    {/* Level 3: 登入 (輔助) - 柔和白底 C' + 圓潤字體 */}
-                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline" icon={<i className="fa-solid fa-right-to-bracket"></i>}>
+                    {/* Level 3: 登入 (輔助) - 柔和白底 C' + 圓潤字體 + 手機版寬度一致 */}
+                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline flex-1 min-w-[140px]" icon={<i className="fa-solid fa-right-to-bracket"></i>}>
                       登入拿推薦碼
                     </LinkButton>
                   </div>
@@ -1262,12 +1263,12 @@
                   {/* ✅ 修改：加入 flex-wrap，防止手機版按鈕過寬被切掉 */}
                   <div className="flex flex-wrap gap-4 justify-center w-full">
                     {/* Level 1: 註冊 - 新沈穩松石綠 A' + 圓潤字體 */}
-                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary" icon={<i className="fa-solid fa-user-plus"></i>}>
-                      前往註冊領手搖
+                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary flex-1 min-w-[140px]" icon={<i className="fa-solid fa-user-plus"></i>}>
+                      立即註冊領手搖
                     </LinkButton>
                     {/* Level 3: 登入 (輔助) - 柔和白底 C' + 圓潤字體 */}
-                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline" icon={<i className="fa-solid fa-right-to-bracket"></i>}>
-                      登入領推薦碼
+                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline flex-1 min-w-[140px]" icon={<i className="fa-solid fa-right-to-bracket"></i>}>
+                      登入拿推薦碼
                     </LinkButton>
                   </div>
                 </div>
