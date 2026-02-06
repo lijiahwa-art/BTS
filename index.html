@@ -546,7 +546,6 @@
       ]
     };
 
-    // ✅ 修改：LinkButton 支援額外的 className 擴充 (例如 width)
     const LinkButton = ({ href, children, colorClass, icon, onClick, className = "" }) => {
       const handleClick = (e) => {
         if (onClick) {
@@ -927,8 +926,8 @@
               </div>
             </div>
 
-            {/* ✅ 修正：手機版使用 -mt-12 (深度負邊距) 強制消除斷層 */}
-            <div className="container mx-auto px-4 md:px-6 flex flex-col items-center max-w-5xl relative z-20 -mt-12 md:mt-0">
+            {/* ✅ 修正：手機版使用 -mt-1 (只消除縫隙)，桌機版維持 mt-0 */}
+            <div className="container mx-auto px-4 md:px-6 flex flex-col items-center max-w-5xl relative z-20 -mt-1 md:mt-0">
               
               <div className="w-full flex flex-col items-center">
                 <Countdown />
