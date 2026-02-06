@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet" />
-  <!-- ✅ 修改：引入更耐看、現代的圓體 M PLUS Rounded 1c -->
+  <!-- ✅ 引入圓潤字體 M PLUS Rounded 1c (只用 700 避免過粗模糊) -->
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
 
   <style>
@@ -53,13 +53,13 @@
       --btn-secondary-bg: var(--ac-yellow);
       --btn-secondary-text: var(--ac-dark-brown); 
       
-      /* ✅ 修改：CTA 按鈕顏色 - Level 1 (主 CTA - 參考圖片的松石綠) */
+      /* ✅ CTA 按鈕顏色 - Level 1 (主 CTA - 松石綠 + 深框 + 3D) */
       --cta-level1-bg: #2baea0;      
       --cta-level1-hover: #228b80;   
       --cta-level1-text: #FFFFFF;
       --cta-level1-border: #174D48; /* 深墨綠邊框 */
       
-      /* ✅ 修改：CTA 按鈕顏色 - Level 3 (輔助型 - 參考圖片的白底綠字) */
+      /* ✅ CTA 按鈕顏色 - Level 3 (輔助型 - 白底綠字 + 綠框) */
       --cta-level3-bg: #FFFFFF;
       --cta-level3-border: #2baea0; 
       --cta-level3-text: #1d7c73;   
@@ -88,7 +88,7 @@
       line-height: 1.5;
     }
 
-    /* ✅ 圓潤字體：使用新的 M PLUS Rounded 1c */
+    /* ✅ 圓潤字體：只套用在標題與重要文字 */
     .font-rounded {
       font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
     }
@@ -168,17 +168,27 @@
     /* 按鈕設計 */
     .ac-btn-new {
       border-radius: 999px; font-weight: 700;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative; overflow: hidden; letter-spacing: 0.05em;
       font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif; /* ✅ 更新圓體 */
     }
-    .ac-btn-new:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); filter: brightness(1.05); }
-    .ac-btn-new:active { transform: scale(0.95); }
-
+    
     /* Level 2: Navigation (Banner) - 維持原樣 */
-    .btn-primary { background: var(--btn-primary-bg); color: var(--btn-primary-text); border: 2px solid rgba(255,255,255,0.2); }
-    .btn-secondary { background: var(--btn-secondary-bg); color: var(--btn-secondary-text); border: 2px solid rgba(255,255,255,0.4); }
+    .btn-primary { 
+      background: var(--btn-primary-bg); color: var(--btn-primary-text); 
+      border: 2px solid rgba(255,255,255,0.2); 
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); filter: brightness(1.05); }
+    .btn-primary:active { transform: scale(0.95); }
+
+    .btn-secondary { 
+      background: var(--btn-secondary-bg); color: var(--btn-secondary-text); 
+      border: 2px solid rgba(255,255,255,0.4); 
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    .btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); filter: brightness(1.05); }
+    .btn-secondary:active { transform: scale(0.95); }
 
     /* ✅ Level 1: Conversion (Primary CTA) - 3D 實體按鈕風格 */
     .btn-cta-primary {
@@ -234,7 +244,7 @@
     }
 
     /* 頁籤 */
-    /* ✅ 手機版頁籤樣式優化：提升字級至 text-lg (18px) 讓閱讀更有感 */
+    /* ✅ 手機版頁籤樣式優化：提升字級至 text-lg (18px) */
     .ac-tab {
       background: rgba(253, 251, 247, 0.9); color: #8b6a4f; border: 3px solid var(--ac-text);
       transition: all 0.2s; position: relative; border-radius: 12px; margin-bottom: 0.5rem; backdrop-filter: blur(5px);
@@ -286,17 +296,17 @@
 
     /* ✅ 修改：跑馬燈完全輕量化 (系統提示感) */
     .ticker-container {
-      background: rgba(255, 255, 255, 0.2); /* 30% 透明度太亮，改 20% 更隱形 */
-      backdrop-filter: blur(2px); /* 微模糊 */
-      border: 1px solid rgba(255, 255, 255, 0.2); /* 極淡邊框 */
+      background: rgba(255, 255, 255, 0.2); 
+      backdrop-filter: blur(2px); 
+      border: 1px solid rgba(255, 255, 255, 0.2); 
       border-radius: 999px; 
       overflow: hidden; 
       white-space: nowrap; 
       position: relative;
-      padding: 0.3rem 1rem; /* 縮小 Padding */
-      box-shadow: none; /* 移除陰影 */
+      padding: 0.3rem 1rem; 
+      box-shadow: none; 
       margin-bottom: 2rem;
-      max-width: 90%; /* 手機版不滿版 */
+      max-width: 90%; 
     }
     .ticker-content { display: inline-block; animation: tickerLoop 80s linear infinite; }
     @keyframes tickerLoop { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
@@ -422,7 +432,7 @@
           // ✅ 攻略區：分行以獲得多個小葉子
           lines: [
               "立志成為團長後，請前往 LTrust 本島的熱門服務區，領取團長專屬的登島推薦碼。",
-              "一個推薦碼限一人使用！就像搭飛機一樣，每個人只有一張登機證，若你要揪第 2~10 位同學，需再領 10 個推薦碼。"
+              "🔔一個推薦碼限一人使用！就像搭飛機一樣，每個人只有一張登機證，若你要揪第 2~10 位同學，需再領 10 個推薦碼。"
           ],
           showImage: true,
           imageSrc: "images/step2.png", 
@@ -625,7 +635,7 @@
       
       return (
         // ✅ 修正：使用 mt-0 (或極小負邊距 -mt-1) 確保緊貼 Banner 下方不重疊
-        <div className="flex flex-col items-center mb-4 w-full px-2 relative z-10 -mt-1">
+        <div className="flex flex-col items-center mb-4 w-full px-2 relative z-10 -mt-2 md:-mt-1">
              {/* ✅ 修正：浮霧卡片樣式 (bg-gradient-to-b from-white/10 to-[#e8f5e9]/90, rounded-[40px], border-t-0, border-b-2) */}
              <div className="bg-gradient-to-b from-white/10 to-[#e8f5e9]/90 backdrop-blur-[2px] rounded-[40px] px-8 py-3 flex flex-wrap md:flex-nowrap items-center justify-center gap-3 md:gap-5 shadow-sm border-b-2 border-white/40 border-t-0 max-w-[95%]">
                 
@@ -982,8 +992,8 @@
                     <div className="pointer-events-auto absolute w-full md:w-[50%] left-0 bottom-6 md:bottom-[15%] flex justify-center gap-4 md:gap-6 lg:gap-10 px-4 md:px-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-none pb-6 pt-10 md:pb-0 md:pt-0">
                         {/* ✅ 修改：間距加寬 (md:gap-6)，讓視覺更舒展，且在桌機版置中對齊 */}
                         <div className="flex flex-wrap gap-3 md:gap-6 justify-center w-full">
-                          <LinkButton onClick={() => scrollToContent('methods')} colorClass="btn-primary" icon={<DrinkWithStrawIcon />}>我要領手搖</LinkButton>
-                          <LinkButton onClick={() => scrollToContent('prizes')} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>}>我要揪團</LinkButton>
+                          <LinkButton onClick={() => scrollToContent('methods')} colorClass="btn-primary" icon={<DrinkWithStrawIcon />}>領手搖步驟</LinkButton>
+                          <LinkButton onClick={() => scrollToContent('prizes')} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>}>看揪團玩法</LinkButton>
                         </div>
                     </div>
                 </div>
@@ -1011,18 +1021,22 @@
               </div>
 
               {/* ✅ 新增：中段攔截 CTA (懶人包下方) - 把握使用者「看懂了」的黃金時刻直接轉化 */}
-              <div className="w-full max-w-5xl mx-auto flex flex-row justify-center items-center gap-3 md:gap-6 mb-12 px-4 animate-[fadeIn_1s_ease-out]">
+              {/* ✅ 修正：加入 mb-12 增加與頁籤的間距，並插入虛線分隔線 */}
+              <div className="w-full max-w-5xl mx-auto flex flex-col justify-center items-center gap-6 mb-12 px-4 animate-[fadeIn_1s_ease-out]">
                   {/* ✅ 修改：使用 justify-center 讓 CTA 置中平衡，並設定寬度 */}
-                  <div className="flex flex-wrap gap-4 justify-center w-full">
+                  <div className="flex flex-row flex-wrap gap-4 justify-center w-full">
                     {/* Level 1: 註冊 - 新沈穩松石綠 A' + 圓潤字體 */}
                     <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary" icon={<i className="fa-solid fa-user-plus"></i>}>
-                      前往註冊領手搖
+                      立即註冊領手搖
                     </LinkButton>
                     {/* Level 3: 登入 (輔助) - 柔和白底 C' + 圓潤字體 */}
                     <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline" icon={<i className="fa-solid fa-right-to-bracket"></i>}>
-                      登入領推薦碼
+                      登入拿推薦碼
                     </LinkButton>
                   </div>
+                  
+                  {/* ✅ 新增：視覺切割虛線 (Separator) */}
+                  <div className="w-full max-w-2xl border-b-2 border-dashed border-[#d6b484] opacity-40"></div>
               </div>
 
               <div className="w-full relative mb-20 z-20"> 
