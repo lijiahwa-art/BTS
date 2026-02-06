@@ -23,8 +23,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet" />
-  <!-- ✅ 新增：引入圓潤字體 Zen Maru Gothic (只用 700 避免過粗模糊) -->
-  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+  <!-- ✅ 修改：引入更耐看、現代的圓體 M PLUS Rounded 1c -->
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -88,9 +88,9 @@
       line-height: 1.5;
     }
 
-    /* ✅ 圓潤字體：只套用在標題與重要文字 */
+    /* ✅ 圓潤字體：使用新的 M PLUS Rounded 1c */
     .font-rounded {
-      font-family: 'Zen Maru Gothic', 'Noto Sans TC', sans-serif;
+      font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
     }
 
     /* 🌄 風景背景層 */
@@ -171,7 +171,7 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative; overflow: hidden; letter-spacing: 0.05em;
-      font-family: 'Zen Maru Gothic', 'Noto Sans TC', sans-serif; /* ✅ 套用圓潤字體 */
+      font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif; /* ✅ 更新圓體 */
     }
     .ac-btn-new:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); filter: brightness(1.05); }
     .ac-btn-new:active { transform: scale(0.95); }
@@ -188,7 +188,7 @@
       /* 下方陰影模擬按鈕厚度 */
       box-shadow: 0 4px 0 var(--cta-level1-border), 0 8px 15px rgba(0,0,0,0.15); 
       transform: translateY(0);
-      font-family: 'Zen Maru Gothic', 'Noto Sans TC', sans-serif;
+      font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif; /* ✅ 更新圓體 */
     }
     .btn-cta-primary:hover {
       background: var(--cta-level1-hover);
@@ -209,7 +209,7 @@
       color: var(--cta-level3-text);
       border: 2px solid var(--cta-level3-border);
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      font-family: 'Zen Maru Gothic', 'Noto Sans TC', sans-serif;
+      font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif; /* ✅ 更新圓體 */
     }
     .btn-cta-outline:hover {
       background: var(--cta-level3-hover-bg);
@@ -411,14 +411,19 @@
         { 
           id: 1, 
           title: "取得島民（會員）資格", 
-          // ✅ 攻略區：使用 text 屬性，搭配 whitespace-pre-line 支援 \n 換行
-          text: " 無論是新舊島民，只要是 LTrust 島民，都有資格成為「團長」，開啟你的揪團計畫。",
+          // ✅ 攻略區：換成 lines 陣列，讓它也有小葉子 (或者如果不要小葉子，就改回 text 屬性)
+          // 這裡依照要求「跟3步驟一樣」，所以改成 lines
+          lines: ["無論是新舊島民，只要是 LTrust 島民，都有資格成為「團長」，開啟你的揪團計畫。"],
           highlights: [{ phrase: "無論是新舊島民，只要是 LTrust 島民，都有資格成為「團長」" }]
         },
         { 
           id: 2, 
           title: "前往服務中心領推薦碼", 
-          text: "立志成為團長後，請前往 LTrust 本島的熱門服務區，領取團長專屬的登島推薦碼。\n 🔔一個推薦碼限一人使用！就像搭飛機一樣，每個人只有一張登機證，若你要揪第 2~10 位同學，需再領 10 個推薦碼。",
+          // ✅ 攻略區：分行以獲得多個小葉子
+          lines: [
+              "立志成為團長後，請前往 LTrust 本島的熱門服務區，領取團長專屬的登島推薦碼。",
+              "一個推薦碼限一人使用！就像搭飛機一樣，每個人只有一張登機證，若你要揪第 2~10 位同學，需再領 10 個推薦碼。"
+          ],
           showImage: true,
           imageSrc: "images/step2.png", 
           highlights: [{ phrase: "熱門服務區" }, { phrase: "登島推薦碼" }] 
@@ -426,7 +431,7 @@
         { 
           id: 3, 
           title: "發送推薦碼", 
-          text: "將邀請碼發給同學，對方在註冊時輸入並成功完成註冊，系統將自動把他納入你的團隊！", 
+          lines: ["將邀請碼發給同學，對方在註冊時輸入並成功完成註冊，系統將自動把他納入你的團隊！"],
           showImage: true,
           imageSrc: "images/step3.png",
         },
@@ -540,10 +545,10 @@
           target={href ? "_blank" : "_self"}
           rel="noopener noreferrer" 
           onClick={handleClick}
-          // ✅ 修改：桌機版字級放大 1.5 倍，並套用圓潤字體
-          className={`ac-btn-new px-4 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 text-sm md:text-xl lg:text-2xl flex items-center justify-center gap-2 md:gap-3 min-w-[120px] md:min-w-[150px] lg:min-w-[180px] shadow-lg ${colorClass} font-rounded`}
+          // ✅ 修改：桌機版字級放大 1.5 倍，手機版字級提升至 text-lg (18px)
+          className={`ac-btn-new px-3 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 text-lg md:text-xl lg:text-2xl flex items-center justify-center gap-2 md:gap-3 min-w-[120px] md:min-w-[150px] lg:min-w-[180px] shadow-lg ${colorClass} font-rounded`}
         >
-          {icon && <span className="text-base md:text-xl lg:text-2xl">{icon}</span>}
+          {icon && <span className="text-lg md:text-xl lg:text-2xl">{icon}</span>}
           {children}
         </a>
       );
