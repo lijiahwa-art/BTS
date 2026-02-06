@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet" />
-  <!-- ✅ 引入圓潤字體 M PLUS Rounded 1c (只用 700 避免過粗模糊) -->
+  <!-- ✅ 引入圓潤字體 M PLUS Rounded 1c -->
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
 
   <style>
@@ -194,7 +194,8 @@
     .btn-cta-primary {
       background: var(--cta-level1-bg);
       color: var(--cta-level1-text);
-      border: 2px solid var(--cta-level1-border); /* ✅ 修正：統一為 2px，消除權重差異 */
+      /* ✅ 修正：使用 2px 邊框與下方按鈕一致 */
+      border: 2px solid var(--cta-level1-border); 
       /* 下方陰影模擬按鈕厚度 */
       box-shadow: 0 4px 0 var(--cta-level1-border), 0 8px 15px rgba(0,0,0,0.15); 
       transform: translateY(0);
@@ -217,6 +218,7 @@
     .btn-cta-outline {
       background: var(--cta-level3-bg);
       color: var(--cta-level3-text);
+      /* ✅ 修正：使用 2px 邊框 */
       border: 2px solid var(--cta-level3-border);
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif; /* ✅ 更新圓體 */
@@ -556,10 +558,10 @@
           target={href ? "_blank" : "_self"}
           rel="noopener noreferrer" 
           onClick={handleClick}
-          // ✅ 修改：桌機版字級放大，手機版統一為 text-lg
-          className={`ac-btn-new px-3 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 text-lg md:text-xl lg:text-2xl flex items-center justify-center gap-2 md:gap-3 shadow-lg ${colorClass} font-rounded ${className}`}
+          // ✅ 修改：桌機版字級放大 1.5 倍 (text-2xl)，手機版 text-lg
+          className={`ac-btn-new px-4 py-4 md:px-8 md:py-4 lg:px-10 lg:py-5 text-lg md:text-2xl flex items-center justify-center gap-2 md:gap-3 shadow-lg ${colorClass} font-rounded ${className}`}
         >
-          {icon && <span className="text-lg md:text-xl lg:text-2xl">{icon}</span>}
+          {icon && <span className="text-lg md:text-2xl">{icon}</span>}
           {children}
         </a>
       );
@@ -636,9 +638,9 @@
       
       return (
         // ✅ 修正：使用 mt-0 (或極小負邊距 -mt-1) 確保緊貼 Banner 下方不重疊
-        <div className="flex flex-col items-center mb-4 w-full px-2 relative z-10 -mt-2 md:-mt-1">
+        <div className="flex flex-col items-center mb-4 w-full px-2 relative z-10 -mt-1">
              {/* ✅ 修正：浮霧卡片樣式 (bg-gradient-to-b from-white/10 to-[#e8f5e9]/90, rounded-[40px], border-t-0, border-b-2) */}
-             <div className="bg-gradient-to-b from-white/10 to-[#e8f5e9]/90 backdrop-blur-[2px] rounded-[40px] px-8 py-3 flex flex-wrap md:flex-nowrap items-center justify-center gap-3 md:gap-5 shadow-sm border-b-2 border-white/40 border-t-0 max-w-[95%]">
+             <div className="bg-gradient-to-b from-white/10 to-[#e8f5e9]/90 backdrop-blur-[2px] rounded-full px-8 py-3 flex flex-wrap md:flex-nowrap items-center justify-center gap-3 md:gap-5 shadow-sm border-b-2 border-white/40 border-t-0 max-w-[95%]">
                 
                 {/* 標題：手搖空投倒數 ✈️ */}
                 <div className="flex items-center justify-center flex-shrink-0">
@@ -974,35 +976,40 @@
         <div className="page-enter">
           <div className="flex flex-col items-center">
             <div className="w-full relative">
-              <div className="relative overflow-hidden shadow-none md:shadow-2xl"> {/* ✅ 修正：手機版移除 shadow-2xl，解決黑線問題 */}
-                <img 
-                  src={data.bannerImageMobile} 
-                  onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1080"} 
-                  alt="活動主視覺(手機版)" 
-                  className="w-full h-auto block md:hidden object-cover object-center" 
-                />
-                <img 
-                  src={data.bannerImage} 
-                  onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1974"} 
-                  alt="活動主視覺(電腦版)" 
-                  className="w-full h-auto hidden md:block min-h-[300px] object-cover object-center" 
-                />
+              <div className="relative overflow-hidden shadow-none md:shadow-2xl"> 
+                {/* ✅ 修正：強制 block 且 leading-none，解決手機版白邊斷層 */}
+                <div className="leading-none font-[0]">
+                  <img 
+                    src={data.bannerImageMobile} 
+                    onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1080"} 
+                    alt="活動主視覺(手機版)" 
+                    className="w-full h-auto block md:hidden object-cover object-center" 
+                  />
+                  <img 
+                    src={data.bannerImage} 
+                    onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1974"} 
+                    alt="活動主視覺(電腦版)" 
+                    className="w-full h-auto hidden md:block min-h-[300px] object-cover object-center" 
+                  />
+                </div>
+                
                 <div className="absolute inset-0 pointer-events-none">
                     {/* ✅ 修改：位置往左修正 (md:left-[5%])，對齊日期框左側；bottom 維持 12% */}
                     {/* ✅ 修正：bottom-6 md:bottom-[15%] - 將按鈕下移至理想位置 */}
                     <div className="pointer-events-auto absolute w-full md:w-[50%] left-0 bottom-6 md:bottom-[15%] flex justify-center gap-4 md:gap-6 lg:gap-10 px-4 md:px-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-none pb-6 pt-10 md:pb-0 md:pt-0">
                         {/* ✅ 修改：間距加寬 (md:gap-6)，讓視覺更舒展，且在桌機版置中對齊 */}
                         <div className="flex flex-wrap gap-3 md:gap-6 justify-center w-full">
-                          <LinkButton onClick={() => scrollToContent('methods')} colorClass="btn-primary" icon={<DrinkWithStrawIcon />}>領手搖步驟</LinkButton>
-                          <LinkButton onClick={() => scrollToContent('prizes')} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>}>看揪團玩法</LinkButton>
+                          {/* ✅ 修改：導覽按鈕改回「咖啡/黃」文案 */}
+                          <LinkButton href="#" onClick={() => scrollToContent('methods')} colorClass="btn-primary" icon={<DrinkWithStrawIcon />} className="text-xl md:text-2xl">領手搖步驟</LinkButton>
+                          <LinkButton href="#" onClick={() => scrollToContent('prizes')} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>} className="text-xl md:text-2xl">看揪團玩法</LinkButton>
                         </div>
                     </div>
                 </div>
               </div>
             </div>
 
-            {/* ✅ 修正：使用 mt-0 (無負邊距) 消除白邊與重疊問題 */}
-            <div className="container mx-auto px-4 md:px-6 flex flex-col items-center max-w-5xl relative z-20 mt-0">
+            {/* ✅ 修正：手機版使用 -mt-4 深度負邊距，強制消除斷層；桌機版維持 mt-0 */}
+            <div className="container mx-auto px-4 md:px-6 flex flex-col items-center max-w-5xl relative z-20 -mt-4 md:mt-0">
               
               <div className="w-full flex flex-col items-center">
                 <Countdown />
@@ -1024,14 +1031,14 @@
               {/* ✅ 新增：中段攔截 CTA (懶人包下方) - 把握使用者「看懂了」的黃金時刻直接轉化 */}
               {/* ✅ 修正：加入 mb-12 增加與頁籤的間距，並插入虛線分隔線 */}
               <div className="w-full max-w-5xl mx-auto flex flex-col justify-center items-center gap-6 mb-12 px-4 animate-[fadeIn_1s_ease-out]">
-                  {/* ✅ 修改：使用 justify-center 讓 CTA 置中平衡，並設定寬度 */}
-                  <div className="flex flex-wrap gap-4 justify-center w-full">
-                    {/* Level 1: 註冊 - 新沈穩松石綠 A' + 圓潤字體 + 手機版寬度一致 */}
-                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary flex-1 min-w-[140px]" icon={<i className="fa-solid fa-user-plus"></i>}>
+                  {/* ✅ 修改：手機版 flex-col (垂直)，桌機版 flex-row (水平)；移除寬度限制 */}
+                  <div className="flex flex-col md:flex-row gap-4 justify-center w-full">
+                    {/* Level 1: 註冊 - 松石綠 + 深框 + 3D */}
+                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-user-plus"></i>}>
                       立即註冊領手搖
                     </LinkButton>
-                    {/* Level 3: 登入 (輔助) - 柔和白底 C' + 圓潤字體 + 手機版寬度一致 */}
-                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline flex-1 min-w-[140px]" icon={<i className="fa-solid fa-right-to-bracket"></i>}>
+                    {/* Level 3: 登入 - 白底綠字 + 綠框 (統一 2px 框) */}
+                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-right-to-bracket"></i>}>
                       登入拿推薦碼
                     </LinkButton>
                   </div>
@@ -1260,14 +1267,14 @@
 
               <div className="w-full mt-4 mb-8 z-20 px-4 md:px-6">
                 <div className="w-full max-w-5xl mx-auto flex flex-row justify-center md:justify-start items-center gap-3 md:gap-6">
-                  {/* ✅ 修改：加入 flex-wrap，防止手機版按鈕過寬被切掉 */}
-                  <div className="flex flex-wrap gap-4 justify-center w-full">
-                    {/* Level 1: 註冊 - 新沈穩松石綠 A' + 圓潤字體 */}
-                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary flex-1 min-w-[140px]" icon={<i className="fa-solid fa-user-plus"></i>}>
+                  {/* ✅ 修改：手機版 flex-col (垂直) + w-full (滿寬)，桌機版 flex-row (水平) */}
+                  <div className="flex flex-col md:flex-row gap-4 justify-center w-full">
+                    {/* Level 1: 註冊 - 松石綠 + 深框 + 3D */}
+                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-user-plus"></i>}>
                       立即註冊領手搖
                     </LinkButton>
-                    {/* Level 3: 登入 (輔助) - 柔和白底 C' + 圓潤字體 */}
-                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline flex-1 min-w-[140px]" icon={<i className="fa-solid fa-right-to-bracket"></i>}>
+                    {/* Level 3: 登入 - 白底綠字 + 綠框 (統一 2px 框) */}
+                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-right-to-bracket"></i>}>
                       登入拿推薦碼
                     </LinkButton>
                   </div>
