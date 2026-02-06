@@ -164,6 +164,7 @@
     .btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); filter: brightness(1.05); }
     .btn-secondary:active { transform: scale(0.95); }
 
+    /* Level 1 CTA: 3D Turquoise (Unified 2px border) */
     .btn-cta-primary {
       background: var(--cta-level1-bg); color: var(--cta-level1-text);
       border: 2px solid var(--cta-level1-border);
@@ -177,13 +178,15 @@
     .btn-cta-primary:active { transform: translateY(4px); box-shadow: 0 0 0 var(--cta-level1-border); }
     .btn-cta-primary i { color: #ffffff !important; }
 
+    /* Level 3 CTA: White Outline (Unified 2px border) */
     .btn-cta-outline {
       background: var(--cta-level3-bg); color: var(--cta-level3-text);
       border: 2px solid var(--cta-level3-border);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
+      box-shadow: 0 4px 0 var(--cta-level3-border), 0 8px 15px rgba(0,0,0,0.05);
+      font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif; transform: translateY(0);
     }
-    .btn-cta-outline:hover { background: var(--cta-level3-hover-bg); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .btn-cta-outline:hover { background: var(--cta-level3-hover-bg); transform: translateY(2px); box-shadow: 0 2px 0 var(--cta-level3-border), 0 4px 10px rgba(0,0,0,0.1); }
+    .btn-cta-outline:active { transform: translateY(4px); box-shadow: 0 0 0 var(--cta-level3-border); }
     .btn-cta-outline i { color: var(--cta-level3-text) !important; }
 
     .nook-ticket-premium {
@@ -614,7 +617,7 @@
                   <img src={data.bannerImage} onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1974"} alt="活動主視覺(電腦版)" className="w-full h-auto hidden md:block min-h-[300px] object-cover object-center" />
                 </div>
                 <div className="absolute inset-0 pointer-events-none">
-                    <div className="pointer-events-auto absolute w-full md:w-auto left-0 md:left-[3%] bottom-6 md:bottom-[15%] flex justify-center md:justify-start gap-4 md:gap-6 lg:gap-10 px-4 md:px-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-none pb-6 pt-10 md:pb-0 md:pt-0">
+                    <div className="pointer-events-auto absolute w-full md:w-auto left-0 md:left-[12%] bottom-6 md:bottom-[15%] flex justify-center md:justify-start gap-4 md:gap-6 lg:gap-10 px-4 md:px-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-none pb-6 pt-10 md:pb-0 md:pt-0">
                         <div className="flex flex-wrap gap-3 md:gap-6 justify-center md:justify-start">
                           <LinkButton href="#" onClick={() => scrollToContent('methods')} colorClass="btn-primary" icon={<DrinkWithStrawIcon />} className="text-xl md:text-2xl">領手搖步驟</LinkButton>
                           <LinkButton href="#" onClick={() => scrollToContent('prizes')} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>} className="text-xl md:text-2xl">看揪團玩法</LinkButton>
