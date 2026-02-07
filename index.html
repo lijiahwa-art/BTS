@@ -2,6 +2,7 @@
 <html lang="zh-TW" class="acnh-theme">
 <head>
   <meta charset="UTF-8" />
+  <!-- ✅ 強化 Viewport 設定，強制滿版，禁止瀏覽器自動縮放 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>高中島民召集｜LTrust 登島領手搖 揪團再抽大獎！</title>
 
@@ -22,11 +23,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet" />
-  <!-- 引入圓潤字體 M PLUS Rounded 1c -->
+  <!-- ✅ 引入圓潤字體 M PLUS Rounded 1c -->
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
+      /* ✅ LTrust/動森色票 */
       --ac-nook: #53bf9d;       
       --ac-paper: #fffdf0;        
       --ac-yellow: #f8e67e;       
@@ -36,32 +38,35 @@
       --ac-goose-yellow: #fefae0; 
       --ac-border-tan: #d6b484;   
       
+      /* ✅ 強調字顏色 */
       --ac-highlight: #ea6558;
 
+      /* 小標題與備註配色 */
       --subtitle-pink: #d46d78;
       --remark-bg-green: #f0fdf4;
       --remark-border-green: #86efac;
       --remark-text-green: #15803d;
       
-      /* CTA Colors */
+      /* CTA 按鈕顏色 - Level 2 (導覽型 - 維持咖啡/黃色) */
       --btn-primary-bg: var(--ac-dark-brown);
       --btn-primary-text: #ffffff;    
       --btn-secondary-bg: var(--ac-yellow);
       --btn-secondary-text: var(--ac-dark-brown); 
       
-      /* Level 1 CTA: 3D Turquoise */
+      /* ✅ CTA 按鈕顏色 - Level 1 (主 CTA - 松石綠 + 深框 + 3D) */
       --cta-level1-bg: #2baea0;      
       --cta-level1-hover: #228b80;   
       --cta-level1-text: #FFFFFF;
-      --cta-level1-border: #174D48;
+      --cta-level1-border: #174D48; /* 深墨綠邊框 */
       
-      /* Level 3 CTA: White Outline */
+      /* ✅ CTA 按鈕顏色 - Level 3 (輔助型 - 白底綠字 + 綠框) */
       --cta-level3-bg: #FFFFFF;
       --cta-level3-border: #2baea0; 
       --cta-level3-text: #1d7c73;   
       --cta-level3-hover-bg: #f0fdfc;
     }
 
+    /* ✅ 全域設定：字體渲染優化 (解決模糊問題關鍵) */
     html, body {
       width: 100%;
       max-width: 100%;
@@ -69,9 +74,9 @@
       position: relative;
       touch-action: manipulation;
       -webkit-text-size-adjust: 100%;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased; /* iOS/Mac 優化 */
+      -moz-osx-font-smoothing: grayscale;  /* Firefox 優化 */
+      text-rendering: optimizeLegibility;  /* 強制清晰渲染 */
     }
 
     body {
@@ -83,26 +88,32 @@
       line-height: 1.5;
     }
 
+    /* ✅ 圓潤字體：只套用在標題與重要文字 */
     .font-rounded {
       font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
     }
 
-    /* Scenic Background */
+    /* 🌄 風景背景層 */
     .scenic-landscape {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; pointer-events: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -3; pointer-events: none;
       background: linear-gradient(to bottom, #4facfe 0%, #00f2fe 30%, #ffffff 70%);
     }
+
     .scenic-landscape::after {
       content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 50vh;
       background: linear-gradient(to bottom, #96e6a1 0%, #d4fc79 100%);
       clip-path: ellipse(150% 100% at 50% 100%); opacity: 0.9;
     }
+
     .scenic-landscape::before {
       content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 40vh;
       background: linear-gradient(to bottom, #56ab2f 0%, #a8e063 100%);
       clip-path: ellipse(120% 90% at 20% 100%); opacity: 0.85; z-index: 1;
     }
 
+    /* 浮動雲朵 */
     .cloud {
       position: fixed; background: rgba(255, 255, 255, 0.85); border-radius: 100px;
       z-index: -1; filter: blur(2px); animation: floatCloud linear infinite;
@@ -111,8 +122,12 @@
       content: ''; position: absolute; top: -50%; left: 20%; width: 60%; height: 100%;
       background: inherit; border-radius: 50%;
     }
-    @keyframes floatCloud { from { transform: translateX(-250px); } to { transform: translateX(100vw); } }
+    @keyframes floatCloud {
+      from { transform: translateX(-250px); }
+      to { transform: translateX(100vw); }
+    }
 
+    /* ✅ 卡片容器基礎 */
     .ac-card {
       border-radius: 30px;
       box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.15), 0 0 0 6px white inset; 
@@ -121,13 +136,20 @@
       background-color: var(--ac-paper);
     }
 
+    /* 鵝黃信紙背景 */
     .bg-texture-goose { background-color: var(--ac-goose-yellow) !important; }
     .bg-texture-goose::before {
       content: ""; position: absolute; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath d='M1,3 L1,1 L3,1 L3,3 L1,3 Z' fill='%23594d40' fill-opacity='0.03'/%3E%3C/svg%3E");
       pointer-events: none; z-index: 0;
     }
-    
+    .bg-texture-goose::after {
+      content: ""; position: absolute; bottom: -8%; right: -5%; width: 380px; height: 380px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M30,50 Q30,20 50,20 Q70,20 70,50 Q70,80 50,80 Q30,80 30,50 M50,80 L50,90' fill='none' stroke='%23594d40' stroke-width='2.5' opacity='0.06'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-size: contain; pointer-events: none; z-index: 0; transform: rotate(-12deg);
+    }
+
+    /* 軟木塞公告欄背景 */
     .bg-texture-board {
       background-color: #fdf5d3 !important;
       background-image: radial-gradient(#e6dcae 20%, transparent 20%);
@@ -143,69 +165,103 @@
 
     .card-content-z { position: relative; z-index: 1; }
 
+    /* 按鈕設計 */
     .ac-btn-new {
       border-radius: 999px; font-weight: 700;
       transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative; overflow: hidden; letter-spacing: 0.05em;
-      font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
+      font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif; /* ✅ 更新圓體 */
     }
     
+    /* Level 2: Navigation (Banner) - 維持原樣 */
     .btn-primary { 
       background: var(--btn-primary-bg); color: var(--btn-primary-text); 
-      border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      border: 2px solid rgba(255,255,255,0.2); 
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
     .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); filter: brightness(1.05); }
     .btn-primary:active { transform: scale(0.95); }
 
     .btn-secondary { 
       background: var(--btn-secondary-bg); color: var(--btn-secondary-text); 
-      border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      border: 2px solid rgba(255,255,255,0.4); 
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
     .btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); filter: brightness(1.05); }
     .btn-secondary:active { transform: scale(0.95); }
 
-    /* Level 1 CTA: 3D Turquoise (Unified 2px border) */
+    /* ✅ Level 1: Conversion (Primary CTA) - 3D 實體按鈕風格 */
     .btn-cta-primary {
-      background: var(--cta-level1-bg); color: var(--cta-level1-text);
-      border: 2px solid var(--cta-level1-border);
+      background: var(--cta-level1-bg);
+      color: var(--cta-level1-text);
+      border: 2px solid var(--cta-level1-border); /* ✅ 修正：統一為 2px，消除權重差異 */
+      /* 下方陰影模擬按鈕厚度 */
       box-shadow: 0 4px 0 var(--cta-level1-border), 0 8px 15px rgba(0,0,0,0.15); 
-      transform: translateY(0); font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
+      transform: translateY(0);
+      font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif; /* ✅ 更新圓體 */
     }
     .btn-cta-primary:hover {
-      background: var(--cta-level1-hover); transform: translateY(2px);
-      box-shadow: 0 2px 0 var(--cta-level1-border), 0 4px 10px rgba(0,0,0,0.1); filter: brightness(1.05);
+      background: var(--cta-level1-hover);
+      /* 按下效果：位移 + 陰影減少 */
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 var(--cta-level1-border), 0 4px 10px rgba(0,0,0,0.1);
+      filter: brightness(1.05);
     }
-    .btn-cta-primary:active { transform: translateY(4px); box-shadow: 0 0 0 var(--cta-level1-border); }
+    .btn-cta-primary:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 var(--cta-level1-border); /* Fully pressed */
+    }
     .btn-cta-primary i { color: #ffffff !important; }
 
-    /* Level 3 CTA: White Outline (Unified 2px border) */
+    /* ✅ Level 3: Auxiliary (Secondary CTA) - 描邊版 C' */
     .btn-cta-outline {
-      background: var(--cta-level3-bg); color: var(--cta-level3-text);
-      border: 2px solid var(--cta-level3-border);
-      box-shadow: 0 4px 0 var(--cta-level3-border), 0 8px 15px rgba(0,0,0,0.05);
-      font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif; transform: translateY(0);
+      background: var(--cta-level3-bg);
+      color: var(--cta-level3-text);
+      border: 2px solid var(--cta-level3-border); /* ✅ 修正：使用 2px 邊框 */
+      box-shadow: 0 4px 0 var(--cta-level3-border), 0 8px 15px rgba(0,0,0,0.05); /* ✅ 修正：加上 3D 陰影 */
+      font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif; /* ✅ 更新圓體 */
+      transform: translateY(0);
     }
-    .btn-cta-outline:hover { background: var(--cta-level3-hover-bg); transform: translateY(2px); box-shadow: 0 2px 0 var(--cta-level3-border), 0 4px 10px rgba(0,0,0,0.1); }
-    .btn-cta-outline:active { transform: translateY(4px); box-shadow: 0 0 0 var(--cta-level3-border); }
+    .btn-cta-outline:hover {
+      background: var(--cta-level3-hover-bg);
+      transform: translateY(2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .btn-cta-outline:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 var(--cta-level3-border);
+    }
     .btn-cta-outline i { color: var(--cta-level3-text) !important; }
 
+    /* 哩數旅行券風格 */
     .nook-ticket-premium {
       background: linear-gradient(135deg, rgba(157, 240, 222, 0.95) 0%, rgba(108, 222, 189, 0.95) 100%);
       backdrop-filter: blur(10px);
       border: 5px solid white !important;
       border-radius: 24px;
       box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255,255,255,0.5) inset;
+      position: relative;
+      overflow: hidden;
       color: var(--ac-text);
     }
-    
+    .ticket-dashed-line-premium {
+      border-right: 3px dashed rgba(255, 255, 255, 0.6);
+    }
+
+    /* 頁籤 */
+    /* ✅ 手機版頁籤樣式優化：提升字級至 text-lg (18px) */
     .ac-tab {
       background: rgba(253, 251, 247, 0.9); color: #8b6a4f; border: 3px solid var(--ac-text);
       transition: all 0.2s; position: relative; border-radius: 12px; margin-bottom: 0.5rem; backdrop-filter: blur(5px);
     }
-    @media (min-width: 768px) { .ac-tab { border-radius: 20px 20px 0 0; border-bottom: none; margin-bottom: -3px; } }
+    /* ✅ 電腦版還原為上方圓角的頁籤樣式 */
+    @media (min-width: 768px) { 
+      .ac-tab { border-radius: 20px 20px 0 0; border-bottom: none; margin-bottom: -3px; } 
+    }
     .ac-tab.active { background: var(--ac-yellow); color: var(--ac-text); z-index: 20; }
     @media (min-width: 768px) { .ac-tab.active { transform: translateY(-4px); padding-bottom: 8px; } }
 
+    /* ✅ section-title 樣式定義 */
     .section-title {
         font-size: 1.875rem; font-weight: 700; color: var(--ac-dark-brown);
         text-shadow: 2px 2px 0 #fff, 4px 4px 0 rgba(0,0,0,0.1);
@@ -213,6 +269,7 @@
         display: inline-block; padding-bottom: 0.5rem; margin-bottom: 1.5rem; 
     }
 
+    /* 小標與備註 */
     .section-subtitle {
         color: var(--subtitle-pink); font-weight: 700; font-size: 1.25rem;
         line-height: 1.6; text-align: center; margin-bottom: 0.5rem;
@@ -220,10 +277,17 @@
     }
     @media (min-width: 768px) { .section-subtitle { font-size: 1.5rem; } }
 
+    /* ✅ 統一的備註小框樣式 */
     .remark-box {
-        background-color: var(--remark-bg-green); border: 2px dashed var(--remark-border-green);
-        color: var(--remark-text-green); padding: 0.5rem 1.5rem; border-radius: 9999px;
-        font-weight: 700; font-size: 0.875rem; display: inline-block; margin-top: 0.5rem;
+        background-color: var(--remark-bg-green);
+        border: 2px dashed var(--remark-border-green);
+        color: var(--remark-text-green);
+        padding: 0.5rem 1.5rem;
+        border-radius: 9999px;
+        font-weight: 700;
+        font-size: 0.875rem;
+        display: inline-block;
+        margin-top: 0.5rem;
     }
     @media (min-width: 768px) { .remark-box { font-size: 1rem; } }
 
@@ -235,15 +299,25 @@
     }
     @keyframes shine { 0% { left: -100%; opacity: 0; } 20% { left: 100%; opacity: 0.6; } 100% { left: 100%; opacity: 0; } }
 
+    /* ✅ 修改：跑馬燈完全輕量化 (系統提示感) */
     .ticker-container {
-      background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(2px); 
-      border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 999px; 
-      overflow: hidden; white-space: nowrap; position: relative;
-      padding: 0.3rem 1rem; box-shadow: none; margin-bottom: 2rem; max-width: 90%; 
+      background: rgba(255, 255, 255, 0.2); 
+      backdrop-filter: blur(2px); 
+      border: 1px solid rgba(255, 255, 255, 0.2); 
+      border-radius: 999px; 
+      overflow: hidden; 
+      white-space: nowrap; 
+      position: relative;
+      padding: 0.3rem 1rem; 
+      box-shadow: none; 
+      margin-bottom: 2rem;
+      max-width: 90%; 
     }
     .ticker-content { display: inline-block; animation: tickerLoop 80s linear infinite; }
     @keyframes tickerLoop { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
+    .countdown-box { display: flex; gap: 0.8rem; justify-content: center; margin-bottom: 1.5rem; }
+    
     .footer-sc { border-top: 4px dashed var(--ac-dark-brown); margin-top: 4rem; padding: 2rem 0; text-align: center; color: var(--ac-dark-brown); }
 
     .task-checkbox {
@@ -252,12 +326,17 @@
     }
     .task-checkbox.checked { background: #78b159; border-color: #78b159; transform: scale(1.1); }
     .task-checkbox.checked::after { content: '✔'; color: white; font-weight: 900; font-size: 14px; }
+
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    /* FAQ 答案保留換行 */
     .faq-a { white-space: pre-line; }  
   </style>
 </head>
 
 <body class="min-h-screen pb-12">
   <div class="scenic-landscape"></div>
+  
   <div class="cloud w-32 h-12 top-10 left-10" style="animation-duration: 35s"></div>
   <div class="cloud w-48 h-16 top-40 right-20" style="animation-duration: 45s"></div>
   <div class="cloud w-40 h-14 top-20 right-1/3" style="animation-duration: 50s"></div>
@@ -268,12 +347,18 @@
   <script type="text/babel">
     const { useState, useEffect } = React;
 
+    /**
+     * ✅ 全站統一的「指定字詞上色」工具
+     */
     const renderWithHighlights = (text, highlights = []) => {
       if (text == null) return null;
       const str = String(text);
       if (!highlights || highlights.length === 0) return str;
 
-      const rules = highlights.sort((a, b) => String(b.phrase).length - String(a.phrase).length);
+      const rules = highlights
+        .filter(h => h && h.phrase && String(h.phrase).length > 0)
+        .sort((a, b) => String(b.phrase).length - String(a.phrase).length);
+
       let nodes = [];
       let i = 0;
 
@@ -281,61 +366,103 @@
         let hit = null;
         for (const h of rules) {
           const phrase = String(h.phrase);
-          if (str.startsWith(phrase, i)) { hit = h; break; }
+          if (str.startsWith(phrase, i)) {
+            hit = h;
+            break;
+          }
         }
+
         if (!hit) {
           let nextPos = -1;
+          let nextRule = null;
           for (const h of rules) {
-            const pos = str.indexOf(String(h.phrase), i);
-            if (pos !== -1 && (nextPos === -1 || pos < nextPos)) nextPos = pos;
+            const phrase = String(h.phrase);
+            const pos = str.indexOf(phrase, i);
+            if (pos !== -1 && (nextPos === -1 || pos < nextPos)) {
+              nextPos = pos;
+              nextRule = h;
+            }
           }
-          if (nextPos === -1) { nodes.push(str.slice(i)); break; }
-          else { nodes.push(str.slice(i, nextPos)); i = nextPos; }
-        } else {
-          const phrase = String(hit.phrase);
-          nodes.push(<span key={`${i}-${phrase}`} className={hit.className || "font-black"} style={{ color: hit.color || "var(--ac-highlight)" }}>{phrase}</span>);
-          i += phrase.length;
+
+          if (nextPos === -1) {
+            nodes.push(str.slice(i));
+            break;
+          } else {
+            nodes.push(str.slice(i, nextPos));
+            i = nextPos;
+            hit = nextRule;
+          }
         }
+
+        const phrase = String(hit.phrase);
+        nodes.push(
+          <span key={`${i}-${phrase}`} className={hit.className || "font-black"} style={{ color: hit.color || "var(--ac-highlight)" }}>
+            {phrase}
+          </span>
+        );
+        i += phrase.length;
       }
+
       return <React.Fragment>{nodes.map((n, idx) => <React.Fragment key={idx}>{n}</React.Fragment>)}</React.Fragment>;
     };
 
     const data = {
+      // ✅ 圖片路徑更新為 "images/"
       bannerImage: "banner.png",
-      bannerImageMobile: " mobile_banner.png",
+      bannerImageMobile: "mobile_banner.png",
       lineQRCode: "qrcode.png",
-      roleMapImage: "end.png",
-      roleMapImageMobile: "mobile_end.png",
+      // ✅ 懶人包圖片：電腦版與手機版
+      roleMapImage: "end.png", // 電腦版
+      roleMapImageMobile: "mobile_end.png", // 手機版
       lineLink: "https://line.me/ti/p/@173eprbj",
       ctaLinks: { register: "https://example.com/register", host: "https://example.com/host" },
       hostBonuses: [
-        { people: 10, money: "NT$ 1,000" }, { people: 15, money: "NT$ 1,500" },
-        { people: 20, money: "NT$ 2,000" }, { people: 25, money: "NT$ 2,500" },
+        { people: 10, money: "NT$ 1,000" },
+        { people: 15, money: "NT$ 1,500" },
+        { people: 20, money: "NT$ 2,000" },
+        { people: 25, money: "NT$ 2,500" },
       ],
       hostBonusMax: { people: 30, original: "NT$ 3,000", money: "NT$ 3,500" },
       
       hostGuideSteps: [
         { 
-          id: 1, title: "取得島民（會員）資格", 
+          id: 1, 
+          title: "取得島民（會員）資格", 
+          // ✅ 攻略區：換成 lines 陣列，讓它也有小葉子 (或者如果不要小葉子，就改回 text 屬性)
+          // 這裡依照要求「跟3步驟一樣」，所以改成 lines
           lines: ["無論是新舊島民，只要是 LTrust 島民，都有資格成為「團長」，開啟你的揪團計畫。"],
           highlights: [{ phrase: "無論是新舊島民，只要是 LTrust 島民，都有資格成為「團長」" }]
         },
         { 
-          id: 2, title: "前往服務中心領推薦碼", 
-          lines: ["立志成為團長後，請前往 LTrust 本島的熱門服務區，領取團長專屬的登島推薦碼。", "一個推薦碼限一人使用！就像搭飛機一樣，每個人只有一張登機證，若你要揪第 2~10 位同學，需再領 10 個推薦碼。"],
-          showImage: true, imageSrc: "images/step2.png", 
+          id: 2, 
+          title: "前往服務中心領推薦碼", 
+          // ✅ 攻略區：分行以獲得多個小葉子
+          lines: [
+              "立志成為團長後，請前往 LTrust 本島的熱門服務區，領取團長專屬的登島推薦碼。",
+              "🔔一個推薦碼限一人使用！就像搭飛機一樣，每個人只有一張登機證，若你要揪第 2~10 位同學，需再領 10 個推薦碼。"
+          ],
+          showImage: true,
+          imageSrc: "images/step2.png", 
           highlights: [{ phrase: "熱門服務區" }, { phrase: "登島推薦碼" }] 
         },
         { 
-          id: 3, title: "發送推薦碼", 
+          id: 3, 
+          title: "發送推薦碼", 
           lines: ["將邀請碼發給同學，對方在註冊時輸入並成功完成註冊，系統將自動把他納入你的團隊！"],
-          showImage: true, imageSrc: "images/step3.png",
+          showImage: true,
+          imageSrc: "images/step3.png",
         },
       ],
       prizePools: [
         { 
-          title: "🎉 無人之境 豪華池", people: "30", descSuffix: "人｜整團皆可抽", 
-          borderColor: "border-[#fcd34d]", headerBg: "bg-yellow-200", chestType: "gold", chestImage: "images/chest_level_3.png",
+          // ✅ 縮小標題字級：text-xl
+          title: "🎉 無人之境 豪華池", 
+          people: "30", 
+          descSuffix: "人｜整團皆可抽", 
+          borderColor: "border-[#fcd34d]", 
+          headerBg: "bg-yellow-200", 
+          chestType: "gold", 
+          chestImage: "images/chest_level_3.png",
           items: [
             { name: "Switch 2", price: "$14,800", quantity: "1 台", imgSrc: "images/1.png" }, 
             { name: "Apple iPad 11", price: "$10,900", quantity: "1 台", imgSrc: "images/2.png" }, 
@@ -343,8 +470,14 @@
           ] 
         },
         { 
-          title: "🎧 歡樂中獎池", people: "15", descSuffix: "人｜整團皆可抽", 
-          borderColor: "border-blue-400", headerBg: "bg-blue-200", chestType: "silver", chestImage: "images/chest_level_2.png",
+          // ✅ 縮小標題字級：text-xl
+          title: "🎧 歡樂中獎池", 
+          people: "15", 
+          descSuffix: "人｜整團皆可抽", 
+          borderColor: "border-blue-400", 
+          headerBg: "bg-blue-200", 
+          chestType: "silver", 
+          chestImage: "images/chest_level_2.png",
           items: [
             { name: "Apple AirPods 4", price: "$4,990", quantity: "2 台", imgSrc: "images/4.png" }, 
             { name: "Apple HomePod mini", price: "$3,000", quantity: "3 台", imgSrc: "images/5.png" }, 
@@ -352,8 +485,14 @@
           ] 
         },
         { 
-          title: "☕ 迷你小團也有獎池", people: "5", descSuffix: "人｜整團皆可抽", 
-          borderColor: "border-orange-400", headerBg: "bg-orange-200", chestType: "wood", chestImage: "images/chest_level_1.png",
+          // ✅ 縮小標題字級：text-xl
+          title: "☕ 迷你小團也有獎池", 
+          people: "5", 
+          descSuffix: "人｜整團皆可抽", 
+          borderColor: "border-orange-400", 
+          headerBg: "bg-orange-200", 
+          chestType: "wood", 
+          chestImage: "images/chest_level_1.png",
           items: [
             { name: "星巴克 星享飲料券", price: "$175", quantity: "20 份", iconClass: "fa-solid fa-mug-hot text-green-700 text-4xl" }, 
             { name: "Uber Eats 好禮即享券", price: "$200", quantity: "20 份", iconClass: "fa-solid fa-burger text-black text-4xl" }, 
@@ -361,7 +500,10 @@
           ] 
         }
       ],
-      noticeHighlights: [{ phrase: "全台高中職在校生" }, { phrase: "IP監控系統" }, { phrase: "凍結帳號" }],
+      
+      noticeHighlights: [
+        { phrase: "全台高中職在校生" }, { phrase: "IP監控系統" }, { phrase: "凍結帳號" }
+      ],
       notices: [
         "身分限定：此活動僅開放全台高中職在校生參加。註冊時請務必填寫學校類型、名稱、年級與入學年度，領獎時將核對 「學生證/身分證」，若資料造假、與註冊身分不符都將被取消領獎資格。",
         "團長揪團基金：屬於額外加碼，不影響揪團抽獎權益！",
@@ -379,6 +521,7 @@
         { q: "抽到大獎需要付錢嗎？", a: " 請放心不用支付任何費用！依照台灣法律規定，價值超過 $1,000 的禮贈品需要進行申報，所以需請你填寫「領獎確認書」，並提供身分證明及收件資料，我們才能順利幫你把獎品寄給你！" },
         { q: "揪團獎金什麼時候發？是直接匯款嗎？", a: " 是的！活動結束後，我們會結算你的總戰績（揪了多少人），確認無違規後，將寄發「領獎確認書」到註冊信箱給你，請在規定時間內回傳，資料審核通過後，獎金將直接匯入指定帳戶（限本人帳戶）。" }
       ],
+
       tickerNews: [
         "🌸 恭喜「建國中學」陳O明 同學揪團成功，全團獲得抽獎資格！",
         "🧋 累積入島人數已突破 800 位！剩餘手搖飲額度倒數中...",
@@ -388,6 +531,7 @@
       steps: [
         { 
           num: "01", title: "註冊成為 LTrust 島民", 
+          // ✅ 領取3步驟：使用 lines 陣列，TaskItem 會自動加上 🍃
           lines: ["基本資料「學校類型、名稱、年級與入學年度」為必填，並確保 Email 正確無誤（填錯就無法補發囉！）"], 
           showQR: false,
           highlights: [{ phrase: "學校類型、名稱、年級與入學年度" }, { phrase: "必填資料" }]
@@ -395,26 +539,33 @@
         { 
           num: "02", title: "加入LINE @ 龍騰高中聲", 
           lines: ["傳送通關密語： 「我要領手搖」"], 
-          showQR: true, highlights: [{ phrase: "我要領手搖" }]
+          showQR: true,
+          highlights: [{ phrase: "我要領手搖" }]
         },
         { 
           num: "03", title: "🙆任務完成 → 等待飲料空投", 
           lines: ["周一~日完成任務，飲料券將於下週三空投到註冊 Email，憑電子即享券至門市兌換（可參考空投時程表）。","如果沒收到信，請先檢查垃圾信件匣或促銷內容，它可能躲起來了！"], 
-          showQR: false, highlights: [{ phrase: "下週三" }]
+          showQR: false,
+          highlights: [{ phrase: "下週三" }]
         }
       ]
     };
 
     const LinkButton = ({ href, children, colorClass, icon, onClick, className = "" }) => {
       const handleClick = (e) => {
-        if (onClick) { e.preventDefault(); onClick(); }
+        if (onClick) {
+          e.preventDefault();
+          onClick();
+        }
       };
+
       return (
         <a 
           href={href || "#"} 
           target={href ? "_blank" : "_self"}
           rel="noopener noreferrer" 
           onClick={handleClick}
+          // ✅ 修改：桌機版字級放大 1.5 倍 (text-2xl)，手機版 text-lg
           className={`ac-btn-new px-3 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 text-lg md:text-2xl flex items-center justify-center gap-2 md:gap-3 shadow-lg ${colorClass} font-rounded ${className}`}
         >
           {icon && <span className="text-lg md:text-2xl">{icon}</span>}
@@ -423,6 +574,7 @@
       );
     };
 
+    // ✅ 確保這個元件在 HomePage 之前被定義
     const DrinkWithStrawIcon = () => (
       <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 md:w-6 md:h-6" style={{ transform: 'translateY(-1px)' }}>
         <path d="M17.5 7H15V3l2-2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -431,16 +583,56 @@
       </svg>
     );
 
+    const CuteBobaIcon = () => (
+      <svg viewBox="0 0 100 120" className="w-20 h-20 md:w-28 md:h-28 drop-shadow-xl">
+        <line x1="85" y1="-10" x2="65" y2="60" stroke="#a29bfe" strokeWidth="8" strokeLinecap="round" />
+        <line x1="85" y1="-10" x2="65" y2="60" stroke="rgba(0,0,0,0.1)" strokeWidth="1" />
+        <g>
+            <path d="M25 35 Q30 15 50 25 L55 35 Z" fill="#f9ca24" />
+            <path d="M30 25 Q40 18 48 28" fill="none" stroke="#ffeaa7" strokeWidth="2" opacity="0.8" />
+            <path d="M50 35 Q70 15 75 35 Z" fill="#2d3436" />
+            <path d="M55 30 Q65 20 70 32" fill="none" stroke="#636e72" strokeWidth="2" opacity="0.5" />
+            <circle cx="40" cy="28" r="5" fill="#2d3436" />
+            <circle cx="50" cy="22" r="5" fill="#2d3436" />
+            <circle cx="60" cy="28" r="5" fill="#2d3436" />
+            <circle cx="45" cy="18" r="5" fill="#2d3436" />
+            <circle cx="55" cy="18" r="5" fill="#2d3436" />
+            <circle cx="48" cy="20" r="1.5" fill="white" opacity="0.4" />
+            <circle cx="53" cy="16" r="1.5" fill="white" opacity="0.4" />
+        </g>
+        <path d="M20 35 L80 35 L72 110 Q68 115 60 115 L40 115 Q32 115 28 110 Z" fill="#dcb690" stroke="#fff" strokeWidth="2.5" />
+        <circle cx="35" cy="95" r="4" fill="#2d3436" opacity="0.1" />
+        <circle cx="65" cy="100" r="4" fill="#2d3436" opacity="0.1" />
+        <path d="M30 85 Q40 95 50 85" stroke="#2d3436" strokeWidth="3" opacity="0.05" fill="none" />
+        <g transform="translate(0, 5)">
+            <circle cx="38" cy="65" r="3.5" fill="#594d40" />
+            <circle cx="62" cy="65" r="3.5" fill="#594d40" />
+            <path d="M45 72 Q50 78 55 72" fill="none" stroke="#594d40" strokeWidth="2.5" strokeLinecap="round" />
+            <circle cx="32" cy="70" r="3" fill="#ff9999" opacity="0.5" />
+            <circle cx="68" cy="70" r="3" fill="#ff9999" opacity="0.5" />
+        </g>
+        <path d="M28 45 L32 105" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" opacity="0.3" />
+      </svg>
+    );
+
+    // ✅ 倒數計時器：單行膠囊版 (1:1 還原) + 浮霧漸層 + 絕不重疊
+    // ✅ 必須定義在 HomePage 之前
     const VoucherTicket = ({ isSoldOut = false }) => (
       <div className="w-full flex justify-center transform hover:scale-105 transition duration-300 shine-effect relative overflow-hidden rounded-[24px]">
+        
+        {/* ✅ 修改：移除 bg-black/10 背景，只保留印章 */}
         {isSoldOut && (
            <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
+              {/* ✅ 修改：加大印章尺寸、字體放大、邊框加粗，讓它更醒目 */}
               <div className="border-[6px] border-[#ea6558] text-[#ea6558] font-black text-3xl md:text-5xl px-8 py-3 md:px-12 md:py-4 rounded-xl transform -rotate-12 bg-white/95 shadow-2xl tracking-[0.15em] opacity-100 border-double whitespace-nowrap">
                  數量已發畢
               </div>
            </div>
         )}
+
+        {/* ✅ 修改：加入 grayscale 與 opacity 當已發畢時 */}
         <div className={`nook-ticket-premium w-full max-w-[480px] flex flex-row flex-nowrap p-3 relative transition-all duration-300 ${isSoldOut ? 'grayscale opacity-60' : ''}`}>
+          {/* ✅ 修改：縮小左側文字區的內距 (p-3)，並允許文字在必要時換行 */}
           <div className="flex-1 p-2 md:p-6 flex flex-col justify-center relative z-10 text-left min-w-0">
             <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-4">
                <div className="bg-white/90 px-3 py-1 md:px-4 md:py-1.5 rounded-full shadow-sm flex items-center gap-2 border border-white/50">
@@ -448,13 +640,19 @@
                   <span className="font-black text-xs md:text-sm lg:text-base text-[#006c64]">新島民限定</span>
                </div>
             </div>
+            {/* ✅ 修改：手機版字體調整為 text-xl，避免過大撐開 */}
             <h3 className="text-xl md:text-4xl font-black tracking-tight mb-1 md:mb-2 text-[#006c64] drop-shadow-sm leading-tight">LTrust 歡迎你</h3>
             <p className="text-sm md:text-xl font-bold text-orange-700 leading-tight">CoCo都可 奶茶三兄弟(大) 電子好禮即享券</p>
           </div>
+          
+          {/* ✅ 修改：分隔線固定顯示 */}
           <div className="w-[2px] border-r-2 border-dashed border-white/60 my-2 mx-1 flex-shrink-0"></div>
+          
+          {/* ✅ 修改：手機版右側插畫區縮小為 w-[85px]，確保不佔據太多文字空間 */}
           <div className="w-[85px] md:w-[150px] flex items-center justify-center bg-white/10 flex-shrink-0 rounded-r-xl">
               <div className="scale-75 md:scale-100">
-                <img src="images/image_d5105c.png" className="w-16 h-16 object-contain" alt="Bubble Tea" onError={(e) => { e.target.style.display='none'; }} />
+                <img src="images/image_d5105c.png" className="w-16 h-16 object-contain" alt="Bubble Tea" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }} />
+                <div style={{display:'none'}}><CuteBobaIcon /></div>
               </div>
           </div>
           <div className="absolute top-0 right-0 opacity-10 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
@@ -466,11 +664,19 @@
 
     const Countdown = () => {
       const [timeLeft, setTimeLeft] = useState({ d: '00', h: '00' });
+      
       useEffect(() => {
         const timer = setInterval(() => {
           const now = new Date();
-          const target = new Date("2026-03-25T00:00:00");
+          const targetDates = [
+             new Date("2026-03-11T00:00:00"),
+             new Date("2026-03-18T00:00:00"),
+             new Date("2026-03-25T00:00:00")
+          ];
+          let target = targetDates.find(d => d > now);
+          if (!target) target = targetDates[targetDates.length - 1];
           const diff = target.getTime() - now.getTime();
+          
           if (diff <= 0) {
               setTimeLeft({ d: '0', h: '0' });
           } else {
@@ -484,18 +690,29 @@
       }, []);
       
       return (
+        // ✅ 修正：使用 mt-0 (或極小負邊距 -mt-1) 確保緊貼 Banner 下方不重疊
         <div className="flex flex-col items-center mb-4 w-full px-2 relative z-10 -mt-1">
+             {/* ✅ 修正：浮霧卡片樣式 (bg-gradient-to-b from-white/10 to-[#e8f5e9]/90, rounded-[40px], border-t-0, border-b-2) */}
              <div className="bg-gradient-to-b from-white/10 to-[#e8f5e9]/90 backdrop-blur-[2px] rounded-full px-8 py-3 flex flex-wrap md:flex-nowrap items-center justify-center gap-3 md:gap-5 shadow-sm border-b-2 border-white/40 border-t-0 max-w-[95%]">
+                
+                {/* 標題：手搖空投倒數 ✈️ */}
                 <div className="flex items-center justify-center flex-shrink-0">
-                   <h3 className="text-lg md:text-xl font-bold text-[#594d40] tracking-wider drop-shadow-[0_1px_0_rgba(255,255,255,0.8)] font-rounded">手搖空投倒數 ✈️</h3>
+                   {/* ✅ 修改：Emoji 換成飛機 ✈️ */}
+                   <h3 className="text-lg md:text-xl font-bold text-[#594d40] tracking-wider drop-shadow-[0_1px_0_rgba(255,255,255,0.8)] font-rounded">
+                      手搖空投倒數 ✈️
+                   </h3>
                    <span className="text-[#594d40] mx-1 md:mx-2 hidden md:inline">:</span>
                 </div>
+                
+                {/* 時間：XX DAYS · CC HOURS */}
                 <div className="flex items-center gap-2 justify-center w-full md:w-auto flex-nowrap">
                    <div className="flex items-baseline gap-0.5 md:gap-1">
                       <span className="text-2xl md:text-3xl font-bold text-[#594d40] font-mono leading-none">{timeLeft.d}</span>
                       <span className="text-[#594d40] font-bold text-[10px] md:text-sm pt-0.5 md:pt-1 opacity-80">DAYS</span>
                    </div>
+
                    <span className="text-[#594d40]/50 font-black mx-0.5">·</span>
+
                    <div className="flex items-baseline gap-0.5 md:gap-1">
                       <span className="text-2xl md:text-3xl font-bold text-[#594d40] font-mono leading-none">{timeLeft.h}</span>
                       <span className="text-[#594d40] font-bold text-[10px] md:text-sm pt-0.5 md:pt-1 opacity-80">HOURS</span>
@@ -506,34 +723,71 @@
       );
     };
 
+    // ✅ 新增：手搖空投時程表 (融合風格 - 深灰底 + 機場黃字 + 資訊層級優化)
+    // ✅ 修正：字體大小統一為 text-base (16px) 或更舒適大小
     const FlightScheduleBoard = () => {
       const schedule = [
         { batch: "首批", period: "3/2 (一) ~ 3/8 (日)", flight: "3/11 (三) 首波大空投" },
         { batch: "第二梯次", period: "3/9 (一) ~ 3/15 (日)", flight: "3/18 (三) 準時" },
       ];
+
       return (
         <div className="w-full max-w-4xl mx-auto mt-12 mb-12 animate-[fadeIn_0.5s_ease-out]">
-          <div className="text-center mb-6"><div className="section-title">✈️ 空投時程表</div></div>
+          <div className="text-center mb-6">
+            <div className="section-title">✈️ 空投時程表</div>
+          </div>
+          
           <div className="bg-[#2d3436] rounded-xl overflow-hidden shadow-2xl border-4 border-[#636e72] ring-4 ring-[#2d3436]/50">
+             {/* Board Header - ✅ 修改：統一使用 text-base md:text-lg */}
              <div className="bg-[#1e272e] grid grid-cols-12 py-3 px-2 md:px-4 font-black text-base md:text-lg tracking-wider gap-1 md:gap-2 border-b-2 border-[#636e72]">
                 <div className="col-span-5 md:col-span-4 text-left pl-2 text-white/80">登島日期</div>
                 <div className="col-span-5 md:col-span-5 text-left pl-1 text-white/80">預計發券日</div>
                 <div className="col-span-2 md:col-span-3 text-center text-white/80">備註</div>
              </div>
+
+             {/* Board Body */}
              <div className="divide-y divide-[#636e72]/50 bg-[#2d3436] font-mono">
                 {schedule.map((row, idx) => (
                   <div key={idx} className="grid grid-cols-12 py-4 px-2 md:px-4 items-center hover:bg-[#353b48] transition-colors duration-200 gap-1 md:gap-2">
                       <div className="col-span-5 md:col-span-4 text-left flex flex-col justify-center pl-2">
-                          <div className="mb-1"><span className="text-gray-300 text-sm font-bold border border-gray-400 px-1.5 py-0.5 rounded inline-block">{row.batch}</span></div>
-                          <span className="text-[#ffcc00] text-base md:text-xl font-black tracking-tight leading-tight">{row.period}</span>
+                          <div className="mb-1">
+                             <span className="text-gray-300 text-sm font-bold border border-gray-400 px-1.5 py-0.5 rounded inline-block">
+                               {row.batch}
+                             </span>
+                          </div>
+                          {/* ✅ 修改：使用 text-base (16px) 統一字級 */}
+                          <span className="text-[#ffcc00] text-base md:text-xl font-black tracking-tight leading-tight">
+                            {row.period}
+                          </span>
                       </div>
-                      <div className="col-span-5 md:col-span-5 text-left flex items-center pl-1"><span className="text-white font-bold text-base md:text-xl flex items-center flex-wrap leading-tight">{row.flight}</span></div>
-                      <div className="col-span-2 md:col-span-3 text-center flex flex-col justify-center items-center"><span className="inline-block text-[#ff7675] text-base md:text-xl font-black tracking-wider leading-none mb-1">送完為止</span></div>
+                      
+                      <div className="col-span-5 md:col-span-5 text-left flex items-center pl-1">
+                          {/* ✅ 修改：使用 text-base (16px) 統一字級 */}
+                          <span className="text-white font-bold text-base md:text-xl flex items-center flex-wrap leading-tight">
+                             {row.flight}
+                          </span>
+                      </div>
+
+                      <div className="col-span-2 md:col-span-3 text-center flex flex-col justify-center items-center">
+                         {/* ✅ 修改：使用 text-base (16px) 統一字級 */}
+                         <span className="inline-block text-[#ff7675] text-base md:text-xl font-black tracking-wider leading-none mb-1">
+                           送完為止
+                         </span>
+                      </div>
                   </div>
                 ))}
              </div>
+             
+             {/* Footer Decoration */}
              <div className="bg-[#1e272e] p-2 flex justify-between items-center border-t border-[#636e72]">
-                <div className="flex gap-2 items-center"><div className="flex space-x-1"><div className="w-1.5 h-1.5 rounded-full bg-red-500"></div><div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div><div className="w-1.5 h-1.5 rounded-full bg-green-500"></div></div><span className="text-[10px] text-gray-400 font-mono hidden md:inline">SYSTEM ONLINE</span></div>
+                <div className="flex gap-2 items-center">
+                   <div className="flex space-x-1">
+                      <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                   </div>
+                   <span className="text-[10px] text-gray-400 font-mono hidden md:inline">SYSTEM ONLINE</span>
+                </div>
                 <span className="text-[10px] text-[#ffcc00]/50 font-mono tracking-widest uppercase">LTrust Flight Info</span>
              </div>
           </div>
@@ -541,45 +795,46 @@
       );
     };
 
+    // ✅ 優化：獨立的圖片讀取元件，包含 Lazy Loading 與 Skeleton
+    // ✅ 調整4: 懶人包去框，融進背景
     const RoleMapCard = ({ src }) => {
       const [loading, setLoading] = useState(true);
       return (
         <div className="mb-10 w-full">
+          {/* ✅ 調整4: 移除所有外框和底色，只留 rounded-2xl 和 shadow-xl 增加立體感 */}
           <div className="relative group min-h-[100px] rounded-2xl shadow-xl overflow-hidden">
-            {loading && <div className="w-full h-[200px] bg-gray-200/50 animate-pulse rounded-2xl flex flex-col items-center justify-center text-gray-400"><span className="text-sm font-bold">Loading...</span></div>}
-            <img src={src} alt="入境流程角色定義與路徑" className={`w-full h-auto block transform transition duration-500 hover:scale-[1.01] ${loading ? 'opacity-0 absolute top-0 left-0 -z-10 h-0' : 'opacity-100'}`} onLoad={() => setLoading(false)} onError={(e) => { setLoading(false); e.target.style.display = 'none'; }} loading="lazy" decoding="async"/>
-          </div>
-        </div>
-      );
-    };
-
-    const TaskItem = ({ step }) => {
-      return (
-        <div className="bg-white border-4 border-[var(--ac-border-tan)] rounded-[30px] p-6 relative hover:-translate-y-2 transition duration-300 shadow-md flex flex-col items-center">
-          <div className="w-12 h-12 bg-[#78b159] text-white rounded-full shadow-md flex items-center justify-center text-xl font-black mx-auto mb-4 absolute -top-6 left-1/2 -translate-x-1/2">{step.id}</div>
-          <h3 className="mt-4 text-lg md:text-xl font-black text-[#594d40] mb-3 text-center">{step.title}</h3>
-          <div className="text-[#7c7c7c] font-bold leading-relaxed w-full text-left">
-              {step.lines ? (
-                 step.lines.map((l, i) => (
-                   <p key={i} className="mb-1 flex items-start"><span className="mr-2 flex-shrink-0">🍃</span><span>{renderWithHighlights(l, step.highlights)}</span></p>
-                 ))
-              ) : (
-                 <p className="whitespace-pre-line">{renderWithHighlights(step.text, step.highlights)}</p>
-              )}
-              {step.sub && <p className="text-[#ea6558] text-sm mt-1">{renderWithHighlights(step.sub, step.highlights)}</p>}
-          </div>
-          {step.showImage && (
-              <div className="mt-4 w-full aspect-square rounded-xl overflow-hidden shadow-sm border-2 border-gray-100">
-                {step.imageSrc ? <img src={step.imageSrc} alt={step.title} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('bg-gray-50', 'border-dashed', 'border-gray-300', 'flex', 'flex-col', 'items-center', 'justify-center', 'text-gray-400'); e.target.parentElement.innerHTML = '<i class="fa-regular fa-image text-4xl mb-2"></i><span class="font-bold text-sm">圖片載入失敗<br/>請確認檔名</span>'; }} /> : <div className="w-full h-full bg-gray-50 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400"><i className="fa-regular fa-image text-4xl mb-2"></i><span class="font-bold text-sm">步驟示意圖</span></div>}
+            
+            {/* Loading Placeholder (Skeleton) - 保持簡單 */}
+            {loading && (
+              <div className="w-full h-[200px] bg-gray-200/50 animate-pulse rounded-2xl flex flex-col items-center justify-center text-gray-400">
+                 <span className="text-sm font-bold">Loading...</span>
               </div>
-          )}
+            )}
+
+            {/* ✅ 修改：純淨圖片顯示，移除所有 padding/margin */}
+            <img 
+              src={src} 
+              alt="入境流程角色定義與路徑" 
+              className={`w-full h-auto block transform transition duration-500 hover:scale-[1.01] ${loading ? 'opacity-0 absolute top-0 left-0 -z-10 h-0' : 'opacity-100'}`} 
+              onLoad={() => setLoading(false)}
+              onError={(e) => {
+                setLoading(false); 
+                e.target.style.display = 'none'; 
+              }}
+              loading="lazy" 
+              decoding="async"
+            />
+          </div>
         </div>
       );
     };
 
     const HomePage = () => {
       const [activeTab, setActiveTab] = useState("methods");
+      // ✅ 預設為 false，未來可改為 true 切換為「已發畢」模式
       const isSoldOut = false; 
+
+      // ✅ 更名頁籤：揪團福利社 -> 解鎖揪團任務，圖示改為開鎖
       const tabs = [
         { id: "methods", label: "登島領手搖", iconClass: "fa-solid fa-plane-departure" },
         { id: "prizes", label: "揪團任務", iconClass: "fa-solid fa-lock-open" }, 
@@ -591,7 +846,9 @@
       const scrollToContent = (tabId) => {
           setActiveTab(tabId);
           const element = document.getElementById("main-content-card");
-          if (element) { element.scrollIntoView({ behavior: 'smooth' }); }
+          if (element) {
+              element.scrollIntoView({ behavior: 'smooth' });
+          }
       };
 
       const getTextureClass = () => {
@@ -600,12 +857,42 @@
         return '';
       };
 
-      const renderFallbackChest = (type) => { /* ... (SVG logic kept, omitted for brevity but logic is preserved if image fails) ... */ return null; };
-      const renderChest = (pool) => {
-        if (pool.chestImage) {
-           return (<div className="relative flex justify-center items-center"><img src={pool.chestImage} alt={pool.title} className="w-36 h-36 md:w-48 md:h-48 object-contain drop-shadow-xl hover:scale-110 transition duration-300 relative z-10" onError={(e) => { e.target.style.display = "none"; }} /><div style={{display: 'none'}}></div></div>);
+      // 備用 SVG 渲染 (只有當圖片失敗或沒圖片時顯示)
+      const renderFallbackChest = (type) => {
+        switch(type) {
+          case 'gold': return <GoldenChestIcon />;
+          case 'silver': return <SilverChestIcon />;
+          case 'wood': return <WoodenChestIcon />;
+          default: return null;
         }
-        return null;
+      };
+
+      // ✅ 修正與優化：圖片優先渲染邏輯
+      const renderChest = (pool) => {
+        // 1. 如果設定了圖片路徑
+        if (pool.chestImage) {
+           return (
+             <div className="relative flex justify-center items-center">
+               <img 
+                 src={pool.chestImage} 
+                 alt={pool.title}
+                 className="w-36 h-36 md:w-48 md:h-48 object-contain drop-shadow-xl hover:scale-110 transition duration-300 relative z-10"
+                 onError={(e) => {
+                   // 圖片載入失敗，隱藏圖片並顯示下方的 SVG 備案
+                   e.target.style.display = "none";
+                   const fallback = e.target.nextSibling;
+                   if(fallback) fallback.style.display = "block";
+                 }}
+               />
+               {/* 預設隱藏的備案，出錯時顯示 */}
+               <div style={{display: 'none'}}>
+                 {renderFallbackChest(pool.chestType)}
+               </div>
+             </div>
+           );
+        }
+        // 2. 如果沒設定圖片，直接顯示 SVG
+        return renderFallbackChest(pool.chestType);
       };
 
       return (
@@ -613,45 +900,87 @@
           <div className="flex flex-col items-center">
             <div className="w-full relative">
               <div className="relative overflow-hidden shadow-none md:shadow-2xl"> 
+                {/* ✅ 修正：強制 block 且 leading-none，解決手機版白邊斷層 */}
                 <div className="leading-none font-[0]">
-                  <img src={data.bannerImageMobile} onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1080"} alt="活動主視覺(手機版)" className="w-full h-auto block md:hidden object-cover object-center" />
-                  <img src={data.bannerImage} onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1974"} alt="活動主視覺(電腦版)" className="w-full h-auto hidden md:block min-h-[300px] object-cover object-center" />
+                  <img 
+                    src={data.bannerImageMobile} 
+                    onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1080"} 
+                    alt="活動主視覺(手機版)" 
+                    className="w-full h-auto block md:hidden object-cover object-center" 
+                  />
+                  <img 
+                    src={data.bannerImage} 
+                    onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1974"} 
+                    alt="活動主視覺(電腦版)" 
+                    className="w-full h-auto hidden md:block min-h-[300px] object-cover object-center" 
+                  />
                 </div>
+                
                 <div className="absolute inset-0 pointer-events-none">
-                    <div className="pointer-events-auto absolute w-full md:w-auto left-0 md:left-[12%] bottom-6 md:bottom-[15%] flex justify-center md:justify-start gap-4 md:gap-6 lg:gap-10 px-4 md:px-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-none pb-6 pt-10 md:pb-0 md:pt-0">
-                        <div className="flex flex-wrap gap-3 md:gap-6 justify-center md:justify-start">
-                          <LinkButton href="#" onClick={() => scrollToContent('methods')} colorClass="btn-primary" icon={<DrinkWithStrawIcon />} className="text-xl md:text-2xl">領手搖步驟</LinkButton>
-                          <LinkButton href="#" onClick={() => scrollToContent('prizes')} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>} className="text-xl md:text-2xl">看揪團玩法</LinkButton>
+                    {/* ✅ 修改：位置往左修正 (md:left-[5%])，對齊日期框左側；bottom 維持 12% */}
+                    {/* ✅ 修正：bottom-6 md:bottom-[15%] - 將按鈕下移至理想位置 */}
+                    <div className="pointer-events-auto absolute w-full md:w-[50%] left-0 bottom-6 md:bottom-[15%] flex justify-center gap-4 md:gap-6 lg:gap-10 px-4 md:px-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-none pb-6 pt-10 md:pb-0 md:pt-0">
+                        {/* ✅ 修改：間距加寬 (md:gap-6)，讓視覺更舒展，且在桌機版置中對齊 */}
+                        <div className="flex flex-wrap gap-3 md:gap-6 justify-center w-full">
+                          <LinkButton href="#" onClick={() => scrollToContent('methods')} colorClass="btn-primary" icon={<DrinkWithStrawIcon />}>領手搖步驟</LinkButton>
+                          <LinkButton href="#" onClick={() => scrollToContent('prizes')} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>}>看揪團玩法</LinkButton>
                         </div>
                     </div>
                 </div>
               </div>
             </div>
 
+            {/* ✅ 修正：使用 mt-0 (無負邊距) 消除白邊與重疊問題 */}
             <div className="container mx-auto px-4 md:px-6 flex flex-col items-center max-w-5xl relative z-20 -mt-1 md:mt-0">
+              
               <div className="w-full flex flex-col items-center">
                 <Countdown />
+                {/* ✅ 調整3：跑馬燈樣式更新 (降級顯示 + 字體加大) */}
                 <div className="ticker-container w-full max-w-[95%] md:max-w-full bg-white/20 border border-white/20 shadow-none backdrop-blur-sm">
-                  <div className="ticker-content text-[#594d40]/80 font-medium text-base md:text-lg">{data.tickerNews.join(" | ")} | {data.tickerNews.join(" | ")}</div>
+                  <div className="ticker-content text-[#594d40]/80 font-medium text-base md:text-lg">
+                    {data.tickerNews.join(" | ")} | {data.tickerNews.join(" | ")}
+                  </div>
                 </div>
               </div>
 
+              {/* ✅ 懶人包移至此處 (Ticker 下方，頁籤上方) */}
               <div className="w-full mt-2 mb-6 px-0 md:px-0">
-                <div className="w-full max-w-5xl mx-auto"><RoleMapCard src={data.roleMapImage} /></div>
+                <div className="w-full max-w-5xl mx-auto">
+                  {/* ✅ 使用修改後的 RoleMapCard，傳入手機與電腦版圖片 */}
+                  <RoleMapCard src={data.roleMapImage} />
+                </div>
               </div>
 
+              {/* ✅ 新增：中段攔截 CTA (懶人包下方) - 把握使用者「看懂了」的黃金時刻直接轉化 */}
+              {/* ✅ 修正：加入 mb-12 增加與頁籤的間距，並插入虛線分隔線 */}
               <div className="w-full max-w-5xl mx-auto flex flex-col justify-center items-center gap-6 mb-12 px-4 animate-[fadeIn_1s_ease-out]">
+                  {/* ✅ 修改：手機版 flex-col (垂直)，桌機版 flex-row (水平)；移除寬度限制 */}
                   <div className="flex flex-col md:flex-row gap-4 justify-center w-full">
-                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-user-plus"></i>}>立即註冊領手搖</LinkButton>
-                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-right-to-bracket"></i>}>登入拿推薦碼</LinkButton>
+                    {/* Level 1: 註冊 - 松石綠 + 深框 + 3D */}
+                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-user-plus"></i>}>
+                      立即註冊領手搖
+                    </LinkButton>
+                    {/* Level 3: 登入 - 白底綠字 + 綠框 (統一 2px 框) */}
+                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-right-to-bracket"></i>}>
+                      登入拿推薦碼
+                    </LinkButton>
                   </div>
+                  
+                  {/* ✅ 新增：視覺切割虛線 (Separator) */}
                   <div className="w-full max-w-2xl border-b-2 border-dashed border-[#d6b484] opacity-40"></div>
               </div>
 
               <div className="w-full relative mb-20 z-20"> 
                 <div className="flex flex-wrap justify-center md:justify-start w-full border-b-0 md:border-b-4 border-[var(--ac-text)] gap-2 px-2 md:px-4 items-end pb-0">
                   {tabs.map((tab) => (
-                    <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`ac-tab flex-grow md:flex-grow-0 min-w-[45%] md:min-w-0 px-4 py-3 md:px-5 md:py-3 font-black text-lg md:text-xl flex items-center justify-center gap-2 ${activeTab === tab.id ? 'active' : 'hover:brightness-95'}`}><i className={tab.iconClass}></i>{tab.label}</button>
+                    <button 
+                      key={tab.id} 
+                      onClick={() => setActiveTab(tab.id)} 
+                      /* ✅ 修改：手機版頁籤字級提升至 text-lg (18px)，桌機版維持 text-xl */
+                      className={`ac-tab flex-grow md:flex-grow-0 min-w-[45%] md:min-w-0 px-4 py-3 md:px-5 md:py-3 font-black text-lg md:text-xl flex items-center justify-center gap-2 ${activeTab === tab.id ? 'active' : 'hover:brightness-95'}`}
+                    >
+                      <i className={tab.iconClass}></i>{tab.label}
+                    </button>
                   ))}
                 </div>
 
@@ -662,21 +991,54 @@
                       <div className="animate-[fadeIn_0.5s_ease-out] text-center">
                         <div className="section-title">LTrust 登島禮 🎁</div>
                          <p className="section-subtitle"> 限量1,000杯！發送完畢將於此活動頁公告</p>
+
                         <div className="mb-12">
                           <VoucherTicket isSoldOut={isSoldOut} />
+                          {/* ✅ 修改：備註區塊極簡化（降噪）- 移除所有裝飾，只保留文字 */}
                           <div className="mt-4 w-full max-w-[480px] mx-auto text-left flex flex-col gap-1 px-4">
                               <span className="font-bold text-sm md:text-base text-[#594d40]">💡 電子券使用期間：自發放日起3個月</span>
                               <span className="font-bold text-sm md:text-base text-[#594d40]">💡 不適用店點：兌換前請務必確認，請依業者現場說明為準</span>
                           </div>
                         </div>
+
+                        {/* ✅ 新增：在此處插入手搖空投時程表 */}
                         <FlightScheduleBoard />
+
                         <div className="text-xl md:text-3xl font-black text-[#594d40] mb-8 bg-[var(--ac-yellow)] inline-block px-6 py-2 rounded-lg transform -rotate-1 border-2 border-[#594d40]">領取3步驟</div>
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
-                          {data.steps.map((step, index) => <div key={index} className="bg-white border-4 border-[var(--ac-border-tan)] rounded-[30px] p-6 relative hover:-translate-y-2 transition duration-300 shadow-md flex flex-col items-center"><div className="w-12 h-12 bg-[#78b159] text-white rounded-full shadow-md flex items-center justify-center text-xl font-black mx-auto mb-4 absolute -top-6 left-1/2 -translate-x-1/2">{step.num}</div><h3 className="mt-4 text-lg md:text-xl font-black text-[#594d40] mb-3 text-center">{step.title}</h3><div className="text-[#7c7c7c] font-bold leading-relaxed w-full text-left">{step.lines.map((l, i) => (<p key={i} className="mb-1 flex items-start"><span className="mr-2 flex-shrink-0">🍃</span><span>{renderWithHighlights(l, step.highlights)}</span></p>))}</div>{step.showQR && (<div className="mt-6 flex flex-col items-center justify-center w-full"><a href={data.lineLink} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center group"><div className="bg-[#ea6558] text-white px-5 py-2 rounded-full font-black text-lg mb-3 shadow-md transform transition group-hover:scale-105 flex items-center gap-2"><i className="fa-solid fa-hand-point-down animate-bounce"></i> 點擊或掃描加入</div><img src={data.lineQRCode} alt="QR Code" className="w-48 h-48 object-contain drop-shadow-md transform transition group-hover:scale-105" /></a></div>)}</div>)}
+                          {data.steps.map((step, index) => (
+                            <div key={index} className="bg-white border-4 border-[var(--ac-border-tan)] rounded-[30px] p-6 relative hover:-translate-y-2 transition duration-300 shadow-md flex flex-col items-center">
+                              <div className="w-12 h-12 bg-[#78b159] text-white rounded-full shadow-md flex items-center justify-center text-xl font-black mx-auto mb-4 absolute -top-6 left-1/2 -translate-x-1/2">{step.num}</div>
+                              <h3 className="mt-4 text-lg md:text-xl font-black text-[#594d40] mb-3 text-center">{step.title}</h3>
+                              {/* ✅ 修正：恢復列表渲染，並確保每一行前面有小葉子 */}
+                              <div className="text-[#7c7c7c] font-bold leading-relaxed w-full text-left">
+                                {step.lines ? (
+                                   step.lines.map((l, i) => (
+                                     <p key={i} className="mb-1 flex items-start">
+                                       <span className="mr-2 flex-shrink-0">🍃</span>
+                                       <span>{renderWithHighlights(l, step.highlights)}</span>
+                                     </p>
+                                   ))
+                                ) : (
+                                   <p className="whitespace-pre-line">{renderWithHighlights(step.text, step.highlights)}</p>
+                                )}
+                              </div>
+                              {step.showQR && (
+                                <div className="mt-6 flex flex-col items-center justify-center w-full">
+                                  <a href={data.lineLink} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center group">
+                                    <div className="bg-[#ea6558] text-white px-5 py-2 rounded-full font-black text-lg mb-3 shadow-md transform transition group-hover:scale-105 flex items-center gap-2">
+                                        <i className="fa-solid fa-hand-point-down animate-bounce"></i> 點擊或掃描加入
+                                    </div>
+                                    <img src={data.lineQRCode} alt="QR Code" className="w-48 h-48 object-contain drop-shadow-md transform transition group-hover:scale-105" />
+                                  </a>
+                                </div>
+                              )}
+                            </div>
+                          ))}
                         </div>
                       </div>
                     )}
-                    {/* ✅ 這裡就是救回來的「揪團任務」頁籤內容 */}
+
                     {activeTab === "prizes" && (
                       <div className="flex flex-col gap-12 relative z-10 mt-8">
                         <div className="bg-white p-6 rounded-[30px] border-4 border-[#d6cfa8] shadow-xl relative">
@@ -684,39 +1046,102 @@
                              <div className="section-title pt-8 md:pt-0">💰 團長揪團基金</div>
                              <div className="flex flex-col items-center gap-1">
                                <p className="section-subtitle">免抽獎！達標直接領獎金</p>
+                               {/* ✅ 修改：備註區塊極簡化（降噪） */}
                                <p className="font-bold text-[#594d40] text-sm md:text-base mt-2">💡 依達標最高門檻，每位團長限領取一次基金，不累加</p>
                              </div>
                            </div>
+                           
                            <div className="mb-8 flex flex-col gap-4 items-center">
                                 {data.hostBonuses.map((bonus, idx) => (
-                                  <div key={idx} className="w-full max-w-lg bg-[#fffdf0] rounded-2xl p-3 md:p-4 shadow-md border-2 border-[#e6dcae] hover:-translate-y-1 transition duration-200 flex justify-between items-center relative group">
-                                     <div className="flex items-center gap-3"><div className="w-8 h-8 md:w-10 md:h-10 bg-white border-2 border-[#594d40] rounded-full flex items-center justify-center text-lg md:text-xl shadow-inner text-[#594d40]">👥</div><span className="text-[#594d40] font-black text-lg md:text-xl">揪 <span className="text-xl md:text-2xl">{bonus.people}</span> 人</span></div><div className="flex items-center gap-2 bg-white px-3 py-1 md:px-4 md:py-2 rounded-xl border border-dashed border-[#53bf9d]"><span className="text-xl md:text-2xl">💰</span><span className="text-[#059669] font-black text-xl md:text-2xl">{bonus.money}</span></div>
+                                  // ✅ 修改：p-2 (padding縮小), gap-1 (間距縮小), whitespace-nowrap (不換行)
+                                  <div key={idx} className="w-full max-w-lg bg-[#fffdf0] rounded-2xl p-2 md:p-4 shadow-md border-2 border-[#e6dcae] hover:-translate-y-1 transition duration-200 flex justify-between items-center relative group">
+                                     <div className="flex items-center gap-1 md:gap-3">
+                                       <div className="w-8 h-8 md:w-10 md:h-10 bg-white border-2 border-[#594d40] rounded-full flex items-center justify-center text-lg md:text-xl shadow-inner text-[#594d40]">👥</div>
+                                       <span className="text-[#594d40] font-black text-lg md:text-xl whitespace-nowrap">揪 <span className="text-xl md:text-2xl">{bonus.people}</span> 人</span>
+                                     </div>
+                                     <div className="flex items-center gap-1 md:gap-2 bg-white px-2 py-1 md:px-4 md:py-2 rounded-xl border border-dashed border-[#53bf9d]">
+                                       <span className="text-lg md:text-2xl">💰</span>
+                                       <span className="text-[#059669] font-black text-lg md:text-2xl whitespace-nowrap">{bonus.money}</span>
+                                     </div>
                                    </div>
                                 ))}
+                                
                                 <div className="w-full max-w-lg bg-[#ea6558] text-white py-3 md:py-4 px-4 md:px-6 rounded-2xl shadow-2xl shine-effect relative flex flex-col md:flex-row justify-center items-center gap-2 transform transition hover:scale-[1.02] border-4 border-white ring-4 ring-[#ea6558]/30">
-                                   <div className="flex flex-row items-center gap-3 relative z-10 w-full justify-between"><div className="flex items-center gap-3"><div className="w-10 h-10 md:w-12 md:h-12 bg-white text-[#ea6558] rounded-full flex items-center justify-center text-xl md:text-2xl font-black shadow-md border-2 border-[#ea6558]">🔥</div><div className="text-left"><div className="font-bold text-base md:text-lg leading-none opacity-90">揪滿 30 人</div><div className="text-sm line-through opacity-60 font-medium">{data.hostBonusMax.original}</div></div></div><div className="flex flex-col items-end"><div className="font-black text-3xl md:text-4xl text-yellow-200 drop-shadow-md">{data.hostBonusMax.money}</div><div className="bg-white text-[#ea6558] px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs font-black shadow-md mt-1 border-2 border-[#ea6558]">加碼！！</div></div></div>
+                                   <div className="flex flex-row items-center gap-3 relative z-10 w-full justify-between">
+                                     <div className="flex items-center gap-3">
+                                       <div className="w-10 h-10 md:w-12 md:h-12 bg-white text-[#ea6558] rounded-full flex items-center justify-center text-xl md:text-2xl font-black shadow-md border-2 border-[#ea6558]">🔥</div>
+                                       <div className="text-left">
+                                          <div className="font-bold text-base md:text-lg leading-none opacity-90">揪滿 30 人</div>
+                                          <div className="text-sm line-through opacity-60 font-medium">{data.hostBonusMax.original}</div>
+                                       </div>
+                                     </div>
+                                     
+                                     <div className="flex flex-col items-end">
+                                        <div className="font-black text-3xl md:text-4xl text-yellow-200 drop-shadow-md">{data.hostBonusMax.money}</div>
+                                        <div className="bg-white text-[#ea6558] px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs font-black shadow-md mt-1 border-2 border-[#ea6558]">加碼！！</div>
+                                     </div>
+                                   </div>
                                 </div>
                            </div>
+
                            <div className="border-b-2 border-dashed border-gray-300 my-8 w-full"></div>
-                           <div className="text-center mb-6"><div className="section-title">📖 揪團攻略</div><p className="section-subtitle mt-1">團長必看！！</p></div>
-                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">{data.hostGuideSteps.map((step) => (<TaskItem key={step.id} step={step} />))}</div>
+
+                           <div className="text-center mb-6">
+                             <div className="section-title">📖 揪團攻略</div>
+                             <p className="section-subtitle mt-1">團長必看！！</p>
+                           </div>
+                           
+                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                             {data.hostGuideSteps.map((step) => (
+                               <TaskItem key={step.id} step={step} />
+                             ))}
+                           </div>
                         </div>
+
                         <div className="bg-[#fffbeb] p-6 rounded-[30px] border-4 border-[#e6dcae] shadow-lg mt-4 text-center relative">
-                           <div className="text-center mb-8 relative z-10"><div className="section-title">🎁 抽獎池目錄</div><div className="flex flex-col items-center gap-2"><p className="section-subtitle">跟團長一起解鎖獎品池！越多人參與解鎖更高等級寶箱</p><div className="max-w-2xl leading-relaxed text-center mx-auto font-bold text-sm md:text-base text-[#594d40]">💡 認定資格：團員需用團長發的推薦碼完成註冊，系統將會自動認定同團！達門檻後（包含團長）整團均可參加抽獎。⚠️如未在註冊時輸入推薦馬，將無法補登。</div></div></div>
+                           <div className="text-center mb-8 relative z-10">
+                             <div className="section-title">🎁 抽獎池目錄</div>
+                             <div className="flex flex-col items-center gap-2">
+                                 <p className="section-subtitle">跟團長一起解鎖獎品池！越多人參與解鎖更高等級寶箱</p>
+                                 {/* ✅ 修改：備註區塊極簡化（降噪）並置中 */}
+                                 <div className="max-w-2xl leading-relaxed text-center mx-auto font-bold text-sm md:text-base text-[#594d40]">
+                                   💡 認定資格：團員需用團長發的推薦碼完成註冊，系統將會自動認定同團！達門檻後（包含團長）整團均可參加抽獎。⚠️如未在註冊時輸入推薦馬，將無法補登。
+                                 </div>
+                             </div>
+                           </div>
+                           
                            <div className="flex flex-col gap-16 relative z-10 mt-12">
                              {data.prizePools.map((pool, idx) => (
                                <div key={idx} className={`bg-white rounded-3xl overflow-visible border-4 ${pool.borderColor} shadow-xl`}>
                                   <div className={`${pool.headerBg} rounded-t-[20px] p-4 relative flex flex-col items-center border-b-4 border-dashed border-black/10`}>
+                                    
+                                    {/* 聚光燈特效 - 優化：更柔和的光暈，避免髒髒的感覺 */}
                                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/40 rounded-full blur-3xl pointer-events-none"></div>
-                                    <div className="relative z-10 -mt-8 mb-4 transform hover:scale-105 transition duration-300 drop-shadow-lg">{renderChest(pool)}<div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-28 h-3 bg-black/10 rounded-[100%] blur-sm -z-10"></div></div>
-                                    <div className="relative z-10 flex flex-col items-center pb-4"><h4 className="font-black text-2xl text-[#594d40] mb-2 drop-shadow-sm">{pool.title}</h4><div className="bg-white/90 px-6 py-1.5 rounded-full border-2 border-white shadow-sm flex items-center gap-2"><span className="text-lg">🔓</span><p className="text-lg font-bold text-[#8b5e3c]">揪滿 <span className="text-[#ea6558] text-2xl font-black">{pool.people}</span> {pool.descSuffix}</p></div></div>
+
+                                    {/* 寶箱本體 (向上破格) - 優化：降低高度 (-mt-8)，陰影變淡 */}
+                                    <div className="relative z-10 -mt-8 mb-4 transform hover:scale-105 transition duration-300 drop-shadow-lg">
+                                      {renderChest(pool)}
+                                      {/* 寶箱落地陰影 - 優化：顏色變淡 */}
+                                      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-28 h-3 bg-black/10 rounded-[100%] blur-sm -z-10"></div>
+                                    </div>
+                                    
+                                    {/* 標題與門檻 */}
+                                    <div className="relative z-10 flex flex-col items-center pb-4">
+                                        <h4 className="font-black text-xl md:text-2xl text-[#594d40] mb-2 drop-shadow-sm">{pool.title}</h4>
+                                        <div className="bg-white/90 px-6 py-1.5 rounded-full border-2 border-white shadow-sm flex items-center gap-2">
+                                             <span className="text-lg">🔓</span>
+                                             <p className="text-lg font-bold text-[#8b5e3c]">揪滿 <span className="text-[#ea6558] text-2xl font-black">{pool.people}</span> {pool.descSuffix}</p>
+                                        </div>
+                                    </div>
                                   </div>
                                   <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-3">
                                      {pool.items.map((item, i) => (
                                        <div key={i} className="bg-gray-50 rounded-xl p-3 flex flex-col items-center text-center border-2 border-transparent hover:border-[#78b159] transition">
                                             <div className="w-20 h-20 bg-white rounded-xl flex items-center justify-center mb-2 shadow-sm overflow-hidden">{item.imgSrc ? <img src={item.imgSrc} className="w-full h-full object-cover" /> : <i className={item.iconClass}></i>}</div>
                                             <div className="font-bold text-[#594d40] text-base leading-tight mb-1">{item.name}</div>
-                                            <div className="text-sm text-gray-500 font-bold mb-0">{item.price}</div><div className="h-6"></div><span className="text-sm bg-gray-200 px-2 py-0.5 rounded-md font-bold text-gray-500">{item.quantity}</span>
+                                            <div className="text-sm text-gray-500 font-bold mb-0">{item.price}</div>
+                                            <div className="h-6"></div>
+                                            <span className="text-sm bg-gray-200 px-2 py-0.5 rounded-md font-bold text-gray-500">{item.quantity}</span>
                                        </div>
                                      ))}
                                   </div>
@@ -727,12 +1152,37 @@
                         </div>
                       </div>
                     )}
-                    {activeTab === "winners" && (<div className="animate-[fadeIn_0.5s_ease-out] text-center min-h-[300px] flex flex-col items-center justify-center"><div className="section-title pt-8 md:pt-0">🏆 中獎名單公告</div><div className="bg-white/80 p-8 rounded-xl border-2 border-[#d6cfa8] shadow-inner max-w-xl w-full"><p className="font-bold text-[#594d40] text-xl mb-4 leading-relaxed">📢 5/6 佈告欄貼榜 & 團長基金結算</p><p className="text-[#8b5e3c] font-medium leading-relaxed">為了將獎品、獎金順利空投給你，依法贈品價值超過 $1,000 需要辦理申報。👉請領獎人在收到 「領獎確認書」後 7 日內回傳相關資料，經資料審核通過後，將在 10 個工作天內安排空投！</p></div></div>)}
+
+                    {activeTab === "winners" && (
+                      <div className="animate-[fadeIn_0.5s_ease-out] text-center min-h-[300px] flex flex-col items-center justify-center">
+                        <div className="section-title pt-8 md:pt-0">🏆 中獎名單公告</div>
+                        <div className="bg-white/80 p-8 rounded-xl border-2 border-[#d6cfa8] shadow-inner max-w-xl w-full">
+                          <p className="font-bold text-[#594d40] text-xl mb-4 leading-relaxed">📢 5/6 佈告欄貼榜 & 團長基金結算</p>
+                          <p className="text-[#8b5e3c] font-medium leading-relaxed">為了將獎品、獎金順利空投給你，依法贈品價值超過 $1,000 需要辦理申報。👉請領獎人在收到 「領獎確認書」後 7 日內回傳相關資料，經資料審核通過後，將在 10 個工作天內安排空投！</p>
+                        </div>
+                      </div>
+                    )}
+
                     {(activeTab === "notices" || activeTab === "faq") && (
                       <div className="animate-[fadeIn_0.5s_ease-out] max-w-3xl mx-auto text-left">
                         <div className="text-center mb-8"><div className="section-title">{activeTab === "notices" ? "登島注意事項" : "服務處 FAQ"}</div></div>
-                        {activeTab === "notices" && (<ul className="space-y-4">{data.notices.map((n, i) => (<li key={i} className="flex gap-3 bg-white/50 p-4 rounded-xl border-2 border-[#f3eacb] shadow-sm backdrop-blur-[2px]"><span className="font-black text-[#78b159] flex-shrink-0">{i+1}.</span><span className="font-bold text-[#594d40] leading-relaxed">{renderWithHighlights(n, data.noticeHighlights)}</span></li>))}</ul>)}
-                        {activeTab === "faq" && (<div className="space-y-4">{data.faqs.map((f, i) => (<details key={i} className="group bg-white/60 rounded-xl border-2 border-[#e5e7eb] overflow-hidden open:shadow-md backdrop-blur-[2px]"><summary className="flex justify-between items-center p-4 font-bold cursor-pointer hover:bg-gray-50/50 text-[#594d40]"><div className="flex gap-3 items-center text-left"><span className="bg-[#53bf9d] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">Q</span><span>{f.q}</span></div><i className="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition"></i></summary><div className="faq-a p-4 pt-0 text-gray-600 font-medium pl-14 border-t-0 leading-relaxed text-left">{f.a}</div></details>))}</div>)}
+                        {activeTab === "notices" && (
+                           <ul className="space-y-4">{data.notices.map((n, i) => (
+                             <li key={i} className="flex gap-3 bg-white/50 p-4 rounded-xl border-2 border-[#f3eacb] shadow-sm backdrop-blur-[2px]">
+                               {/* ✅ 使用 renderWithHighlights 強調注意事項關鍵字 */}
+                               <span className="font-black text-[#78b159] flex-shrink-0">{i+1}.</span><span className="font-bold text-[#594d40] leading-relaxed">{renderWithHighlights(n, data.noticeHighlights)}</span>
+                             </li>))}</ul>
+                        )}
+                        {activeTab === "faq" && (
+                           <div className="space-y-4">{data.faqs.map((f, i) => (
+                             <details key={i} className="group bg-white/60 rounded-xl border-2 border-[#e5e7eb] overflow-hidden open:shadow-md backdrop-blur-[2px]">
+                               <summary className="flex justify-between items-center p-4 font-bold cursor-pointer hover:bg-gray-50/50 text-[#594d40]">
+                                  <div className="flex gap-3 items-center text-left"><span className="bg-[#53bf9d] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">Q</span><span>{f.q}</span></div>
+                                  <i className="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition"></i>
+                                </summary>
+                                <div className="faq-a p-4 pt-0 text-gray-600 font-medium pl-14 border-t-0 leading-relaxed text-left">{f.a}</div>
+                             </details>))}</div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -741,9 +1191,16 @@
 
               <div className="w-full mt-4 mb-8 z-20 px-4 md:px-6">
                 <div className="w-full max-w-5xl mx-auto flex flex-row justify-center md:justify-start items-center gap-3 md:gap-6">
+                  {/* ✅ 修改：手機版 flex-col (垂直)，桌機版 flex-row (水平)；移除寬度限制 */}
                   <div className="flex flex-col md:flex-row gap-4 justify-center w-full">
-                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-user-plus"></i>}>立即註冊領手搖</LinkButton>
-                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-right-to-bracket"></i>}>登入拿推薦碼</LinkButton>
+                    {/* Level 1: 註冊 - 新沈穩松石綠 A' + 圓潤字體 */}
+                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-user-plus"></i>}>
+                      立即註冊領手搖
+                    </LinkButton>
+                    {/* Level 3: 登入 - 白底綠字 + 綠框 (統一 2px 框) */}
+                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-right-to-bracket"></i>}>
+                      登入拿推薦碼
+                    </LinkButton>
                   </div>
                 </div>
               </div>
@@ -768,6 +1225,3 @@
   </script>
 </body>
 </html>
-
-
-
