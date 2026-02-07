@@ -1,774 +1,783 @@
-<!DOCTYPE html>
-<html lang="zh-TW" class="acnh-theme">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>LTrust 高中島民召集｜登島領手搖 揪團再抽大獎！</title>
+import React, { useState, useEffect } from 'react';
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+// --- Styles & Resources Injection ---
 
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+const EXTERNAL_LINKS = [
+  { rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" },
+  { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" },
+  { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" }
+];
 
-  <!-- React & ReactDOM -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-
-  <!-- Babel -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet" />
-  <!-- 引入圓潤字體 M PLUS Rounded 1c -->
-  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --ac-nook: #53bf9d;       
-      --ac-paper: #fffdf0;        
-      --ac-yellow: #f8e67e;       
-      --ac-text: #594d40;        
-      --ac-red: #ea6558;          
-      --ac-dark-brown: #583e26;   
-      --ac-goose-yellow: #fefae0; 
-      --ac-border-tan: #d6b484;   
-      
-      --ac-highlight: #ea6558;
-
-      --subtitle-pink: #d46d78;
-      --remark-bg-green: #f0fdf4;
-      --remark-border-green: #86efac;
-      --remark-text-green: #15803d;
-      
-      /* CTA Colors */
-      --btn-primary-bg: var(--ac-dark-brown);
-      --btn-primary-text: #ffffff;    
-      --btn-secondary-bg: var(--ac-yellow);
-      --btn-secondary-text: var(--ac-dark-brown); 
-      
-      /* Level 1 CTA: 3D Turquoise */
-      --cta-level1-bg: #2baea0;      
-      --cta-level1-hover: #228b80;   
-      --cta-level1-text: #FFFFFF;
-      --cta-level1-border: #174D48;
-      
-      /* Level 3 CTA: White Outline */
-      --cta-level3-bg: #FFFFFF;
-      --cta-level3-border: #2baea0; 
-      --cta-level3-text: #1d7c73;   
-      --cta-level3-hover-bg: #f0fdfc;
-    }
-
-    html, body {
-      width: 100%;
-      max-width: 100%;
-      overflow-x: hidden;
-      position: relative;
-      touch-action: manipulation;
-      -webkit-text-size-adjust: 100%;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
-    }
-
-    body {
-      font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-      color: var(--ac-text);
-      background: linear-gradient(to bottom, #74b9ff 0%, #a29bfe 30%, #dfe6e9 70%);
-      background-attachment: fixed;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-
-    .font-rounded {
-      font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
-    }
-
-    /* Scenic Background */
-    .scenic-landscape {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; pointer-events: none;
-      background: linear-gradient(to bottom, #4facfe 0%, #00f2fe 30%, #ffffff 70%);
-    }
-    .scenic-landscape::after {
-      content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 50vh;
-      background: linear-gradient(to bottom, #96e6a1 0%, #d4fc79 100%);
-      clip-path: ellipse(150% 100% at 50% 100%); opacity: 0.9;
-    }
-    .scenic-landscape::before {
-      content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 40vh;
-      background: linear-gradient(to bottom, #56ab2f 0%, #a8e063 100%);
-      clip-path: ellipse(120% 90% at 20% 100%); opacity: 0.85; z-index: 1;
-    }
-
-    .cloud {
-      position: fixed; background: rgba(255, 255, 255, 0.85); border-radius: 100px;
-      z-index: -1; filter: blur(2px); animation: floatCloud linear infinite;
-    }
-    .cloud::after {
-      content: ''; position: absolute; top: -50%; left: 20%; width: 60%; height: 100%;
-      background: inherit; border-radius: 50%;
-    }
-    @keyframes floatCloud { from { transform: translateX(-250px); } to { transform: translateX(100vw); } }
-
-    .ac-card {
-      border-radius: 30px;
-      box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.15), 0 0 0 6px white inset; 
-      border: 4px solid var(--ac-text);
-      z-index: 10; position: relative; overflow: hidden;
-      background-color: var(--ac-paper);
-    }
-
-    .bg-texture-goose { background-color: var(--ac-goose-yellow) !important; }
-    .bg-texture-goose::before {
-      content: ""; position: absolute; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath d='M1,3 L1,1 L3,1 L3,3 L1,3 Z' fill='%23594d40' fill-opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 0;
-    }
+const CUSTOM_STYLES = `
+  :root {
+    --ac-nook: #53bf9d;        
+    --ac-paper: #fffdf0;        
+    --ac-yellow: #f8e67e;        
+    --ac-text: #594d40;        
+    --ac-red: #ea6558;          
+    --ac-dark-brown: #583e26;   
+    --ac-goose-yellow: #fefae0; 
+    --ac-border-tan: #d6b484;   
     
-    .bg-texture-board {
-      background-color: #fdf5d3 !important;
-      background-image: radial-gradient(#e6dcae 20%, transparent 20%);
-      background-size: 12px 12px;
-      border: 10px solid #8b5e3c !important; 
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3), 0 0 0 4px #7a4f2c inset;
-    }
-    .board-pin {
-      width: 20px; height: 20px; border-radius: 50%; background: #e94e4e;
-      position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
-      box-shadow: 1px 2px 4px rgba(0,0,0,0.3); border: 2px solid white; z-index: 5;
-    }
+    --ac-highlight: #ea6558;
 
-    .card-content-z { position: relative; z-index: 1; }
-
-    .ac-btn-new {
-      border-radius: 999px; font-weight: 700;
-      transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative; overflow: hidden; letter-spacing: 0.05em;
-      font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
-    }
+    --subtitle-pink: #d46d78;
+    --remark-bg-green: #f0fdf4;
+    --remark-border-green: #86efac;
+    --remark-text-green: #15803d;
     
-    .btn-primary { 
-      background: var(--btn-primary-bg); color: var(--btn-primary-text); 
-      border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); filter: brightness(1.05); }
-    .btn-primary:active { transform: scale(0.95); }
-
-    .btn-secondary { 
-      background: var(--btn-secondary-bg); color: var(--btn-secondary-text); 
-      border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-    .btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); filter: brightness(1.05); }
-    .btn-secondary:active { transform: scale(0.95); }
-
-    .btn-cta-primary {
-      background: var(--cta-level1-bg); color: var(--cta-level1-text);
-      border: 2px solid var(--cta-level1-border);
-      box-shadow: 0 4px 0 var(--cta-level1-border), 0 8px 15px rgba(0,0,0,0.15); 
-      transform: translateY(0); font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
-    }
-    .btn-cta-primary:hover {
-      background: var(--cta-level1-hover); transform: translateY(2px);
-      box-shadow: 0 2px 0 var(--cta-level1-border), 0 4px 10px rgba(0,0,0,0.1); filter: brightness(1.05);
-    }
-    .btn-cta-primary:active { transform: translateY(4px); box-shadow: 0 0 0 var(--cta-level1-border); }
-    .btn-cta-primary i { color: #ffffff !important; }
-
-    .btn-cta-outline {
-      background: var(--cta-level3-bg); color: var(--cta-level3-text);
-      border: 2px solid var(--cta-level3-border);
-      box-shadow: 0 4px 0 var(--cta-level3-border), 0 8px 15px rgba(0,0,0,0.05);
-      font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif; transform: translateY(0);
-    }
-    .btn-cta-outline:hover { background: var(--cta-level3-hover-bg); transform: translateY(2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    .btn-cta-outline:active { transform: translateY(4px); box-shadow: 0 0 0 var(--cta-level3-border); }
-    .btn-cta-outline i { color: var(--cta-level3-text) !important; }
-
-    .nook-ticket-premium {
-      background: linear-gradient(135deg, rgba(157, 240, 222, 0.95) 0%, rgba(108, 222, 189, 0.95) 100%);
-      backdrop-filter: blur(10px);
-      border: 5px solid white !important;
-      border-radius: 24px;
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255,255,255,0.5) inset;
-      color: var(--ac-text);
-    }
+    /* CTA Colors */
+    --btn-primary-bg: var(--ac-dark-brown);
+    --btn-primary-text: #ffffff;      
+    --btn-secondary-bg: var(--ac-yellow);
+    --btn-secondary-text: var(--ac-dark-brown); 
     
-    .ac-tab {
-      background: rgba(253, 251, 247, 0.9); color: #8b6a4f; border: 3px solid var(--ac-text);
-      transition: all 0.2s; position: relative; border-radius: 12px; margin-bottom: 0.5rem; backdrop-filter: blur(5px);
+    /* Level 1 CTA: 3D Turquoise */
+    --cta-level1-bg: #2baea0;       
+    --cta-level1-hover: #228b80;     
+    --cta-level1-text: #FFFFFF;
+    --cta-level1-border: #174D48;
+    
+    /* Level 3 CTA: White Outline */
+    --cta-level3-bg: #FFFFFF;
+    --cta-level3-border: #2baea0; 
+    --cta-level3-text: #1d7c73;     
+    --cta-level3-hover-bg: #f0fdfc;
+  }
+
+  body {
+    font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+    color: var(--ac-text);
+    background: linear-gradient(to bottom, #74b9ff 0%, #a29bfe 30%, #dfe6e9 70%);
+    background-attachment: fixed;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .font-rounded {
+    font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
+  }
+
+  /* Scenic Background */
+  .scenic-landscape {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; pointer-events: none;
+    background: linear-gradient(to bottom, #4facfe 0%, #00f2fe 30%, #ffffff 70%);
+  }
+  .scenic-landscape::after {
+    content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 50vh;
+    background: linear-gradient(to bottom, #96e6a1 0%, #d4fc79 100%);
+    clip-path: ellipse(150% 100% at 50% 100%); opacity: 0.9;
+  }
+  .scenic-landscape::before {
+    content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 40vh;
+    background: linear-gradient(to bottom, #56ab2f 0%, #a8e063 100%);
+    clip-path: ellipse(120% 90% at 20% 100%); opacity: 0.85; z-index: 1;
+  }
+
+  .cloud {
+    position: fixed; background: rgba(255, 255, 255, 0.85); border-radius: 100px;
+    z-index: -1; filter: blur(2px); animation: floatCloud linear infinite;
+  }
+  .cloud::after {
+    content: ''; position: absolute; top: -50%; left: 20%; width: 60%; height: 100%;
+    background: inherit; border-radius: 50%;
+  }
+  @keyframes floatCloud { from { transform: translateX(-250px); } to { transform: translateX(100vw); } }
+
+  .ac-card {
+    border-radius: 30px;
+    box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.15), 0 0 0 6px white inset; 
+    border: 4px solid var(--ac-text);
+    z-index: 10; position: relative; overflow: hidden;
+    background-color: var(--ac-paper);
+  }
+
+  .bg-texture-goose { background-color: var(--ac-goose-yellow) !important; }
+  .bg-texture-goose::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath d='M1,3 L1,1 L3,1 L3,3 L1,3 Z' fill='%23594d40' fill-opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
+  }
+  
+  .bg-texture-board {
+    background-color: #fdf5d3 !important;
+    background-image: radial-gradient(#e6dcae 20%, transparent 20%);
+    background-size: 12px 12px;
+    border: 10px solid #8b5e3c !important; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3), 0 0 0 4px #7a4f2c inset;
+  }
+  .board-pin {
+    width: 20px; height: 20px; border-radius: 50%; background: #e94e4e;
+    position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
+    box-shadow: 1px 2px 4px rgba(0,0,0,0.3); border: 2px solid white; z-index: 5;
+  }
+
+  .card-content-z { position: relative; z-index: 1; }
+
+  .ac-btn-new {
+    border-radius: 999px; font-weight: 700;
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative; overflow: hidden; letter-spacing: 0.05em;
+    font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
+  }
+  
+  .btn-primary { 
+    background: var(--btn-primary-bg); color: var(--btn-primary-text); 
+    border: 2px solid rgba(255,255,255,0.2); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); filter: brightness(1.05); }
+  .btn-primary:active { transform: scale(0.95); }
+
+  .btn-secondary { 
+    background: var(--btn-secondary-bg); color: var(--btn-secondary-text); 
+    border: 2px solid rgba(255,255,255,0.4); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  .btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25); filter: brightness(1.05); }
+  .btn-secondary:active { transform: scale(0.95); }
+
+  .btn-cta-primary {
+    background: var(--cta-level1-bg); color: var(--cta-level1-text);
+    border: 2px solid var(--cta-level1-border);
+    box-shadow: 0 4px 0 var(--cta-level1-border), 0 8px 15px rgba(0,0,0,0.15); 
+    transform: translateY(0); font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif;
+  }
+  .btn-cta-primary:hover {
+    background: var(--cta-level1-hover); transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--cta-level1-border), 0 4px 10px rgba(0,0,0,0.1); filter: brightness(1.05);
+  }
+  .btn-cta-primary:active { transform: translateY(4px); box-shadow: 0 0 0 var(--cta-level1-border); }
+  .btn-cta-primary i { color: #ffffff !important; }
+
+  .btn-cta-outline {
+    background: var(--cta-level3-bg); color: var(--cta-level3-text);
+    border: 2px solid var(--cta-level3-border);
+    box-shadow: 0 4px 0 var(--cta-level3-border), 0 8px 15px rgba(0,0,0,0.05);
+    font-family: 'M PLUS Rounded 1c', 'Noto Sans TC', sans-serif; transform: translateY(0);
+  }
+  .btn-cta-outline:hover { background: var(--cta-level3-hover-bg); transform: translateY(2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+  .btn-cta-outline:active { transform: translateY(4px); box-shadow: 0 0 0 var(--cta-level3-border); }
+  .btn-cta-outline i { color: var(--cta-level3-text) !important; }
+
+  .nook-ticket-premium {
+    background: linear-gradient(135deg, rgba(157, 240, 222, 0.95) 0%, rgba(108, 222, 189, 0.95) 100%);
+    backdrop-filter: blur(10px);
+    border: 5px solid white !important;
+    border-radius: 24px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255,255,255,0.5) inset;
+    color: var(--ac-text);
+  }
+  
+  .ac-tab {
+    background: rgba(253, 251, 247, 0.9); color: #8b6a4f; border: 3px solid var(--ac-text);
+    transition: all 0.2s; position: relative; border-radius: 12px; margin-bottom: 0.5rem; backdrop-filter: blur(5px);
+  }
+  @media (min-width: 768px) { .ac-tab { border-radius: 20px 20px 0 0; border-bottom: none; margin-bottom: -3px; } }
+  .ac-tab.active { background: var(--ac-yellow); color: var(--ac-text); z-index: 20; }
+  @media (min-width: 768px) { .ac-tab.active { transform: translateY(-4px); padding-bottom: 8px; } }
+
+  .section-title {
+      font-size: 1.875rem; font-weight: 700; color: var(--ac-dark-brown);
+      text-shadow: 2px 2px 0 #fff, 4px 4px 0 rgba(0,0,0,0.1);
+      border-bottom: 4px dashed #8b5e3c; 
+      display: inline-block; padding-bottom: 0.5rem; margin-bottom: 1.5rem; 
+  }
+
+  .section-subtitle {
+      color: var(--subtitle-pink); font-weight: 700; font-size: 1.25rem;
+      line-height: 1.6; text-align: center; margin-bottom: 0.5rem;
+      letter-spacing: 0.025em; text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+  }
+  @media (min-width: 768px) { .section-subtitle { font-size: 1.5rem; } }
+
+  .remark-box {
+      background-color: var(--remark-bg-green); border: 2px dashed var(--remark-border-green);
+      color: var(--remark-text-green); padding: 0.5rem 1.5rem; border-radius: 9999px;
+      font-weight: 700; font-size: 0.875rem; display: inline-block; margin-top: 0.5rem;
+  }
+  @media (min-width: 768px) { .remark-box { font-size: 1rem; } }
+
+  .shine-effect { position: relative; overflow: hidden; }
+  .shine-effect::before {
+    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
+    transform: skewX(-20deg); animation: shine 3s infinite; z-index: 10; pointer-events: none;
+  }
+  @keyframes shine { 0% { left: -100%; opacity: 0; } 20% { left: 100%; opacity: 0.6; } 100% { left: 100%; opacity: 0; } }
+
+  .ticker-container {
+    background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(2px); 
+    border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 999px; 
+    overflow: hidden; white-space: nowrap; position: relative;
+    padding: 0.3rem 1rem; box-shadow: none; margin-bottom: 2rem; max-width: 90%; 
+  }
+  .ticker-content { display: inline-block; animation: tickerLoop 80s linear infinite; }
+  @keyframes tickerLoop { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+  .footer-sc { border-top: 4px dashed var(--ac-dark-brown); margin-top: 4rem; padding: 2rem 0; text-align: center; color: var(--ac-dark-brown); }
+
+  .task-checkbox {
+    width: 24px; height: 24px; border: 3px solid #8b5e3c; border-radius: 6px; background: #fff;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;
+  }
+  .task-checkbox.checked { background: #78b159; border-color: #78b159; transform: scale(1.1); }
+  .task-checkbox.checked::after { content: '✔'; color: white; font-weight: 900; font-size: 14px; }
+  .faq-a { white-space: pre-line; }  
+`;
+
+// --- Data & Helpers ---
+
+const renderWithHighlights = (text, highlights = []) => {
+  if (text == null) return null;
+  const str = String(text);
+  if (!highlights || highlights.length === 0) return str;
+
+  const rules = highlights.sort((a, b) => String(b.phrase).length - String(a.phrase).length);
+  let nodes = [];
+  let i = 0;
+
+  while (i < str.length) {
+    let hit = null;
+    for (const h of rules) {
+      const phrase = String(h.phrase);
+      if (str.startsWith(phrase, i)) { hit = h; break; }
     }
-    @media (min-width: 768px) { .ac-tab { border-radius: 20px 20px 0 0; border-bottom: none; margin-bottom: -3px; } }
-    .ac-tab.active { background: var(--ac-yellow); color: var(--ac-text); z-index: 20; }
-    @media (min-width: 768px) { .ac-tab.active { transform: translateY(-4px); padding-bottom: 8px; } }
-
-    .section-title {
-        font-size: 1.875rem; font-weight: 700; color: var(--ac-dark-brown);
-        text-shadow: 2px 2px 0 #fff, 4px 4px 0 rgba(0,0,0,0.1);
-        border-bottom: 4px dashed #8b5e3c; 
-        display: inline-block; padding-bottom: 0.5rem; margin-bottom: 1.5rem; 
-    }
-
-    .section-subtitle {
-        color: var(--subtitle-pink); font-weight: 700; font-size: 1.25rem;
-        line-height: 1.6; text-align: center; margin-bottom: 0.5rem;
-        letter-spacing: 0.025em; text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
-    }
-    @media (min-width: 768px) { .section-subtitle { font-size: 1.5rem; } }
-
-    .remark-box {
-        background-color: var(--remark-bg-green); border: 2px dashed var(--remark-border-green);
-        color: var(--remark-text-green); padding: 0.5rem 1.5rem; border-radius: 9999px;
-        font-weight: 700; font-size: 0.875rem; display: inline-block; margin-top: 0.5rem;
-    }
-    @media (min-width: 768px) { .remark-box { font-size: 1rem; } }
-
-    .shine-effect { position: relative; overflow: hidden; }
-    .shine-effect::before {
-      content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-      background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
-      transform: skewX(-20deg); animation: shine 3s infinite; z-index: 10; pointer-events: none;
-    }
-    @keyframes shine { 0% { left: -100%; opacity: 0; } 20% { left: 100%; opacity: 0.6; } 100% { left: 100%; opacity: 0; } }
-
-    .ticker-container {
-      background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(2px); 
-      border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 999px; 
-      overflow: hidden; white-space: nowrap; position: relative;
-      padding: 0.3rem 1rem; box-shadow: none; margin-bottom: 2rem; max-width: 90%; 
-    }
-    .ticker-content { display: inline-block; animation: tickerLoop 80s linear infinite; }
-    @keyframes tickerLoop { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
-    .footer-sc { border-top: 4px dashed var(--ac-dark-brown); margin-top: 4rem; padding: 2rem 0; text-align: center; color: var(--ac-dark-brown); }
-
-    .task-checkbox {
-      width: 24px; height: 24px; border: 3px solid #8b5e3c; border-radius: 6px; background: #fff;
-      display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;
-    }
-    .task-checkbox.checked { background: #78b159; border-color: #78b159; transform: scale(1.1); }
-    .task-checkbox.checked::after { content: '✔'; color: white; font-weight: 900; font-size: 14px; }
-    .faq-a { white-space: pre-line; }  
-  </style>
-</head>
-
-<body class="min-h-screen pb-12">
-  <div class="scenic-landscape"></div>
-  <div class="cloud w-32 h-12 top-10 left-10" style="animation-duration: 35s"></div>
-  <div class="cloud w-48 h-16 top-40 right-20" style="animation-duration: 45s"></div>
-  <div class="cloud w-40 h-14 top-20 right-1/3" style="animation-duration: 50s"></div>
-  <div class="cloud w-56 h-20 top-60 left-1/4" style="animation-duration: 60s; opacity: 0.6;"></div>
-
-  <div id="root"></div>
-
-  <script type="text/babel">
-    const { useState, useEffect } = React;
-
-    const renderWithHighlights = (text, highlights = []) => {
-      if (text == null) return null;
-      const str = String(text);
-      if (!highlights || highlights.length === 0) return str;
-
-      const rules = highlights.sort((a, b) => String(b.phrase).length - String(a.phrase).length);
-      let nodes = [];
-      let i = 0;
-
-      while (i < str.length) {
-        let hit = null;
-        for (const h of rules) {
-          const phrase = String(h.phrase);
-          if (str.startsWith(phrase, i)) { hit = h; break; }
-        }
-        if (!hit) {
-          let nextPos = -1;
-          for (const h of rules) {
-            const pos = str.indexOf(String(h.phrase), i);
-            if (pos !== -1 && (nextPos === -1 || pos < nextPos)) nextPos = pos;
-          }
-          if (nextPos === -1) { nodes.push(str.slice(i)); break; }
-          else { nodes.push(str.slice(i, nextPos)); i = nextPos; }
-        } else {
-          const phrase = String(hit.phrase);
-          nodes.push(<span key={`${i}-${phrase}`} className={hit.className || "font-black"} style={{ color: hit.color || "var(--ac-highlight)" }}>{phrase}</span>);
-          i += phrase.length;
-        }
+    if (!hit) {
+      let nextPos = -1;
+      for (const h of rules) {
+        const pos = str.indexOf(String(h.phrase), i);
+        if (pos !== -1 && (nextPos === -1 || pos < nextPos)) nextPos = pos;
       }
-      return <React.Fragment>{nodes.map((n, idx) => <React.Fragment key={idx}>{n}</React.Fragment>)}</React.Fragment>;
-    };
+      if (nextPos === -1) { nodes.push(str.slice(i)); break; }
+      else { nodes.push(str.slice(i, nextPos)); i = nextPos; }
+    } else {
+      const phrase = String(hit.phrase);
+      nodes.push(<span key={`${i}-${phrase}`} className={hit.className || "font-black"} style={{ color: hit.color || "var(--ac-highlight)" }}>{phrase}</span>);
+      i += phrase.length;
+    }
+  }
+  return <React.Fragment>{nodes.map((n, idx) => <React.Fragment key={idx}>{n}</React.Fragment>)}</React.Fragment>;
+};
 
-    const data = {
-      bannerImage: "banner.png",
-      bannerImageMobile: "mobile_banner.png",
-      lineQRCode: "qrcode.png",
-      roleMapImage: "end.png",
-      roleMapImageMobile: "mobile_end.png",
-      lineLink: "https://line.me/ti/p/@173eprbj",
-      ctaLinks: { register: "https://example.com/register", host: "https://example.com/host" },
-      hostBonuses: [
-        { people: 10, money: "NT$ 1,000" }, { people: 15, money: "NT$ 1,500" },
-        { people: 20, money: "NT$ 2,000" }, { people: 25, money: "NT$ 2,500" },
-      ],
-      hostBonusMax: { people: 30, original: "NT$ 3,000", money: "NT$ 3,500" },
-      
-      hostGuideSteps: [
-        { 
-          id: 1, title: "取得島民（會員）資格", 
-          lines: ["無論是新舊島民，只要是 LTrust 島民，都有資格成為「團長」，開啟你的揪團計畫。"],
-          highlights: [{ phrase: "無論是新舊島民，只要是 LTrust 島民，都有資格成為「團長」" }]
-        },
-        { 
-          id: 2, title: "前往服務中心領推薦碼", 
-          lines: ["立志成為團長後，請前往 LTrust 本島的熱門服務區，領取團長專屬的登島推薦碼。", "🔔一個推薦碼限一人使用！就像搭飛機一樣，每個人只有一張登機證，若你要揪第 2~10 位同學，需再領 10 個推薦碼。"],
-          showImage: true, imageSrc: "images/step2.png", 
-          highlights: [{ phrase: "熱門服務區" }, { phrase: "登島推薦碼" }] 
-        },
-        { 
-          id: 3, title: "發送推薦碼", 
-          lines: ["將邀請碼發給同學，對方在註冊時輸入並成功完成註冊，系統將自動把他納入你的團隊！"],
-          showImage: true, imageSrc: "images/step3.png",
-        },
-      ],
-      prizePools: [
-        { 
-          title: "🎉 無人之境 豪華池", people: "30", descSuffix: "人｜整團皆可抽", 
-          borderColor: "border-[#fcd34d]", headerBg: "bg-yellow-200", chestType: "gold", chestImage: "chest_level_3.png",
-          items: [
-            { name: "Switch 2", price: "$14,800", quantity: "1 台", imgSrc: "images/1.png" }, 
-            { name: "Apple iPad 11", price: "$10,900", quantity: "1 台", imgSrc: "images/2.png" }, 
-            { name: "Apple Watch SE 3", price: "$7,900", quantity: "1 台", imgSrc: "images/3.png" }
-          ] 
-        },
-        { 
-          title: "🎧 歡樂中獎池", people: "15", descSuffix: "人｜整團皆可抽", 
-          borderColor: "border-blue-400", headerBg: "bg-blue-200", chestType: "silver", chestImage: "chest_level_2.png",
-          items: [
-            { name: "Apple AirPods 4", price: "$4,990", quantity: "2 台", imgSrc: "images/4.png" }, 
-            { name: "Apple HomePod mini", price: "$3,000", quantity: "3 台", imgSrc: "images/5.png" }, 
-            { name: "LINE POINT 1,000", price: "$1,000", quantity: "10 份", iconClass: "fa-brands fa-line text-green-500 text-4xl" }
-          ] 
-        },
-        { 
-          title: "☕ 迷你小團也有獎池", people: "5", descSuffix: "人｜整團皆可抽", 
-          borderColor: "border-orange-400", headerBg: "bg-orange-200", chestType: "wood", chestImage: "chest_level_1.png",
-          items: [
-            { name: "星巴克 星享飲料券", price: "$175", quantity: "20 份", iconClass: "fa-solid fa-mug-hot text-green-700 text-4xl" }, 
-            { name: "Uber Eats 好禮即享券", price: "$200", quantity: "20 份", iconClass: "fa-solid fa-burger text-black text-4xl" }, 
-            { name: "LTrust 紅利 10 萬點", price: "價值台幣 $1,000", quantity: "20 份", iconClass: "fa-solid fa-graduation-cap text-blue-600 text-4xl" }
-          ] 
-        }
-      ],
-      noticeHighlights: [{ phrase: "全台高中職在校生" }, { phrase: "IP監控系統" }, { phrase: "凍結帳號" }],
-      notices: [
-        "身分限定：此活動僅開放全台高中職在校生參加。註冊時請務必填寫學校類型、名稱、年級與入學年度，領獎時將核對 「學生證/身分證」，若資料造假、與註冊身分不符都將被取消領獎資格。",
-        "團長揪團基金：屬於額外加碼，不影響揪團抽獎權益！",
-        "帳號規範：為確保公平，一人限註冊一組帳號。 本島設有IP監控系統，禁止多重分身，若發現惡意洗帳號、大量異常註冊，系統將自動凍結帳號並取消所有活動資格🔥",
-        "活動變更權：若遇不可抗力因素（如獎品缺貨），LTrust 保有隨時調整活動內容、或更換等值獎品或禮券之權利，最新公告請以此活動網頁為主。",
-        "參加活動即代表同意 LTrust 的隱私權政策，你的資料僅供本次活動身分核對、寄送獎勵使用，絕不外洩。",
-        "若有有任何疑問，歡迎隨時聯繫服務處！服務信箱：support@ltrust.tw、官方 LINE：@173eprbj (記得加 @)"
-      ],
-      faqs: [
-        { q: "註冊完也加LINE了，飲料券什麼時候會來？", a: "每週一～日完成登島任務，將會統一在下週三發放。\n例如：\n　你在 3/2 (一) ～ 3/8 (日) 期間完成任務，就會在 3/11 (三) 收到電子飲料；\n　你在 3/9 (一) ～ 3/15 (日) 期間完成任務，就會在 3/18 (三) 收到電子飲料券，送完為止。" },
-        { q: "已經領了手搖飲，還可以參加揪團抽獎嗎？ ", a: " 當然可以！這兩個活動完全不衝突\n ◆ 前 1,000 名完成註冊 + LINE 留言的同學 ➡️ 免抽獎獲得電子手搖券 \n ◆ 使用朋友推薦碼註冊 or 自己當團長揪人 ➡️ 獲得抽獎資格 & 團長獎金" },
-        { q: "如果填錯 Email 怎麼辦？可以補發嗎？", a: "抱歉！因為是自動化空投，Email 填錯就真的收不到了😭請在註冊時務必檢查三次！" },
-        { q: "為什麼可以同時是「團長」又是「團員」？", a: " 只要你「使用他人推薦碼完成註冊」，註冊後「再揪其他人註冊」，就同時擁有兩種身分，達成門檻後享有 2 次中獎機會！" },
-        { q: "為什麼我的推薦碼不能一次傳全班？", a: "為了精準確保同學的身份是由你推薦來的，採用「一碼一人用」，讓你的獎金及抽獎資格不丟失！\n💡Tips：建議團長可以一次領取 5~10 組推薦碼，存在記事本，就可以快速發碼給同學。" },
-        { q: "抽到大獎需要付錢嗎？", a: " 請放心不用支付任何費用！依照台灣法律規定，價值超過 $1,000 的禮贈品需要進行申報，所以需請你填寫「領獎確認書」，並提供身分證明及收件資料，我們才能順利幫你把獎品寄給你！" },
-        { q: "揪團獎金什麼時候發？是直接匯款嗎？", a: " 是的！活動結束後，我們會結算你的總戰績（揪了多少人），確認無違規後，將寄發「領獎確認書」到註冊信箱給你，請在規定時間內回傳，資料審核通過後，獎金將直接匯入指定帳戶（限本人帳戶）。" }
-      ],
-      tickerNews: [
-        "🌸 恭喜「建國中學」陳O明 同學揪團成功，全團獲得抽獎資格！",
-        "🧋 累積入島人數已突破 800 位！剩餘手搖飲額度倒數中...",
-        "🎁 5/6 島內佈告欄貼榜，記得回來查看中獎資訊喔！",
-        "📢 揪團成功，全團獲得抽獎資格"
-      ],
-      steps: [
-        { 
-          num: "01", title: "註冊成為 LTrust 島民", 
-          lines: ["基本資料「學校類型、名稱、年級與入學年度」為必填，並確保 Email 正確無誤（填錯就無法補發囉！）"], 
-          showQR: false,
-          highlights: [{ phrase: "學校類型、名稱、年級與入學年度" }, { phrase: "必填資料" }]
-        },
-        { 
-          num: "02", title: "加入LINE @ 龍騰高中聲", 
-          lines: ["傳送通關密語： 「我要領手搖」"], 
-          showQR: true, highlights: [{ phrase: "我要領手搖" }]
-        },
-        { 
-          num: "03", title: "🙆任務完成 → 等待飲料空投", 
-          lines: ["周一~日完成任務，飲料券將於下週三空投到註冊 Email，憑電子即享券至門市兌換（可參考空投時程表）。","如果沒收到信，請先檢查垃圾信件匣或促銷內容，它可能躲起來了！"], 
-          showQR: false, highlights: [{ phrase: "下週三" }]
-        }
-      ]
-    };
+const data = {
+  bannerImage: "banner.png",
+  bannerImageMobile: "mobile_banner.png",
+  lineQRCode: "qrcode.png",
+  roleMapImage: "end.png",
+  roleMapImageMobile: "mobile_end.png",
+  lineLink: "https://line.me/ti/p/@173eprbj",
+  ctaLinks: { register: "https://example.com/register", host: "https://example.com/host" },
+  hostBonuses: [
+    { people: 10, money: "NT$ 1,000" }, { people: 15, money: "NT$ 1,500" },
+    { people: 20, money: "NT$ 2,000" }, { people: 25, money: "NT$ 2,500" },
+  ],
+  hostBonusMax: { people: 30, original: "NT$ 3,000", money: "NT$ 3,500" },
+  
+  hostGuideSteps: [
+    { 
+      id: 1, title: "取得島民（會員）資格", 
+      lines: ["無論是新舊島民，只要是 LTrust 島民，都有資格成為「團長」，開啟你的揪團計畫。"],
+      highlights: [{ phrase: "無論是新舊島民，只要是 LTrust 島民，都有資格成為「團長」" }]
+    },
+    { 
+      id: 2, title: "前往服務中心領推薦碼", 
+      lines: ["立志成為團長後，請前往 LTrust 本島的熱門服務區，領取團長專屬的登島推薦碼。", "🔔一個推薦碼限一人使用！就像搭飛機一樣，每個人只有一張登機證，若你要揪第 2~10 位同學，需再領 10 個推薦碼。"],
+      showImage: true, imageSrc: "images/step2.png", 
+      highlights: [{ phrase: "熱門服務區" }, { phrase: "登島推薦碼" }] 
+    },
+    { 
+      id: 3, title: "發送推薦碼", 
+      lines: ["將邀請碼發給同學，對方在註冊時輸入並成功完成註冊，系統將自動把他納入你的團隊！"],
+      showImage: true, imageSrc: "images/step3.png",
+    },
+  ],
+  prizePools: [
+    { 
+      title: "🎉 無人之境 豪華池", people: "30", descSuffix: "人｜整團皆可抽", 
+      borderColor: "border-[#fcd34d]", headerBg: "bg-yellow-200", chestType: "gold", chestImage: "chest_level_3.png",
+      items: [
+        { name: "Switch 2", price: "$14,800", quantity: "1 台", imgSrc: "images/1.png" }, 
+        { name: "Apple iPad 11", price: "$10,900", quantity: "1 台", imgSrc: "images/2.png" }, 
+        { name: "Apple Watch SE 3", price: "$7,900", quantity: "1 台", imgSrc: "images/3.png" }
+      ] 
+    },
+    { 
+      title: "🎧 歡樂中獎池", people: "15", descSuffix: "人｜整團皆可抽", 
+      borderColor: "border-blue-400", headerBg: "bg-blue-200", chestType: "silver", chestImage: "chest_level_2.png",
+      items: [
+        { name: "Apple AirPods 4", price: "$4,990", quantity: "2 台", imgSrc: "images/4.png" }, 
+        { name: "Apple HomePod mini", price: "$3,000", quantity: "3 台", imgSrc: "images/5.png" }, 
+        { name: "LINE POINT 1,000", price: "$1,000", quantity: "10 份", iconClass: "fa-brands fa-line text-green-500 text-4xl" }
+      ] 
+    },
+    { 
+      title: "☕ 迷你小團也有獎池", people: "5", descSuffix: "人｜整團皆可抽", 
+      borderColor: "border-orange-400", headerBg: "bg-orange-200", chestType: "wood", chestImage: "chest_level_1.png",
+      items: [
+        { name: "星巴克 星享飲料券", price: "$175", quantity: "20 份", iconClass: "fa-solid fa-mug-hot text-green-700 text-4xl" }, 
+        { name: "Uber Eats 好禮即享券", price: "$200", quantity: "20 份", iconClass: "fa-solid fa-burger text-black text-4xl" }, 
+        { name: "LTrust 紅利 10 萬點", price: "價值台幣 $1,000", quantity: "20 份", iconClass: "fa-solid fa-graduation-cap text-blue-600 text-4xl" }
+      ] 
+    }
+  ],
+  noticeHighlights: [{ phrase: "全台高中職在校生" }, { phrase: "IP監控系統" }, { phrase: "凍結帳號" }],
+  notices: [
+    "身分限定：此活動僅開放全台高中職在校生參加。註冊時請務必填寫學校類型、名稱、年級與入學年度，領獎時將核對 「學生證/身分證」，若資料造假、與註冊身分不符都將被取消領獎資格。",
+    "團長揪團基金：屬於額外加碼，不影響揪團抽獎權益！",
+    "帳號規範：為確保公平，一人限註冊一組帳號。 本島設有IP監控系統，禁止多重分身，若發現惡意洗帳號、大量異常註冊，系統將自動凍結帳號並取消所有活動資格🔥",
+    "活動變更權：若遇不可抗力因素（如獎品缺貨），LTrust 保有隨時調整活動內容、或更換等值獎品或禮券之權利，最新公告請以此活動網頁為主。",
+    "參加活動即代表同意 LTrust 的隱私權政策，你的資料僅供本次活動身分核對、寄送獎勵使用，絕不外洩。",
+    "若有有任何疑問，歡迎隨時聯繫服務處！服務信箱：support@ltrust.tw、官方 LINE：@173eprbj (記得加 @)"
+  ],
+  faqs: [
+    { q: "註冊完也加LINE了，飲料券什麼時候會來？", a: "每週一～日完成登島任務，將會統一在下週三發放。\n例如：\n　你在 3/2 (一) ～ 3/8 (日) 期間完成任務，就會在 3/11 (三) 收到電子飲料；\n　你在 3/9 (一) ～ 3/15 (日) 期間完成任務，就會在 3/18 (三) 收到電子飲料券，送完為止。" },
+    { q: "已經領了手搖飲，還可以參加揪團抽獎嗎？ ", a: " 當然可以！這兩個活動完全不衝突\n ◆ 前 1,000 名完成註冊 + LINE 留言的同學 ➡️ 免抽獎獲得電子手搖券 \n ◆ 使用朋友推薦碼註冊 or 自己當團長揪人 ➡️ 獲得抽獎資格 & 團長獎金" },
+    { q: "如果填錯 Email 怎麼辦？可以補發嗎？", a: "抱歉！因為是自動化空投，Email 填錯就真的收不到了😭請在註冊時務必檢查三次！" },
+    { q: "為什麼可以同時是「團長」又是「團員」？", a: " 只要你「使用他人推薦碼完成註冊」，註冊後「再揪其他人註冊」，就同時擁有兩種身分，達成門檻後享有 2 次中獎機會！" },
+    { q: "為什麼我的推薦碼不能一次傳全班？", a: "為了精準確保同學的身份是由你推薦來的，採用「一碼一人用」，讓你的獎金及抽獎資格不丟失！\n💡Tips：建議團長可以一次領取 5~10 組推薦碼，存在記事本，就可以快速發碼給同學。" },
+    { q: "抽到大獎需要付錢嗎？", a: " 請放心不用支付任何費用！依照台灣法律規定，價值超過 $1,000 的禮贈品需要進行申報，所以需請你填寫「領獎確認書」，並提供身分證明及收件資料，我們才能順利幫你把獎品寄給你！" },
+    { q: "揪團獎金什麼時候發？是直接匯款嗎？", a: " 是的！活動結束後，我們會結算你的總戰績（揪了多少人），確認無違規後，將寄發「領獎確認書」到註冊信箱給你，請在規定時間內回傳，資料審核通過後，獎金將直接匯入指定帳戶（限本人帳戶）。" }
+  ],
+  tickerNews: [
+    "🌸 恭喜「建國中學」陳O明 同學揪團成功，全團獲得抽獎資格！",
+    "🧋 累積入島人數已突破 800 位！剩餘手搖飲額度倒數中...",
+    "🎁 5/6 島內佈告欄貼榜，記得回來查看中獎資訊喔！",
+    "📢 揪團成功，全團獲得抽獎資格"
+  ],
+  steps: [
+    { 
+      num: "01", title: "註冊成為 LTrust 島民", 
+      lines: ["基本資料「學校類型、名稱、年級與入學年度」為必填，並確保 Email 正確無誤（填錯就無法補發囉！）"], 
+      showQR: false,
+      highlights: [{ phrase: "學校類型、名稱、年級與入學年度" }, { phrase: "必填資料" }]
+    },
+    { 
+      num: "02", title: "加入LINE @ 龍騰高中聲", 
+      lines: ["傳送通關密語： 「我要領手搖」"], 
+      showQR: true, highlights: [{ phrase: "我要領手搖" }]
+    },
+    { 
+      num: "03", title: "🙆任務完成 → 等待飲料空投", 
+      lines: ["周一~日完成任務，飲料券將於下週三空投到註冊 Email，憑電子即享券至門市兌換（可參考空投時程表）。","如果沒收到信，請先檢查垃圾信件匣或促銷內容，它可能躲起來了！"], 
+      showQR: false, highlights: [{ phrase: "下週三" }]
+    }
+  ]
+};
 
-    const LinkButton = ({ href, children, colorClass, icon, onClick, className = "" }) => {
-      const handleClick = (e) => {
-        if (onClick) { e.preventDefault(); onClick(); }
-      };
-      return (
-        <a 
-          href={href || "#"} 
-          target={href ? "_blank" : "_self"}
-          rel="noopener noreferrer" 
-          onClick={handleClick}
-          className={`ac-btn-new px-3 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 text-lg md:text-2xl flex items-center justify-center gap-2 md:gap-3 shadow-lg ${colorClass} font-rounded ${className}`}
-        >
-          {icon && <span className="text-lg md:text-2xl">{icon}</span>}
-          {children}
-        </a>
-      );
-    };
+// --- Components ---
 
-    const DrinkWithStrawIcon = () => (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 md:w-6 md:h-6" style={{ transform: 'translateY(-1px)' }}>
-        <path d="M17.5 7H15V3l2-2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M6.5 7h11v12.5c0 1.9-1.6 3.5-3.5 3.5h-4c-1.9 0-3.5-1.6-3.5-3.5V7z" />
-        <path d="M5 7h14v2H5z" />
-      </svg>
-    );
+const LinkButton = ({ href, children, colorClass, icon, onClick, className = "" }) => {
+  const handleClick = (e) => {
+    if (onClick) { e.preventDefault(); onClick(); }
+  };
+  return (
+    <a 
+      href={href || "#"} 
+      target={href ? "_blank" : "_self"}
+      rel="noopener noreferrer" 
+      onClick={handleClick}
+      className={`ac-btn-new px-3 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 text-lg md:text-2xl flex items-center justify-center gap-2 md:gap-3 shadow-lg ${colorClass} font-rounded ${className}`}
+    >
+      {icon && <span className="text-lg md:text-2xl">{icon}</span>}
+      {children}
+    </a>
+  );
+};
 
-    const VoucherTicket = ({ isSoldOut = false }) => (
-      <div className="w-full flex justify-center transform hover:scale-105 transition duration-300 shine-effect relative overflow-hidden rounded-[24px]">
-        {isSoldOut && (
-           <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
-              <div className="border-[6px] border-[#ea6558] text-[#ea6558] font-black text-3xl md:text-5xl px-8 py-3 md:px-12 md:py-4 rounded-xl transform -rotate-12 bg-white/95 shadow-2xl tracking-[0.15em] opacity-100 border-double whitespace-nowrap">
-                 數量已發畢
-              </div>
+const DrinkWithStrawIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 md:w-6 md:h-6" style={{ transform: 'translateY(-1px)' }}>
+    <path d="M17.5 7H15V3l2-2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M6.5 7h11v12.5c0 1.9-1.6 3.5-3.5 3.5h-4c-1.9 0-3.5-1.6-3.5-3.5V7z" />
+    <path d="M5 7h14v2H5z" />
+  </svg>
+);
+
+const VoucherTicket = ({ isSoldOut = false }) => (
+  <div className="w-full flex justify-center transform hover:scale-105 transition duration-300 shine-effect relative overflow-hidden rounded-[24px]">
+    {isSoldOut && (
+       <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
+          <div className="border-[6px] border-[#ea6558] text-[#ea6558] font-black text-3xl md:text-5xl px-8 py-3 md:px-12 md:py-4 rounded-xl transform -rotate-12 bg-white/95 shadow-2xl tracking-[0.15em] opacity-100 border-double whitespace-nowrap">
+             數量已發畢
+          </div>
+       </div>
+    )}
+    <div className={`nook-ticket-premium w-full max-w-[480px] flex flex-row flex-nowrap p-3 relative transition-all duration-300 ${isSoldOut ? 'grayscale opacity-60' : ''}`}>
+      <div className="flex-1 p-2 md:p-6 flex flex-col justify-center relative z-10 text-left min-w-0">
+        <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-4">
+           <div className="bg-white/90 px-3 py-1 md:px-4 md:py-1.5 rounded-full shadow-sm flex items-center gap-2 border border-white/50">
+              <span className="text-base md:text-lg">🎫</span>
+              <span className="font-black text-xs md:text-sm lg:text-base text-[#006c64]">新島民限定</span>
            </div>
-        )}
-        <div className={`nook-ticket-premium w-full max-w-[480px] flex flex-row flex-nowrap p-3 relative transition-all duration-300 ${isSoldOut ? 'grayscale opacity-60' : ''}`}>
-          <div className="flex-1 p-2 md:p-6 flex flex-col justify-center relative z-10 text-left min-w-0">
-            <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-4">
-               <div className="bg-white/90 px-3 py-1 md:px-4 md:py-1.5 rounded-full shadow-sm flex items-center gap-2 border border-white/50">
-                  <span className="text-base md:text-lg">🎫</span>
-                  <span className="font-black text-xs md:text-sm lg:text-base text-[#006c64]">新島民限定</span>
-               </div>
-            </div>
-            <h3 className="text-xl md:text-4xl font-black tracking-tight mb-1 md:mb-2 text-[#006c64] drop-shadow-sm leading-tight">LTrust 歡迎你</h3>
-            <p className="text-sm md:text-xl font-bold text-orange-700 leading-tight">CoCo都可 奶茶三兄弟(大) 電子好禮即享券</p>
-          </div>
-          <div className="w-[2px] border-r-2 border-dashed border-white/60 my-2 mx-1 flex-shrink-0"></div>
-          <div className="w-[85px] md:w-[150px] flex items-center justify-center bg-white/10 flex-shrink-0 rounded-r-xl">
-              <div className="scale-75 md:scale-100">
-                <img src="images/image_d5105c.png" className="w-16 h-16 object-contain" alt="Bubble Tea" onError={(e) => { e.target.style.display='none'; }} />
-              </div>
-          </div>
-          <div className="absolute top-0 right-0 opacity-10 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
-              <i className="fa-solid fa-plane text-[120px] md:text-[180px]"></i>
-          </div>
         </div>
+        <h3 className="text-xl md:text-4xl font-black tracking-tight mb-1 md:mb-2 text-[#006c64] drop-shadow-sm leading-tight">LTrust 歡迎你</h3>
+        <p className="text-sm md:text-xl font-bold text-orange-700 leading-tight">CoCo都可 奶茶三兄弟(大) 電子好禮即享券</p>
+      </div>
+      <div className="w-[2px] border-r-2 border-dashed border-white/60 my-2 mx-1 flex-shrink-0"></div>
+      <div className="w-[85px] md:w-[150px] flex items-center justify-center bg-white/10 flex-shrink-0 rounded-r-xl">
+          <div className="scale-75 md:scale-100">
+            <img src="images/image_d5105c.png" className="w-16 h-16 object-contain" alt="Bubble Tea" onError={(e) => { e.target.style.display='none'; }} />
+          </div>
+      </div>
+      <div className="absolute top-0 right-0 opacity-10 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
+          <i className="fa-solid fa-plane text-[120px] md:text-[180px]"></i>
+      </div>
+    </div>
+  </div>
+);
+
+const Countdown = () => {
+  const [timeLeft, setTimeLeft] = useState({ d: '00', h: '00' });
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      const target = new Date("2026-03-25T00:00:00");
+      const diff = target.getTime() - now.getTime();
+      if (diff <= 0) {
+          setTimeLeft({ d: '0', h: '0' });
+      } else {
+          setTimeLeft({
+          d: String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0'),
+          h: String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0'),
+        });
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+  
+  return (
+    <div className="flex flex-col items-center mb-4 w-full px-2 relative z-10 -mt-1">
+          <div className="bg-gradient-to-b from-white/10 to-[#e8f5e9]/90 backdrop-blur-[2px] rounded-full px-8 py-3 flex flex-wrap md:flex-nowrap items-center justify-center gap-3 md:gap-5 shadow-sm border-b-2 border-white/40 border-t-0 max-w-[95%]">
+             <div className="flex items-center justify-center flex-shrink-0">
+                <h3 className="text-lg md:text-xl font-bold text-[#594d40] tracking-wider drop-shadow-[0_1px_0_rgba(255,255,255,0.8)] font-rounded">手搖空投倒數 ✈️</h3>
+                <span className="text-[#594d40] mx-1 md:mx-2 hidden md:inline">:</span>
+             </div>
+             <div className="flex items-center gap-2 justify-center w-full md:w-auto flex-nowrap">
+                <div className="flex items-baseline gap-0.5 md:gap-1">
+                   <span className="text-2xl md:text-3xl font-bold text-[#594d40] font-mono leading-none">{timeLeft.d}</span>
+                   <span className="text-[#594d40] font-bold text-[10px] md:text-sm pt-0.5 md:pt-1 opacity-80">DAYS</span>
+                </div>
+                <span className="text-[#594d40]/50 font-black mx-0.5">·</span>
+                <div className="flex items-baseline gap-0.5 md:gap-1">
+                   <span className="text-2xl md:text-3xl font-bold text-[#594d40] font-mono leading-none">{timeLeft.h}</span>
+                   <span className="text-[#594d40] font-bold text-[10px] md:text-sm pt-0.5 md:pt-1 opacity-80">HOURS</span>
+                </div>
+             </div>
+          </div>
+    </div>
+  );
+};
+
+const FlightScheduleBoard = () => {
+  const schedule = [
+    { batch: "首批", period: "3/2 (一) ~ 3/8 (日)", flight: "3/11 (三) 首波大空投" },
+    { batch: "第二梯次", period: "3/9 (一) ~ 3/15 (日)", flight: "3/18 (三) 準時" },
+  ];
+  return (
+    <div className="w-full max-w-4xl mx-auto mt-12 mb-12 animate-[fadeIn_0.5s_ease-out]">
+      <div className="text-center mb-6"><div className="section-title">✈️ 空投時程表</div></div>
+      <div className="bg-[#2d3436] rounded-xl overflow-hidden shadow-2xl border-4 border-[#636e72] ring-4 ring-[#2d3436]/50">
+          <div className="bg-[#1e272e] grid grid-cols-12 py-3 px-2 md:px-4 font-black text-base md:text-lg tracking-wider gap-1 md:gap-2 border-b-2 border-[#636e72]">
+             <div className="col-span-5 md:col-span-4 text-left pl-2 text-white/80">登島日期</div>
+             <div className="col-span-5 md:col-span-5 text-left pl-1 text-white/80">預計發券日</div>
+             <div className="col-span-2 md:col-span-3 text-center text-white/80">備註</div>
+          </div>
+          <div className="divide-y divide-[#636e72]/50 bg-[#2d3436] font-mono">
+             {schedule.map((row, idx) => (
+               <div key={idx} className="grid grid-cols-12 py-4 px-2 md:px-4 items-center hover:bg-[#353b48] transition-colors duration-200 gap-1 md:gap-2">
+                   <div className="col-span-5 md:col-span-4 text-left flex flex-col justify-center pl-2">
+                       <div className="mb-1"><span className="text-gray-300 text-sm font-bold border border-gray-400 px-1.5 py-0.5 rounded inline-block">{row.batch}</span></div>
+                       <span className="text-[#ffcc00] text-base md:text-xl font-black tracking-tight leading-tight">{row.period}</span>
+                   </div>
+                   <div className="col-span-5 md:col-span-5 text-left flex items-center pl-1"><span className="text-white font-bold text-base md:text-xl flex items-center flex-wrap leading-tight">{row.flight}</span></div>
+                   <div className="col-span-2 md:col-span-3 text-center flex flex-col justify-center items-center"><span className="inline-block text-[#ff7675] text-base md:text-xl font-black tracking-wider leading-none mb-1">送完為止</span></div>
+               </div>
+             ))}
+          </div>
+          <div className="bg-[#1e272e] p-2 flex justify-between items-center border-t border-[#636e72]">
+             <div className="flex gap-2 items-center"><div className="flex space-x-1"><div className="w-1.5 h-1.5 rounded-full bg-red-500"></div><div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div><div className="w-1.5 h-1.5 rounded-full bg-green-500"></div></div><span className="text-[10px] text-gray-400 font-mono hidden md:inline">SYSTEM ONLINE</span></div>
+             <span className="text-[10px] text-[#ffcc00]/50 font-mono tracking-widest uppercase">LTrust Flight Info</span>
+          </div>
+      </div>
+    </div>
+  );
+};
+
+const RoleMapCard = ({ srcDesktop, srcMobile }) => {
+  const [loading, setLoading] = useState(true);
+  const handleLoad = () => setLoading(false);
+  return (
+    <div className="mb-10 w-full">
+      <div className="relative group min-h-[100px] rounded-2xl shadow-xl overflow-hidden">
+        {loading && <div className="w-full h-[200px] bg-gray-200/50 animate-pulse rounded-2xl flex flex-col items-center justify-center text-gray-400"><span className="text-sm font-bold">Loading...</span></div>}
+        <img src={srcMobile} alt="入境流程角色定義與路徑 (手機版)" className={`w-full h-auto block md:hidden transform transition duration-500 hover:scale-[1.01] ${loading ? 'opacity-0 absolute top-0 left-0 -z-10 h-0' : 'opacity-100'}`} onLoad={handleLoad} onError={(e) => { e.target.style.display = 'none'; }} loading="lazy" decoding="async"/>
+        <img src={srcDesktop} alt="入境流程角色定義與路徑 (電腦版)" className={`w-full h-auto hidden md:block transform transition duration-500 hover:scale-[1.01] ${loading ? 'opacity-0 absolute top-0 left-0 -z-10 h-0' : 'opacity-100'}`} onLoad={handleLoad} onError={(e) => { setLoading(false); e.target.style.display = 'none'; }} loading="lazy" decoding="async"/>
+      </div>
+    </div>
+  );
+};
+
+const TaskItem = ({ step }) => {
+  return (
+    <div className="bg-white border-4 border-[var(--ac-border-tan)] rounded-[30px] p-6 relative hover:-translate-y-2 transition duration-300 shadow-md flex flex-col items-center">
+      <div className="w-12 h-12 bg-[#78b159] text-white rounded-full shadow-md flex items-center justify-center text-xl font-black mx-auto mb-4 absolute -top-6 left-1/2 -translate-x-1/2">{step.id}</div>
+      <h3 className="mt-4 text-lg md:text-xl font-black text-[#594d40] mb-3 text-center">{step.title}</h3>
+      <div className="text-[#7c7c7c] font-bold leading-relaxed w-full text-left">
+          {step.lines ? (
+             step.lines.map((l, i) => (
+               <p key={i} className="mb-1 flex items-start"><span className="mr-2 flex-shrink-0">🍃</span><span>{renderWithHighlights(l, step.highlights)}</span></p>
+             ))
+          ) : (
+             <p className="whitespace-pre-line">{renderWithHighlights(step.text, step.highlights)}</p>
+          )}
+          {step.sub && <p className="text-[#ea6558] text-sm mt-1">{renderWithHighlights(step.sub, step.highlights)}</p>}
+      </div>
+      {step.showImage && (
+          <div className="mt-4 w-full aspect-square rounded-xl overflow-hidden shadow-sm border-2 border-gray-100">
+            {step.imageSrc ? <img src={step.imageSrc} alt={step.title} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('bg-gray-50', 'border-dashed', 'border-gray-300', 'flex', 'flex-col', 'items-center', 'justify-center', 'text-gray-400'); e.target.parentElement.innerHTML = '<i class="fa-regular fa-image text-4xl mb-2"></i><span class="font-bold text-sm">圖片載入失敗<br/>請確認檔名</span>'; }} /> : <div className="w-full h-full bg-gray-50 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400"><i className="fa-regular fa-image text-4xl mb-2"></i><span class="font-bold text-sm">步驟示意圖</span></div>}
+          </div>
+      )}
+    </div>
+  );
+};
+
+const ChestImage = ({ pool }) => {
+  const [error, setError] = useState(false);
+  
+  if (!pool.chestImage) return null;
+
+  if (error) {
+    return (
+      <div className="w-36 h-36 md:w-48 md:h-48 flex flex-col items-center justify-center bg-black/5 rounded-2xl border-2 border-dashed border-black/10 text-[#594d40]/40">
+        <i className="fa-solid fa-box-open text-4xl mb-2"></i>
+        <span className="text-xs font-bold mt-1 max-w-[90%] truncate px-2">{pool.chestImage}</span>
       </div>
     );
+  }
 
-    const Countdown = () => {
-      const [timeLeft, setTimeLeft] = useState({ d: '00', h: '00' });
-      useEffect(() => {
-        const timer = setInterval(() => {
-          const now = new Date();
-          const target = new Date("2026-03-25T00:00:00");
-          const diff = target.getTime() - now.getTime();
-          if (diff <= 0) {
-              setTimeLeft({ d: '0', h: '0' });
-          } else {
-              setTimeLeft({
-              d: String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0'),
-              h: String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0'),
-            });
-          }
-        }, 1000);
-        return () => clearInterval(timer);
-      }, []);
-      
-      return (
-        <div className="flex flex-col items-center mb-4 w-full px-2 relative z-10 -mt-1">
-             <div className="bg-gradient-to-b from-white/10 to-[#e8f5e9]/90 backdrop-blur-[2px] rounded-full px-8 py-3 flex flex-wrap md:flex-nowrap items-center justify-center gap-3 md:gap-5 shadow-sm border-b-2 border-white/40 border-t-0 max-w-[95%]">
-                <div className="flex items-center justify-center flex-shrink-0">
-                   <h3 className="text-lg md:text-xl font-bold text-[#594d40] tracking-wider drop-shadow-[0_1px_0_rgba(255,255,255,0.8)] font-rounded">手搖空投倒數 ✈️</h3>
-                   <span className="text-[#594d40] mx-1 md:mx-2 hidden md:inline">:</span>
-                </div>
-                <div className="flex items-center gap-2 justify-center w-full md:w-auto flex-nowrap">
-                   <div className="flex items-baseline gap-0.5 md:gap-1">
-                      <span className="text-2xl md:text-3xl font-bold text-[#594d40] font-mono leading-none">{timeLeft.d}</span>
-                      <span className="text-[#594d40] font-bold text-[10px] md:text-sm pt-0.5 md:pt-1 opacity-80">DAYS</span>
-                   </div>
-                   <span className="text-[#594d40]/50 font-black mx-0.5">·</span>
-                   <div className="flex items-baseline gap-0.5 md:gap-1">
-                      <span className="text-2xl md:text-3xl font-bold text-[#594d40] font-mono leading-none">{timeLeft.h}</span>
-                      <span className="text-[#594d40] font-bold text-[10px] md:text-sm pt-0.5 md:pt-1 opacity-80">HOURS</span>
-                   </div>
-                </div>
-             </div>
-        </div>
-      );
+  return (
+    <div className="relative flex justify-center items-center">
+      <img 
+        src={pool.chestImage} 
+        alt={pool.title} 
+        className="w-36 h-36 md:w-48 md:h-48 object-contain drop-shadow-xl hover:scale-110 transition duration-300 relative z-10" 
+        onError={() => setError(true)} 
+      />
+      <div style={{display: 'none'}}></div>
+    </div>
+  );
+};
+
+// --- Main App Component ---
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState("methods");
+  const isSoldOut = false; 
+  const tabs = [
+    { id: "methods", label: "登島領手搖", iconClass: "fa-solid fa-plane-departure" },
+    { id: "prizes", label: "揪團任務", iconClass: "fa-solid fa-lock-open" }, 
+    { id: "winners", label: "中獎名單", iconClass: "fa-solid fa-trophy" },
+    { id: "notices", label: "登島須知", iconClass: "fa-solid fa-circle-exclamation" },
+    { id: "faq", label: "服務處FAQ", iconClass: "fa-solid fa-circle-question" },
+  ];
+
+  // Inject CSS and Fonts
+  useEffect(() => {
+    // 1. Inject Links
+    EXTERNAL_LINKS.forEach(l => {
+        if (!document.querySelector(`link[href="${l.href}"]`)) {
+            const link = document.createElement('link');
+            link.rel = l.rel;
+            link.href = l.href;
+            document.head.appendChild(link);
+        }
+    });
+
+    // 2. Inject Styles
+    const styleTag = document.createElement('style');
+    styleTag.innerHTML = CUSTOM_STYLES;
+    document.head.appendChild(styleTag);
+
+    // 3. Body Classes
+    document.body.className = "min-h-screen pb-12 acnh-theme";
+
+    return () => {
+        document.head.removeChild(styleTag);
+        document.body.className = "";
     };
+  }, []);
 
-    const FlightScheduleBoard = () => {
-      const schedule = [
-        { batch: "首批", period: "3/2 (一) ~ 3/8 (日)", flight: "3/11 (三) 首波大空投" },
-        { batch: "第二梯次", period: "3/9 (一) ~ 3/15 (日)", flight: "3/18 (三) 準時" },
-      ];
-      return (
-        <div className="w-full max-w-4xl mx-auto mt-12 mb-12 animate-[fadeIn_0.5s_ease-out]">
-          <div className="text-center mb-6"><div className="section-title">✈️ 空投時程表</div></div>
-          <div className="bg-[#2d3436] rounded-xl overflow-hidden shadow-2xl border-4 border-[#636e72] ring-4 ring-[#2d3436]/50">
-             <div className="bg-[#1e272e] grid grid-cols-12 py-3 px-2 md:px-4 font-black text-base md:text-lg tracking-wider gap-1 md:gap-2 border-b-2 border-[#636e72]">
-                <div className="col-span-5 md:col-span-4 text-left pl-2 text-white/80">登島日期</div>
-                <div className="col-span-5 md:col-span-5 text-left pl-1 text-white/80">預計發券日</div>
-                <div className="col-span-2 md:col-span-3 text-center text-white/80">備註</div>
-             </div>
-             <div className="divide-y divide-[#636e72]/50 bg-[#2d3436] font-mono">
-                {schedule.map((row, idx) => (
-                  <div key={idx} className="grid grid-cols-12 py-4 px-2 md:px-4 items-center hover:bg-[#353b48] transition-colors duration-200 gap-1 md:gap-2">
-                      <div className="col-span-5 md:col-span-4 text-left flex flex-col justify-center pl-2">
-                          <div className="mb-1"><span className="text-gray-300 text-sm font-bold border border-gray-400 px-1.5 py-0.5 rounded inline-block">{row.batch}</span></div>
-                          <span className="text-[#ffcc00] text-base md:text-xl font-black tracking-tight leading-tight">{row.period}</span>
-                      </div>
-                      <div className="col-span-5 md:col-span-5 text-left flex items-center pl-1"><span className="text-white font-bold text-base md:text-xl flex items-center flex-wrap leading-tight">{row.flight}</span></div>
-                      <div className="col-span-2 md:col-span-3 text-center flex flex-col justify-center items-center"><span className="inline-block text-[#ff7675] text-base md:text-xl font-black tracking-wider leading-none mb-1">送完為止</span></div>
-                  </div>
-                ))}
-             </div>
-             <div className="bg-[#1e272e] p-2 flex justify-between items-center border-t border-[#636e72]">
-                <div className="flex gap-2 items-center"><div className="flex space-x-1"><div className="w-1.5 h-1.5 rounded-full bg-red-500"></div><div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div><div className="w-1.5 h-1.5 rounded-full bg-green-500"></div></div><span className="text-[10px] text-gray-400 font-mono hidden md:inline">SYSTEM ONLINE</span></div>
-                <span className="text-[10px] text-[#ffcc00]/50 font-mono tracking-widest uppercase">LTrust Flight Info</span>
-             </div>
-          </div>
-        </div>
-      );
-    };
+  const scrollToContent = (tabId) => {
+      setActiveTab(tabId);
+      const element = document.getElementById("main-content-card");
+      if (element) { element.scrollIntoView({ behavior: 'smooth' }); }
+  };
 
-    const RoleMapCard = ({ srcDesktop, srcMobile }) => {
-      const [loading, setLoading] = useState(true);
-      const handleLoad = () => setLoading(false);
-      return (
-        <div className="mb-10 w-full">
-          <div className="relative group min-h-[100px] rounded-2xl shadow-xl overflow-hidden">
-            {loading && <div className="w-full h-[200px] bg-gray-200/50 animate-pulse rounded-2xl flex flex-col items-center justify-center text-gray-400"><span className="text-sm font-bold">Loading...</span></div>}
-            <img src={srcMobile} alt="入境流程角色定義與路徑 (手機版)" className={`w-full h-auto block md:hidden transform transition duration-500 hover:scale-[1.01] ${loading ? 'opacity-0 absolute top-0 left-0 -z-10 h-0' : 'opacity-100'}`} onLoad={handleLoad} onError={(e) => { e.target.style.display = 'none'; }} loading="lazy" decoding="async"/>
-            <img src={srcDesktop} alt="入境流程角色定義與路徑 (電腦版)" className={`w-full h-auto hidden md:block transform transition duration-500 hover:scale-[1.01] ${loading ? 'opacity-0 absolute top-0 left-0 -z-10 h-0' : 'opacity-100'}`} onLoad={handleLoad} onError={(e) => { setLoading(false); e.target.style.display = 'none'; }} loading="lazy" decoding="async"/>
-          </div>
-        </div>
-      );
-    };
+  const getTextureClass = () => {
+    if (['methods', 'notices', 'faq'].includes(activeTab)) return 'bg-texture-goose';
+    if (['prizes', 'winners'].includes(activeTab)) return 'bg-texture-board';
+    return '';
+  };
 
-    const TaskItem = ({ step }) => {
-      return (
-        <div className="bg-white border-4 border-[var(--ac-border-tan)] rounded-[30px] p-6 relative hover:-translate-y-2 transition duration-300 shadow-md flex flex-col items-center">
-          <div className="w-12 h-12 bg-[#78b159] text-white rounded-full shadow-md flex items-center justify-center text-xl font-black mx-auto mb-4 absolute -top-6 left-1/2 -translate-x-1/2">{step.id}</div>
-          <h3 className="mt-4 text-lg md:text-xl font-black text-[#594d40] mb-3 text-center">{step.title}</h3>
-          <div className="text-[#7c7c7c] font-bold leading-relaxed w-full text-left">
-              {step.lines ? (
-                 step.lines.map((l, i) => (
-                   <p key={i} className="mb-1 flex items-start"><span className="mr-2 flex-shrink-0">🍃</span><span>{renderWithHighlights(l, step.highlights)}</span></p>
-                 ))
-              ) : (
-                 <p className="whitespace-pre-line">{renderWithHighlights(step.text, step.highlights)}</p>
-              )}
-              {step.sub && <p className="text-[#ea6558] text-sm mt-1">{renderWithHighlights(step.sub, step.highlights)}</p>}
-          </div>
-          {step.showImage && (
-              <div className="mt-4 w-full aspect-square rounded-xl overflow-hidden shadow-sm border-2 border-gray-100">
-                {step.imageSrc ? <img src={step.imageSrc} alt={step.title} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('bg-gray-50', 'border-dashed', 'border-gray-300', 'flex', 'flex-col', 'items-center', 'justify-center', 'text-gray-400'); e.target.parentElement.innerHTML = '<i class="fa-regular fa-image text-4xl mb-2"></i><span class="font-bold text-sm">圖片載入失敗<br/>請確認檔名</span>'; }} /> : <div className="w-full h-full bg-gray-50 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400"><i className="fa-regular fa-image text-4xl mb-2"></i><span class="font-bold text-sm">步驟示意圖</span></div>}
-              </div>
-          )}
-        </div>
-      );
-    };
+  return (
+    <div className="page-enter">
+      {/* Background Elements */}
+      <div className="scenic-landscape"></div>
+      <div className="cloud w-32 h-12 top-10 left-10" style={{ animationDuration: "35s" }}></div>
+      <div className="cloud w-48 h-16 top-40 right-20" style={{ animationDuration: "45s" }}></div>
+      <div className="cloud w-40 h-14 top-20 right-1/3" style={{ animationDuration: "50s" }}></div>
+      <div className="cloud w-56 h-20 top-60 left-1/4" style={{ animationDuration: "60s", opacity: 0.6 }}></div>
 
-    const renderChest = (pool) => {
-      if (pool.chestImage) {
-         return (<div className="relative flex justify-center items-center"><img src={pool.chestImage} alt={pool.title} className="w-36 h-36 md:w-48 md:h-48 object-contain drop-shadow-xl hover:scale-110 transition duration-300 relative z-10" onError={(e) => { e.target.style.display = "none"; }} /><div style={{display: 'none'}}></div></div>);
-      }
-      return null;
-    };
-
-    const HomePage = () => {
-      const [activeTab, setActiveTab] = useState("methods");
-      const isSoldOut = false; 
-      const tabs = [
-        { id: "methods", label: "登島領手搖", iconClass: "fa-solid fa-plane-departure" },
-        { id: "prizes", label: "揪團任務", iconClass: "fa-solid fa-lock-open" }, 
-        { id: "winners", label: "中獎名單", iconClass: "fa-solid fa-trophy" },
-        { id: "notices", label: "登島須知", iconClass: "fa-solid fa-circle-exclamation" },
-        { id: "faq", label: "服務處FAQ", iconClass: "fa-solid fa-circle-question" },
-      ];
-
-      const scrollToContent = (tabId) => {
-          setActiveTab(tabId);
-          const element = document.getElementById("main-content-card");
-          if (element) { element.scrollIntoView({ behavior: 'smooth' }); }
-      };
-
-      const getTextureClass = () => {
-        if (['methods', 'notices', 'faq'].includes(activeTab)) return 'bg-texture-goose';
-        if (['prizes', 'winners'].includes(activeTab)) return 'bg-texture-board';
-        return '';
-      };
-
-      return (
-        <div className="page-enter">
-          <div className="flex flex-col items-center">
-            <div className="w-full relative">
-              <div className="relative overflow-hidden shadow-none md:shadow-2xl"> 
-                <div className="leading-none font-[0]">
-                  <img src={data.bannerImageMobile} onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1080"} alt="活動主視覺(手機版)" className="w-full h-auto block md:hidden object-cover object-center" />
-                  <img src={data.bannerImage} onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1974"} alt="活動主視覺(電腦版)" className="w-full h-auto hidden md:block min-h-[300px] object-cover object-center" />
-                </div>
-                <div className="absolute inset-0 pointer-events-none">
-                    <div className="pointer-events-auto absolute w-full md:w-auto left-0 md:left-[3%] bottom-6 md:bottom-[15%] flex justify-center md:justify-start gap-4 md:gap-6 lg:gap-10 px-4 md:px-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-none pb-6 pt-10 md:pb-0 md:pt-0">
-                        <div className="flex flex-wrap gap-3 md:gap-6 justify-center md:justify-start">
-                          <LinkButton href="#" onClick={() => scrollToContent('methods')} colorClass="btn-primary" icon={<DrinkWithStrawIcon />} className="text-xl md:text-2xl">領手搖步驟</LinkButton>
-                          <LinkButton href="#" onClick={() => scrollToContent('prizes')} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>} className="text-xl md:text-2xl">看揪團玩法</LinkButton>
-                        </div>
+      <div className="flex flex-col items-center">
+        <div className="w-full relative">
+          <div className="relative overflow-hidden shadow-none md:shadow-2xl"> 
+            <div className="leading-none font-[0]">
+              <img src={data.bannerImageMobile} onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1080"} alt="活動主視覺(手機版)" className="w-full h-auto block md:hidden object-cover object-center" />
+              <img src={data.bannerImage} onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1974"} alt="活動主視覺(電腦版)" className="w-full h-auto hidden md:block min-h-[300px] object-cover object-center" />
+            </div>
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="pointer-events-auto absolute w-full md:w-auto left-0 md:left-[3%] bottom-6 md:bottom-[15%] flex justify-center md:justify-start gap-4 md:gap-6 lg:gap-10 px-4 md:px-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-none pb-6 pt-10 md:pb-0 md:pt-0">
+                    <div className="flex flex-wrap gap-3 md:gap-6 justify-center md:justify-start">
+                      <LinkButton href="#" onClick={() => scrollToContent('methods')} colorClass="btn-primary" icon={<DrinkWithStrawIcon />} className="text-xl md:text-2xl">領手搖步驟</LinkButton>
+                      <LinkButton href="#" onClick={() => scrollToContent('prizes')} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>} className="text-xl md:text-2xl">看揪團玩法</LinkButton>
                     </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="container mx-auto px-4 md:px-6 flex flex-col items-center max-w-5xl relative z-20 -mt-1 md:mt-0">
-              <div className="w-full flex flex-col items-center">
-                <Countdown />
-                <div className="ticker-container w-full max-w-[95%] md:max-w-full bg-white/20 border border-white/20 shadow-none backdrop-blur-sm">
-                  <div className="ticker-content text-[#594d40]/80 font-medium text-base md:text-lg">{data.tickerNews.join(" | ")} | {data.tickerNews.join(" | ")}</div>
-                </div>
-              </div>
-
-              <div className="w-full mt-2 mb-6 px-0 md:px-0">
-                <div className="w-full max-w-5xl mx-auto">
-                    <RoleMapCard srcDesktop={data.roleMapImage} srcMobile={data.roleMapImageMobile} />
-                </div>
-              </div>
-
-              <div className="w-full max-w-5xl mx-auto flex flex-col justify-center items-center gap-6 mb-12 px-4 animate-[fadeIn_1s_ease-out]">
-                  <div className="flex flex-col md:flex-row gap-4 justify-center w-full">
-                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-user-plus"></i>}>立即註冊領手搖</LinkButton>
-                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-right-to-bracket"></i>}>登入拿推薦碼</LinkButton>
-                  </div>
-                  <div className="w-full max-w-2xl border-b-2 border-dashed border-[#d6b484] opacity-40"></div>
-              </div>
-
-              <div className="w-full relative mb-20 z-20"> 
-                <div className="flex flex-wrap justify-center md:justify-start w-full border-b-0 md:border-b-4 border-[var(--ac-text)] gap-2 px-2 md:px-4 items-end pb-0">
-                  {tabs.map((tab) => (
-                    <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`ac-tab flex-grow md:flex-grow-0 min-w-[45%] md:min-w-0 px-4 py-3 md:px-5 md:py-3 font-black text-lg md:text-xl flex items-center justify-center gap-2 ${activeTab === tab.id ? 'active' : 'hover:brightness-95'}`}><i className={tab.iconClass}></i>{tab.label}</button>
-                  ))}
-                </div>
-
-                <div id="main-content-card" className={`ac-card p-4 md:p-12 min-h-[400px] mt-0 md:mt-0 ${getTextureClass()}`}>
-                  {['prizes', 'winners'].includes(activeTab) && <div className="board-pin"></div>}
-                  <div className="card-content-z">
-                    {activeTab === "methods" && (
-                      <div className="animate-[fadeIn_0.5s_ease-out] text-center">
-                        <div className="section-title">LTrust 登島禮 🎁</div>
-                         <p className="section-subtitle"> 限量1,000杯！發送完畢將於此活動頁公告</p>
-                        <div className="mb-12">
-                          <VoucherTicket isSoldOut={isSoldOut} />
-                          <div className="mt-4 w-full max-w-[480px] mx-auto text-left flex flex-col gap-1 px-4">
-                              <span className="font-bold text-sm md:text-base text-[#594d40]">💡 電子券使用期間：自發放日起3個月</span>
-                              <span className="font-bold text-sm md:text-base text-[#594d40]">💡 不適用店點：兌換前請務必確認，請依業者現場說明為準</span>
-                          </div>
-                        </div>
-                        <FlightScheduleBoard />
-                        <div className="text-xl md:text-3xl font-black text-[#594d40] mb-8 bg-[var(--ac-yellow)] inline-block px-6 py-2 rounded-lg transform -rotate-1 border-2 border-[#594d40]">領取3步驟</div>
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
-                          {data.steps.map((step, index) => <div key={index} className="bg-white border-4 border-[var(--ac-border-tan)] rounded-[30px] p-6 relative hover:-translate-y-2 transition duration-300 shadow-md flex flex-col items-center"><div className="w-12 h-12 bg-[#78b159] text-white rounded-full shadow-md flex items-center justify-center text-xl font-black mx-auto mb-4 absolute -top-6 left-1/2 -translate-x-1/2">{step.num}</div><h3 className="mt-4 text-lg md:text-xl font-black text-[#594d40] mb-3 text-center">{step.title}</h3><div className="text-[#7c7c7c] font-bold leading-relaxed w-full text-left">{step.lines.map((l, i) => (<p key={i} className="mb-1 flex items-start"><span className="mr-2 flex-shrink-0">🍃</span><span>{renderWithHighlights(l, step.highlights)}</span></p>))}</div>{step.showQR && (<div className="mt-6 flex flex-col items-center justify-center w-full"><a href={data.lineLink} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center group"><div className="bg-[#ea6558] text-white px-5 py-2 rounded-full font-black text-lg mb-3 shadow-md transform transition group-hover:scale-105 flex items-center gap-2"><i className="fa-solid fa-hand-point-down animate-bounce"></i> 點擊或掃描加入</div><img src={data.lineQRCode} alt="QR Code" className="w-48 h-48 object-contain drop-shadow-md transform transition group-hover:scale-105" /></a></div>)}</div>)}
-                        </div>
-                      </div>
-                    )}
-                    {/* ✅ 這裡就是救回來的「揪團任務」頁籤內容 */}
-                    {activeTab === "prizes" && (
-                      <div className="flex flex-col gap-12 relative z-10 mt-8">
-                        <div className="bg-white p-6 rounded-[30px] border-4 border-[#d6cfa8] shadow-xl relative">
-                           <div className="text-center mb-6">
-                             <div className="section-title pt-8 md:pt-0">💰 團長揪團基金</div>
-                             <div className="flex flex-col items-center gap-1">
-                               <p className="section-subtitle">免抽獎！達標直接領獎金</p>
-                               <p className="font-bold text-[#594d40] text-sm md:text-base mt-2">💡 依達標最高門檻，每位團長限領取一次基金，不累加</p>
-                             </div>
-                           </div>
-                           <div className="mb-8 flex flex-col gap-4 items-center">
-                                {data.hostBonuses.map((bonus, idx) => (
-                                  <div key={idx} className="w-full max-w-lg bg-[#fffdf0] rounded-2xl p-2 md:p-4 shadow-md border-2 border-[#e6dcae] hover:-translate-y-1 transition duration-200 flex justify-between items-center relative group">
-                                     <div className="flex items-center gap-1 md:gap-3"><div className="w-8 h-8 md:w-10 md:h-10 bg-white border-2 border-[#594d40] rounded-full flex items-center justify-center text-lg md:text-xl shadow-inner text-[#594d40]">👥</div><span className="text-[#594d40] font-black text-lg md:text-xl whitespace-nowrap">揪 <span className="text-xl md:text-2xl">{bonus.people}</span> 人</span></div><div className="flex items-center gap-1 md:gap-2 bg-white px-2 py-1 md:px-4 md:py-2 rounded-xl border border-dashed border-[#53bf9d]"><span className="text-lg md:text-2xl">💰</span><span className="text-[#059669] font-black text-lg md:text-2xl whitespace-nowrap">{bonus.money}</span></div>
-                                   </div>
-                                ))}
-                                <div className="w-full max-w-lg bg-[#ea6558] text-white py-3 md:py-4 px-4 md:px-6 rounded-2xl shadow-2xl shine-effect relative flex flex-col md:flex-row justify-center items-center gap-2 transform transition hover:scale-[1.02] border-4 border-white ring-4 ring-[#ea6558]/30">
-                                   <div className="flex flex-row items-center gap-3 relative z-10 w-full justify-between"><div className="flex items-center gap-3"><div className="w-10 h-10 md:w-12 md:h-12 bg-white text-[#ea6558] rounded-full flex items-center justify-center text-xl md:text-2xl font-black shadow-md border-2 border-[#ea6558]">🔥</div><div className="text-left"><div className="font-bold text-base md:text-lg leading-none opacity-90">揪滿 30 人</div><div className="text-sm line-through opacity-60 font-medium">{data.hostBonusMax.original}</div></div></div><div className="flex flex-col items-end"><div className="font-black text-3xl md:text-4xl text-yellow-200 drop-shadow-md">{data.hostBonusMax.money}</div><div className="bg-white text-[#ea6558] px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs font-black shadow-md mt-1 border-2 border-[#ea6558]">加碼！！</div></div></div>
-                                </div>
-                           </div>
-                           <div className="border-b-2 border-dashed border-gray-300 my-8 w-full"></div>
-                           <div className="text-center mb-6"><div className="section-title">📖 揪團攻略</div><p className="section-subtitle mt-1">團長必看！！</p></div>
-                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">{data.hostGuideSteps.map((step) => (<TaskItem key={step.id} step={step} />))}</div>
-                        </div>
-                        <div className="bg-[#fffbeb] p-6 rounded-[30px] border-4 border-[#e6dcae] shadow-lg mt-4 text-center relative">
-                           <div className="text-center mb-8 relative z-10"><div className="section-title">🎁 抽獎池目錄</div><div className="flex flex-col items-center gap-2"><p className="section-subtitle">跟團長一起解鎖獎品池！越多人參與解鎖更高等級寶箱</p><div className="max-w-2xl leading-relaxed text-center mx-auto font-bold text-sm md:text-base text-[#594d40]">💡 認定資格：團員需用團長發的推薦碼完成註冊，系統將會自動認定同團！達門檻後（包含團長）整團均可參加抽獎。⚠️如未在註冊時輸入推薦馬，將無法補登。</div></div></div>
-                           <div className="flex flex-col gap-16 relative z-10 mt-12">
-                             {data.prizePools.map((pool, idx) => (
-                               <div key={idx} className={`bg-white rounded-3xl overflow-visible border-4 ${pool.borderColor} shadow-xl`}>
-                                  <div className={`${pool.headerBg} rounded-t-[20px] p-4 relative flex flex-col items-center border-b-4 border-dashed border-black/10`}>
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/40 rounded-full blur-3xl pointer-events-none"></div>
-                                    <div className="relative z-10 -mt-8 mb-4 transform hover:scale-105 transition duration-300 drop-shadow-lg">{renderChest(pool)}<div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-28 h-3 bg-black/10 rounded-[100%] blur-sm -z-10"></div></div>
-                                    <div className="relative z-10 flex flex-col items-center pb-4"><h4 className="font-black text-xl md:text-2xl text-[#594d40] mb-2 drop-shadow-sm">{pool.title}</h4><div className="bg-white/90 px-6 py-1.5 rounded-full border-2 border-white shadow-sm flex items-center gap-2"><span className="text-lg">🔓</span><p className="text-lg font-bold text-[#8b5e3c]">揪滿 <span className="text-[#ea6558] text-2xl font-black">{pool.people}</span> {pool.descSuffix}</p></div></div>
-                                  </div>
-                                  <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-3">
-                                     {pool.items.map((item, i) => (
-                                       <div key={i} className="bg-gray-50 rounded-xl p-3 flex flex-col items-center text-center border-2 border-transparent hover:border-[#78b159] transition">
-                                            <div className="w-20 h-20 bg-white rounded-xl flex items-center justify-center mb-2 shadow-sm overflow-hidden">{item.imgSrc ? <img src={item.imgSrc} className="w-full h-full object-cover" /> : <i className={item.iconClass}></i>}</div>
-                                            <div className="font-bold text-[#594d40] text-base leading-tight mb-1">{item.name}</div>
-                                            <div className="text-sm text-gray-500 font-bold mb-0">{item.price}</div><div className="h-6"></div><span className="text-sm bg-gray-200 px-2 py-0.5 rounded-md font-bold text-gray-500">{item.quantity}</span>
-                                       </div>
-                                     ))}
-                                  </div>
-                                </div>
-                             ))}
-                           </div>
-                           <div className="mt-8 bg-[#fff7d1] px-6 py-4 rounded-2xl text-center shadow-inner border border-yellow-300 transform rotate-1 text-center relative z-10"><p className="text-[#594d40] font-bold text-base md:text-lg text-center w-full">💡 提醒：若同時為兩團的團員與團長，且達到門檻，最多有 <span className="text-[#ea6558] font-black text-2xl">2次</span> 中獎機會！</p></div>
-                        </div>
-                      </div>
-                    )}
-                    {activeTab === "winners" && (<div className="animate-[fadeIn_0.5s_ease-out] text-center min-h-[300px] flex flex-col items-center justify-center"><div className="section-title pt-8 md:pt-0">🏆 中獎名單公告</div><div className="bg-white/80 p-8 rounded-xl border-2 border-[#d6cfa8] shadow-inner max-w-xl w-full"><p className="font-bold text-[#594d40] text-xl mb-4 leading-relaxed">📢 5/6 佈告欄貼榜 & 團長基金結算</p><p className="text-[#8b5e3c] font-medium leading-relaxed">為了將獎品、獎金順利空投給你，依法贈品價值超過 $1,000 需要辦理申報。👉請領獎人在收到 「領獎確認書」後 7 日內回傳相關資料，經資料審核通過後，將在 10 個工作天內安排空投！</p></div></div>)}
-                    {(activeTab === "notices" || activeTab === "faq") && (
-                      <div className="animate-[fadeIn_0.5s_ease-out] max-w-3xl mx-auto text-left">
-                        <div className="text-center mb-8"><div className="section-title">{activeTab === "notices" ? "登島注意事項" : "服務處 FAQ"}</div></div>
-                        {activeTab === "notices" && (<ul className="space-y-4">{data.notices.map((n, i) => (<li key={i} className="flex gap-3 bg-white/50 p-4 rounded-xl border-2 border-[#f3eacb] shadow-sm backdrop-blur-[2px]"><span className="font-black text-[#78b159] flex-shrink-0">{i+1}.</span><span className="font-bold text-[#594d40] leading-relaxed">{renderWithHighlights(n, data.noticeHighlights)}</span></li>))}</ul>)}
-                        {activeTab === "faq" && (<div className="space-y-4">{data.faqs.map((f, i) => (<details key={i} className="group bg-white/60 rounded-xl border-2 border-[#e5e7eb] overflow-hidden open:shadow-md backdrop-blur-[2px]"><summary className="flex justify-between items-center p-4 font-bold cursor-pointer hover:bg-gray-50/50 text-[#594d40]"><div className="flex gap-3 items-center text-left"><span className="bg-[#53bf9d] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">Q</span><span>{f.q}</span></div><i className="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition"></i></summary><div className="faq-a p-4 pt-0 text-gray-600 font-medium pl-14 border-t-0 leading-relaxed text-left">{f.a}</div></details>))}</div>)}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-full mt-4 mb-8 z-20 px-4 md:px-6">
-                <div className="w-full max-w-5xl mx-auto flex flex-row justify-center md:justify-start items-center gap-3 md:gap-6">
-                  <div className="flex flex-col md:flex-row gap-4 justify-center w-full">
-                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-user-plus"></i>}>立即註冊領手搖</LinkButton>
-                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-right-to-bracket"></i>}>登入拿推薦碼</LinkButton>
-                  </div>
-                </div>
-              </div>
-
-              <footer className="footer-sc w-full max-w-5xl mx-auto px-4 md:px-6">
-                <div className="flex flex-col items-center justify-center gap-2 opacity-80">
-                  <div className="text-center">
-                    <p className="font-black text-xl mb-1">LTrust</p>
-                    <p className="text-sm">© 2025 Longteng Education Co., Ltd.</p>
-                  </div>
-                </div>
-              </footer>
             </div>
           </div>
         </div>
-      );
-    };
 
-    const App = () => <HomePage />;
-    const root = ReactDOM.createRoot(document.getElementById("root"));
-    root.render(<App />);
-  </script>
-</body>
-</html>
+        <div className="container mx-auto px-4 md:px-6 flex flex-col items-center max-w-5xl relative z-20 -mt-1 md:mt-0">
+          <div className="w-full flex flex-col items-center">
+            <Countdown />
+            <div className="ticker-container w-full max-w-[95%] md:max-w-full bg-white/20 border border-white/20 shadow-none backdrop-blur-sm">
+              <div className="ticker-content text-[#594d40]/80 font-medium text-base md:text-lg">{data.tickerNews.join(" | ")} | {data.tickerNews.join(" | ")}</div>
+            </div>
+          </div>
 
+          <div className="w-full mt-2 mb-6 px-0 md:px-0">
+            <div className="w-full max-w-5xl mx-auto">
+                <RoleMapCard srcDesktop={data.roleMapImage} srcMobile={data.roleMapImageMobile} />
+            </div>
+          </div>
 
+          <div className="w-full max-w-5xl mx-auto flex flex-col justify-center items-center gap-6 mb-12 px-4 animate-[fadeIn_1s_ease-out]">
+              <div className="flex flex-col md:flex-row gap-4 justify-center w-full">
+                <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-user-plus"></i>}>立即註冊領手搖</LinkButton>
+                <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-right-to-bracket"></i>}>登入拿推薦碼</LinkButton>
+              </div>
+              <div className="w-full max-w-2xl border-b-2 border-dashed border-[#d6b484] opacity-40"></div>
+          </div>
 
+          <div className="w-full relative mb-20 z-20"> 
+            <div className="flex flex-wrap justify-center md:justify-start w-full border-b-0 md:border-b-4 border-[var(--ac-text)] gap-2 px-2 md:px-4 items-end pb-0">
+              {tabs.map((tab) => (
+                <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`ac-tab flex-grow md:flex-grow-0 min-w-[45%] md:min-w-0 px-4 py-3 md:px-5 md:py-3 font-black text-lg md:text-xl flex items-center justify-center gap-2 ${activeTab === tab.id ? 'active' : 'hover:brightness-95'}`}><i className={tab.iconClass}></i>{tab.label}</button>
+              ))}
+            </div>
+
+            <div id="main-content-card" className={`ac-card p-4 md:p-12 min-h-[400px] mt-0 md:mt-0 ${getTextureClass()}`}>
+              {['prizes', 'winners'].includes(activeTab) && <div className="board-pin"></div>}
+              <div className="card-content-z">
+                {activeTab === "methods" && (
+                  <div className="animate-[fadeIn_0.5s_ease-out] text-center">
+                    <div className="section-title">LTrust 登島禮 🎁</div>
+                      <p className="section-subtitle"> 限量1,000杯！發送完畢將於此活動頁公告</p>
+                    <div className="mb-12">
+                      <VoucherTicket isSoldOut={isSoldOut} />
+                      <div className="mt-4 w-full max-w-[480px] mx-auto text-left flex flex-col gap-1 px-4">
+                          <span className="font-bold text-sm md:text-base text-[#594d40]">💡 電子券使用期間：自發放日起3個月</span>
+                          <span className="font-bold text-sm md:text-base text-[#594d40]">💡 不適用店點：兌換前請務必確認，請依業者現場說明為準</span>
+                      </div>
+                    </div>
+                    <FlightScheduleBoard />
+                    <div className="text-xl md:text-3xl font-black text-[#594d40] mb-8 bg-[var(--ac-yellow)] inline-block px-6 py-2 rounded-lg transform -rotate-1 border-2 border-[#594d40]">領取3步驟</div>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
+                      {data.steps.map((step, index) => <div key={index} className="bg-white border-4 border-[var(--ac-border-tan)] rounded-[30px] p-6 relative hover:-translate-y-2 transition duration-300 shadow-md flex flex-col items-center"><div className="w-12 h-12 bg-[#78b159] text-white rounded-full shadow-md flex items-center justify-center text-xl font-black mx-auto mb-4 absolute -top-6 left-1/2 -translate-x-1/2">{step.num}</div><h3 className="mt-4 text-lg md:text-xl font-black text-[#594d40] mb-3 text-center">{step.title}</h3><div className="text-[#7c7c7c] font-bold leading-relaxed w-full text-left">{step.lines.map((l, i) => (<p key={i} className="mb-1 flex items-start"><span className="mr-2 flex-shrink-0">🍃</span><span>{renderWithHighlights(l, step.highlights)}</span></p>))}</div>{step.showQR && (<div className="mt-6 flex flex-col items-center justify-center w-full"><a href={data.lineLink} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center group"><div className="bg-[#ea6558] text-white px-5 py-2 rounded-full font-black text-lg mb-3 shadow-md transform transition group-hover:scale-105 flex items-center gap-2"><i className="fa-solid fa-hand-point-down animate-bounce"></i> 點擊或掃描加入</div><img src={data.lineQRCode} alt="QR Code" className="w-48 h-48 object-contain drop-shadow-md transform transition group-hover:scale-105" /></a></div>)}</div>)}
+                    </div>
+                  </div>
+                )}
+                
+                {activeTab === "prizes" && (
+                  <div className="flex flex-col gap-12 relative z-10 mt-8">
+                    <div className="bg-white p-6 rounded-[30px] border-4 border-[#d6cfa8] shadow-xl relative">
+                       <div className="text-center mb-6">
+                         <div className="section-title pt-8 md:pt-0">💰 團長揪團基金</div>
+                         <div className="flex flex-col items-center gap-1">
+                           <p className="section-subtitle">免抽獎！達標直接領獎金</p>
+                           <p className="font-bold text-[#594d40] text-sm md:text-base mt-2">💡 依達標最高門檻，每位團長限領取一次基金，不累加</p>
+                         </div>
+                       </div>
+                       <div className="mb-8 flex flex-col gap-4 items-center">
+                            {data.hostBonuses.map((bonus, idx) => (
+                              <div key={idx} className="w-full max-w-lg bg-[#fffdf0] rounded-2xl p-2 md:p-4 shadow-md border-2 border-[#e6dcae] hover:-translate-y-1 transition duration-200 flex justify-between items-center relative group">
+                                   <div className="flex items-center gap-1 md:gap-3"><div className="w-8 h-8 md:w-10 md:h-10 bg-white border-2 border-[#594d40] rounded-full flex items-center justify-center text-lg md:text-xl shadow-inner text-[#594d40]">👥</div><span className="text-[#594d40] font-black text-lg md:text-xl whitespace-nowrap">揪 <span className="text-xl md:text-2xl">{bonus.people}</span> 人</span></div><div className="flex items-center gap-1 md:gap-2 bg-white px-2 py-1 md:px-4 md:py-2 rounded-xl border border-dashed border-[#53bf9d]"><span className="text-lg md:text-2xl">💰</span><span className="text-[#059669] font-black text-lg md:text-2xl whitespace-nowrap">{bonus.money}</span></div>
+                              </div>
+                            ))}
+                            <div className="w-full max-w-lg bg-[#ea6558] text-white py-3 md:py-4 px-4 md:px-6 rounded-2xl shadow-2xl shine-effect relative flex flex-col md:flex-row justify-center items-center gap-2 transform transition hover:scale-[1.02] border-4 border-white ring-4 ring-[#ea6558]/30">
+                               <div className="flex flex-row items-center gap-3 relative z-10 w-full justify-between"><div className="flex items-center gap-3"><div className="w-10 h-10 md:w-12 md:h-12 bg-white text-[#ea6558] rounded-full flex items-center justify-center text-xl md:text-2xl font-black shadow-md border-2 border-[#ea6558]">🔥</div><div className="text-left"><div className="font-bold text-base md:text-lg leading-none opacity-90">揪滿 30 人</div><div className="text-sm line-through opacity-60 font-medium">{data.hostBonusMax.original}</div></div></div><div className="flex flex-col items-end"><div className="font-black text-3xl md:text-4xl text-yellow-200 drop-shadow-md">{data.hostBonusMax.money}</div><div className="bg-white text-[#ea6558] px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs font-black shadow-md mt-1 border-2 border-[#ea6558]">加碼！！</div></div></div>
+                            </div>
+                       </div>
+                       <div className="border-b-2 border-dashed border-gray-300 my-8 w-full"></div>
+                       <div className="text-center mb-6"><div className="section-title">📖 揪團攻略</div><p className="section-subtitle mt-1">團長必看！！</p></div>
+                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">{data.hostGuideSteps.map((step) => (<TaskItem key={step.id} step={step} />))}</div>
+                    </div>
+                    <div className="bg-[#fffbeb] p-6 rounded-[30px] border-4 border-[#e6dcae] shadow-lg mt-4 text-center relative">
+                       <div className="text-center mb-8 relative z-10"><div className="section-title">🎁 抽獎池目錄</div><div className="flex flex-col items-center gap-2"><p className="section-subtitle">跟團長一起解鎖獎品池！越多人參與解鎖更高等級寶箱</p><div className="max-w-2xl leading-relaxed text-center mx-auto font-bold text-sm md:text-base text-[#594d40]">💡 認定資格：團員需用團長發的推薦碼完成註冊，系統將會自動認定同團！達門檻後（包含團長）整團均可參加抽獎。⚠️如未在註冊時輸入推薦馬，將無法補登。</div></div></div>
+                       <div className="flex flex-col gap-16 relative z-10 mt-12">
+                         {data.prizePools.map((pool, idx) => (
+                           <div key={idx} className={`bg-white rounded-3xl overflow-visible border-4 ${pool.borderColor} shadow-xl`}>
+                              <div className={`${pool.headerBg} rounded-t-[20px] p-4 relative flex flex-col items-center border-b-4 border-dashed border-black/10`}>
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/40 rounded-full blur-3xl pointer-events-none"></div>
+                                <div className="relative z-10 -mt-8 mb-4 transform hover:scale-105 transition duration-300 drop-shadow-lg"><ChestImage pool={pool} /><div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-28 h-3 bg-black/10 rounded-[100%] blur-sm -z-10"></div></div>
+                                <div className="relative z-10 flex flex-col items-center pb-4"><h4 className="font-black text-xl md:text-2xl text-[#594d40] mb-2 drop-shadow-sm">{pool.title}</h4><div className="bg-white/90 px-6 py-1.5 rounded-full border-2 border-white shadow-sm flex items-center gap-2"><span className="text-lg">🔓</span><p className="text-lg font-bold text-[#8b5e3c]">揪滿 <span className="text-[#ea6558] text-2xl font-black">{pool.people}</span> {pool.descSuffix}</p></div></div>
+                              </div>
+                              <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+                                 {pool.items.map((item, i) => (
+                                   <div key={i} className="bg-gray-50 rounded-xl p-3 flex flex-col items-center text-center border-2 border-transparent hover:border-[#78b159] transition">
+                                          <div className="w-20 h-20 bg-white rounded-xl flex items-center justify-center mb-2 shadow-sm overflow-hidden">{item.imgSrc ? <img src={item.imgSrc} className="w-full h-full object-cover" /> : <i className={item.iconClass}></i>}</div>
+                                          <div className="font-bold text-[#594d40] text-base leading-tight mb-1">{item.name}</div>
+                                          <div className="text-sm text-gray-500 font-bold mb-0">{item.price}</div><div className="h-6"></div><span className="text-sm bg-gray-200 px-2 py-0.5 rounded-md font-bold text-gray-500">{item.quantity}</span>
+                                   </div>
+                                 ))}
+                              </div>
+                            </div>
+                         ))}
+                       </div>
+                       <div className="mt-8 bg-[#fff7d1] px-6 py-4 rounded-2xl text-center shadow-inner border border-yellow-300 transform rotate-1 text-center relative z-10"><p className="text-[#594d40] font-bold text-base md:text-lg text-center w-full">💡 提醒：若同時為兩團的團員與團長，且達到門檻，最多有 <span className="text-[#ea6558] font-black text-2xl">2次</span> 中獎機會！</p></div>
+                    </div>
+                  </div>
+                )}
+                
+                {activeTab === "winners" && (<div className="animate-[fadeIn_0.5s_ease-out] text-center min-h-[300px] flex flex-col items-center justify-center"><div className="section-title pt-8 md:pt-0">🏆 中獎名單公告</div><div className="bg-white/80 p-8 rounded-xl border-2 border-[#d6cfa8] shadow-inner max-w-xl w-full"><p className="font-bold text-[#594d40] text-xl mb-4 leading-relaxed">📢 5/6 佈告欄貼榜 & 團長基金結算</p><p className="text-[#8b5e3c] font-medium leading-relaxed">為了將獎品、獎金順利空投給你，依法贈品價值超過 $1,000 需要辦理申報。👉請領獎人在收到 「領獎確認書」後 7 日內回傳相關資料，經資料審核通過後，將在 10 個工作天內安排空投！</p></div></div>)}
+                
+                {(activeTab === "notices" || activeTab === "faq") && (
+                  <div className="animate-[fadeIn_0.5s_ease-out] max-w-3xl mx-auto text-left">
+                    <div className="text-center mb-8"><div className="section-title">{activeTab === "notices" ? "登島注意事項" : "服務處 FAQ"}</div></div>
+                    {activeTab === "notices" && (<ul className="space-y-4">{data.notices.map((n, i) => (<li key={i} className="flex gap-3 bg-white/50 p-4 rounded-xl border-2 border-[#f3eacb] shadow-sm backdrop-blur-[2px]"><span className="font-black text-[#78b159] flex-shrink-0">{i+1}.</span><span className="font-bold text-[#594d40] leading-relaxed">{renderWithHighlights(n, data.noticeHighlights)}</span></li>))}</ul>)}
+                    {activeTab === "faq" && (<div className="space-y-4">{data.faqs.map((f, i) => (<details key={i} className="group bg-white/60 rounded-xl border-2 border-[#e5e7eb] overflow-hidden open:shadow-md backdrop-blur-[2px]"><summary className="flex justify-between items-center p-4 font-bold cursor-pointer hover:bg-gray-50/50 text-[#594d40]"><div className="flex gap-3 items-center text-left"><span className="bg-[#53bf9d] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">Q</span><span>{f.q}</span></div><i className="fa-solid fa-chevron-down text-gray-400 group-open:rotate-180 transition"></i></summary><div className="faq-a p-4 pt-0 text-gray-600 font-medium pl-14 border-t-0 leading-relaxed text-left">{f.a}</div></details>))}</div>)}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full mt-4 mb-8 z-20 px-4 md:px-6">
+            <div className="w-full max-w-5xl mx-auto flex flex-row justify-center md:justify-start items-center gap-3 md:gap-6">
+              <div className="flex flex-col md:flex-row gap-4 justify-center w-full">
+                <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-user-plus"></i>}>立即註冊領手搖</LinkButton>
+                <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline w-full md:w-auto md:min-w-[200px]" icon={<i className="fa-solid fa-right-to-bracket"></i>}>登入拿推薦碼</LinkButton>
+              </div>
+            </div>
+          </div>
+
+          <footer className="footer-sc w-full max-w-5xl mx-auto px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center gap-2 opacity-80">
+              <div className="text-center">
+                <p className="font-black text-xl mb-1">LTrust</p>
+                <p className="text-sm">© 2025 Longteng Education Co., Ltd.</p>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  );
+}
