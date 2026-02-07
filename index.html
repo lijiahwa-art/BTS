@@ -321,7 +321,7 @@
         },
         { 
           id: 2, title: "前往服務中心領推薦碼", 
-          lines: ["立志成為團長後，請前往 LTrust 本島的熱門服務區，領取團長專屬的登島推薦碼。", "🔔一個推薦碼限一人使用！就像搭飛機一樣，每個人只有一張登機證，若你要揪第 2~10 位同學，需再領 10 個推薦碼。"],
+          lines: ["立志成為團長後，請前往 LTrust 本島的熱門服務區，領取團長專屬的登島推薦碼。", "一個推薦碼限一人使用！就像搭飛機一樣，每個人只有一張登機證，若你要揪第0位同學，需領10個推薦碼。"],
           showImage: true, imageSrc: "images/step2.png", 
           highlights: [{ phrase: "熱門服務區" }, { phrase: "登島推薦碼" }] 
         },
@@ -333,7 +333,7 @@
       ],
       prizePools: [
         { 
-          title: "🎉 無人之境 豪華池", people: "30", descSuffix: "人｜整團皆可抽", 
+          title: "🎉 豪華大獎池", people: "30", descSuffix: "人｜整團皆可抽", 
           borderColor: "border-[#fcd34d]", headerBg: "bg-yellow-200", chestType: "gold", chestImage: "chest_level_3.png",
           items: [
             { name: "Switch 2", price: "$14,800", quantity: "1 台", imgSrc: "images/1.png" }, 
@@ -351,7 +351,7 @@
           ] 
         },
         { 
-          title: "☕ 迷你小團也有獎池", people: "5", descSuffix: "人｜整團皆可抽", 
+          title: "☕ 小團也有獎池", people: "5", descSuffix: "人｜整團皆可抽", 
           borderColor: "border-orange-400", headerBg: "bg-orange-200", chestType: "wood", chestImage: "chest_level_1.png",
           items: [
             { name: "星巴克 星享飲料券", price: "$175", quantity: "20 份", iconClass: "fa-solid fa-mug-hot text-green-700 text-4xl" }, 
@@ -726,7 +726,7 @@
                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">{data.hostGuideSteps.map((step) => (<TaskItem key={step.id} step={step} />))}</div>
                         </div>
                         <div className="bg-[#fffbeb] p-6 rounded-[30px] border-4 border-[#e6dcae] shadow-lg mt-4 text-center relative">
-                           <div className="text-center mb-8 relative z-10"><div className="section-title">🎁 抽獎池目錄</div><div className="flex flex-col items-center gap-2"><p className="section-subtitle">跟團長一起解鎖獎品池！越多人參與解鎖更高等級寶箱</p><div className="max-w-2xl leading-relaxed text-center mx-auto font-bold text-sm md:text-base text-[#594d40]">💡 認定資格：團員需用團長發的推薦碼完成註冊，系統將會自動認定同團！達門檻後（包含團長）整團均可參加抽獎。⚠️如未在註冊時輸入推薦馬，將無法補登。</div></div></div>
+                           <div className="text-center mb-8 relative z-10"><div className="section-title">🎁 抽獎池目錄</div><div className="flex flex-col items-center gap-2"><p className="section-subtitle">跟團長一起解鎖獎品池！越多人參與解鎖更高等級寶箱</p><div className="max-w-2xl leading-relaxed text-center mx-auto font-bold text-sm md:text-base text-[#594d40]">💡 認定資格：團員需用團長發的推薦碼完成註冊，系統會自動認定同團！達門檻後（包含團長）整團均可參加抽獎。如未在註冊時輸入推薦碼，將無法人工補登。</div></div></div>
                            <div className="flex flex-col gap-16 relative z-10 mt-12">
                              {data.prizePools.map((pool, idx) => (
                                <div key={idx} className={`bg-white rounded-3xl overflow-visible border-4 ${pool.borderColor} shadow-xl`}>
@@ -792,3 +792,4 @@
   </script>
 </body>
 </html>
+
