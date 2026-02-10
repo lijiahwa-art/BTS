@@ -423,9 +423,9 @@
         { q: "揪團獎金什麼時候發？是直接匯款嗎？", a: " 是的！活動結束後，我們會結算你的總戰績（揪了多少人），確認無違規後，將寄發「領獎確認書」到註冊信箱給你，請在規定時間內回傳，資料審核通過後，獎金將直接匯入指定帳戶（限本人帳戶）。" }
       ],
       tickerNews: [
- 	"🧋 同學們～登島人數踴躍，手搖限量倒數中...立即手刀登島領取！",
-        "📢 團長揪團成功，全團獲得抽獎資格再領獎學金",
-	"🎁 5/6 島內佈告欄貼榜，記得回來查看中獎資訊喔！　"
+        "🧋 累積入島人數突破 100 位！手搖額度倒數中...立即手刀登島領取！",
+        "🎁 5/6 島內佈告欄貼榜，記得回來查看中獎資訊喔！",
+        "📢 揪團成功，全團獲得抽獎資格"
       ],
       steps: [
         { 
@@ -440,7 +440,7 @@
           showQR: true, highlights: [{ phrase: "我要領手搖" }]
         },
         { 
-          num: "03", title: "🙆任務完成 → 等待飲料空投", 
+          num: "03", title: "🙆任務完成 → 等待空投", 
           lines: ["周一~日完成任務，飲料券將於下週三空投到註冊 Email，憑電子即享券至門市兌換（可參考空投時程表）。","如果沒收到信，請先檢查垃圾信件匣或促銷內容，它可能躲起來了！"], 
           showQR: false, highlights: [{ phrase: "下週三" }]
         }
@@ -503,7 +503,7 @@
       </svg>
     );
 
-    // --- 專屬珍奶 SVG 元件 ---
+    // --- 專屬珍奶 SVG 組件 ---
     const BubbleTeaIcon = () => (
       <svg viewBox="0 0 200 240" className="w-24 h-24 md:w-32 md:h-32 drop-shadow-lg transform -rotate-3 transition-transform hover:scale-105 duration-300" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -602,19 +602,16 @@
         <div className="flex flex-col items-center mb-4 w-full px-2 relative z-10 -mt-1">
               <div className="bg-gradient-to-b from-white/10 to-[#e8f5e9]/90 backdrop-blur-[2px] rounded-full px-8 py-3 flex flex-wrap md:flex-nowrap items-center justify-center gap-3 md:gap-5 shadow-sm border-b-2 border-white/40 border-t-0 max-w-[95%]">
                  <div className="flex items-center justify-center flex-shrink-0">
-                    {/* 倒數標題：統一字體並退回大小 (text-xl md:text-3xl) */}
                     <h3 className="text-xl md:text-3xl font-bold text-[#594d40] tracking-wider drop-shadow-[0_1px_0_rgba(255,255,255,0.8)] font-rounded">手搖空投倒數 ✈️</h3>
                     <span className="text-[#594d40] mx-1 md:mx-2 hidden md:inline">:</span>
                  </div>
                  <div className="flex items-center gap-2 justify-center w-full md:w-auto flex-nowrap">
                     <div className="flex items-baseline gap-0.5 md:gap-1">
-                       {/* 數字字體統一為 font-rounded */}
                        <span className="text-2xl md:text-3xl font-bold text-[#594d40] font-rounded leading-none">{timeLeft.d}</span>
                        <span className="text-[#594d40] font-bold text-[10px] md:text-sm pt-0.5 md:pt-1 opacity-80 font-rounded">DAYS</span>
                     </div>
                     <span className="text-[#594d40]/50 font-black mx-0.5">·</span>
                     <div className="flex items-baseline gap-0.5 md:gap-1">
-                       {/* 數字字體統一為 font-rounded */}
                        <span className="text-2xl md:text-3xl font-bold text-[#594d40] font-rounded leading-none">{timeLeft.h}</span>
                        <span className="text-[#594d40] font-bold text-[10px] md:text-sm pt-0.5 md:pt-1 opacity-80 font-rounded">HOURS</span>
                     </div>
@@ -678,7 +675,8 @@
         <div className="bg-white border-4 border-[var(--ac-border-tan)] rounded-[30px] p-6 relative hover:-translate-y-2 transition duration-300 shadow-md flex flex-col items-center">
           <div className="w-12 h-12 bg-[#78b159] text-white rounded-full shadow-md flex items-center justify-center text-xl font-black mx-auto mb-4 absolute -top-6 left-1/2 -translate-x-1/2">{step.id}</div>
           <h3 className="mt-4 text-lg md:text-xl font-black text-[#594d40] mb-3 text-center">{step.title}</h3>
-          <div className="text-[#7c7c7c] font-bold leading-relaxed w-full text-left">
+          {/* 揪團攻略內文：桌機版加大至 md:text-[18px] */}
+          <div className="text-[#7c7c7c] font-bold leading-relaxed w-full text-left md:text-[18px]">
               {step.lines ? (
                  step.lines.map((l, i) => (
                    <p key={i} className="mb-1 flex items-start"><span className="mr-2 flex-shrink-0">🍃</span><span>{renderWithHighlights(l, step.highlights)}</span></p>
@@ -795,7 +793,7 @@
                         <FlightScheduleBoard />
                         <div className="text-xl md:text-3xl font-black text-[#594d40] mb-8 bg-[var(--ac-yellow)] inline-block px-6 py-2 rounded-lg transform -rotate-1 border-2 border-[#594d40]">領取3步驟</div>
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
-                          {data.steps.map((step, index) => <div key={index} className="bg-white border-4 border-[var(--ac-border-tan)] rounded-[30px] p-6 relative hover:-translate-y-2 transition duration-300 shadow-md flex flex-col items-center"><div className="w-12 h-12 bg-[#78b159] text-white rounded-full shadow-md flex items-center justify-center text-xl font-black mx-auto mb-4 absolute -top-6 left-1/2 -translate-x-1/2">{step.num}</div><h3 className="mt-4 text-lg md:text-xl font-black text-[#594d40] mb-3 text-center">{step.title}</h3><div className="text-[#7c7c7c] font-bold leading-relaxed w-full text-left">{step.lines.map((l, i) => (<p key={i} className="mb-1 flex items-start"><span className="mr-2 flex-shrink-0">🍃</span><span>{renderWithHighlights(l, step.highlights)}</span></p>))}</div>{step.showQR && (<div className="mt-6 flex flex-col items-center justify-center w-full"><a href={data.lineLink} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center group"><div className="bg-[#ea6558] text-white px-5 py-2 rounded-full font-black text-lg mb-3 shadow-md transform transition group-hover:scale-105 flex items-center gap-2"><i className="fa-solid fa-hand-point-down animate-bounce"></i> 點擊或掃描加入</div><img src={data.lineQRCode} alt="QR Code" className="w-48 h-48 object-contain drop-shadow-md transform transition group-hover:scale-105" /></a></div>)}</div>)}
+                          {data.steps.map((step, index) => <div key={index} className="bg-white border-4 border-[var(--ac-border-tan)] rounded-[30px] p-6 relative hover:-translate-y-2 transition duration-300 shadow-md flex flex-col items-center"><div className="w-12 h-12 bg-[#78b159] text-white rounded-full shadow-md flex items-center justify-center text-xl font-black mx-auto mb-4 absolute -top-6 left-1/2 -translate-x-1/2">{step.num}</div><h3 className="mt-4 text-lg md:text-xl font-black text-[#594d40] mb-3 text-center">{step.title}</h3><div className="text-[#7c7c7c] font-bold leading-relaxed w-full text-left md:text-[18px]">{step.lines.map((l, i) => (<p key={i} className="mb-1 flex items-start"><span className="mr-2 flex-shrink-0">🍃</span><span>{renderWithHighlights(l, step.highlights)}</span></p>))}</div>{step.showQR && (<div className="mt-6 flex flex-col items-center justify-center w-full"><a href={data.lineLink} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center group"><div className="bg-[#ea6558] text-white px-5 py-2 rounded-full font-black text-lg mb-3 shadow-md transform transition group-hover:scale-105 flex items-center gap-2"><i className="fa-solid fa-hand-point-down animate-bounce"></i> 點擊或掃描加入</div><img src={data.lineQRCode} alt="QR Code" className="w-48 h-48 object-contain drop-shadow-md transform transition group-hover:scale-105" /></a></div>)}</div>)}
                         </div>
                       </div>
                     )}
@@ -822,6 +820,7 @@
                            </div>
                            <div className="border-b-2 border-dashed border-gray-300 my-8 w-full"></div>
                            <div className="text-center mb-6"><div className="section-title">📖 揪團攻略</div><p className="section-subtitle mt-1">團長必看！！</p></div>
+                           {/* 這裡的 TaskItem 已修正，內文在桌機版會呈現 18px */}
                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">{data.hostGuideSteps.map((step) => (<TaskItem key={step.id} step={step} />))}</div>
                         </div>
                         <div className="bg-[#fffbeb] p-6 rounded-[30px] border-4 border-[#e6dcae] shadow-lg mt-4 text-center relative">
