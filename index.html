@@ -365,7 +365,7 @@
         },
         { 
           id: 2, title: "前往服務中心領推薦碼", 
-          lines: ["立志成為團長後，請前往 LTrust 本島的熱門服務區，領取團長專屬的登島推薦碼。", "一個推薦碼限一人使用！就像搭飛機一樣，每個人只有一張進機證，若你要揪第0位同學，需領10個推薦碼。"],
+          lines: ["立志成為團長後，請前往 LTrust 本島的熱門服務區，領取團長專屬的登島推薦碼。", "一個推薦碼限一人使用！就像搭飛機一樣，每個人只有一張進入機證，若你要揪第0位同學，需領10個推薦碼。"],
           showImage: true, imageSrc: "images/step2.png", 
           highlights: [{ phrase: "熱門服務區" }, { phrase: "登島推薦碼" }] 
         },
@@ -746,8 +746,9 @@
                 <div className="absolute inset-0 pointer-events-none">
                     <div className="pointer-events-auto absolute w-full md:w-auto left-0 md:left-[11%] bottom-6 md:bottom-[15%] flex justify-center md:justify-start gap-4 md:gap-6 lg:gap-10 px-4 md:px-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-none pb-6 pt-10 md:pb-0 md:pt-0">
                         <div className="flex flex-wrap gap-3 md:gap-6 justify-center md:justify-start">
-                          <LinkButton href="#" onClick={() => scrollToContent('methods')} colorClass="btn-primary" icon={<DrinkWithStrawIcon />} className="text-xl md:text-2xl">領手搖步驟</LinkButton>
-                          <LinkButton href="#" onClick={() => scrollToContent('prizes')} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>} className="text-xl md:text-2xl">看揪團玩法</LinkButton>
+                          {/* 最上方 CTA：桌機版加大至 md:text-3xl (30px) */}
+                          <LinkButton href="#" onClick={() => scrollToContent('methods')} colorClass="btn-primary" icon={<DrinkWithStrawIcon />} className="text-xl md:text-3xl">領手搖步驟</LinkButton>
+                          <LinkButton href="#" onClick={() => scrollToContent('prizes')} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>} className="text-xl md:text-3xl">看揪團玩法</LinkButton>
                         </div>
                     </div>
                 </div>
@@ -770,8 +771,9 @@
 
               <div className="w-full max-w-5xl mx-auto flex flex-col justify-center items-center gap-6 mb-12 px-4 animate-[fadeIn_1s_ease-out]">
                   <div className="flex flex-col md:flex-row gap-4 justify-center w-full">
-                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary w-full md:w-auto md:min-w-[200px] text-xl md:text-2xl" icon={<i className="fa-solid fa-user-plus"></i>}>立即註冊領手搖</LinkButton>
-                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline w-full md:w-auto md:min-w-[200px] text-xl md:text-2xl" icon={<i className="fa-solid fa-right-to-bracket"></i>}>登入拿推薦碼</LinkButton>
+                    {/* 中段 CTA：同步加大至 md:text-3xl */}
+                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary w-full md:w-auto md:min-w-[200px] text-xl md:text-3xl" icon={<i className="fa-solid fa-user-plus"></i>}>立即註冊領手搖</LinkButton>
+                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline w-full md:w-auto md:min-w-[200px] text-xl md:text-3xl" icon={<i className="fa-solid fa-right-to-bracket"></i>}>登入拿推薦碼</LinkButton>
                   </div>
                   <div className="w-full max-w-2xl border-b-2 border-dashed border-[#d6b484] opacity-40"></div>
               </div>
@@ -972,9 +974,9 @@
               <div className="w-full mt-4 mb-8 z-20 px-4 md:px-6">
                 <div className="w-full max-w-5xl mx-auto flex flex-row justify-center md:justify-start items-center gap-3 md:gap-6">
                   <div className="flex flex-col md:flex-row gap-4 justify-center w-full">
-                    {/* CTA 按鈕：手機版退回至 text-xl，電腦版維持 text-2xl */}
-                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary w-full md:w-auto md:min-w-[200px] text-xl md:text-2xl" icon={<i className="fa-solid fa-user-plus"></i>}>立即註冊領手搖</LinkButton>
-                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline w-full md:w-auto md:min-w-[200px] text-xl md:text-2xl" icon={<i className="fa-solid fa-right-to-bracket"></i>}>登入拿推薦碼</LinkButton>
+                    {/* 最下方 CTA：桌機版同步加大至 md:text-3xl */}
+                    <LinkButton href={data.ctaLinks.register} colorClass="btn-cta-primary w-full md:w-auto md:min-w-[200px] text-xl md:text-3xl" icon={<i className="fa-solid fa-user-plus"></i>}>立即註冊領手搖</LinkButton>
+                    <LinkButton href={data.ctaLinks.host} colorClass="btn-cta-outline w-full md:w-auto md:min-w-[200px] text-xl md:text-3xl" icon={<i className="fa-solid fa-right-to-bracket"></i>}>登入拿推薦碼</LinkButton>
                   </div>
                 </div>
               </div>
