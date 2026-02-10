@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>LTrust 高中島民召集｜登島領手搖 揪團再抽大獎！</title>
+  <title>LTrust開學登島計畫｜註冊送人氣手搖奶茶🧋揪團再抽 Switch 2！！</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -300,11 +300,11 @@
     };
 
     const data = {
-      bannerImage: "banner.png",
-      bannerImageMobile: "mobile_banner.png",
-      lineQRCode: "qrcode.png",
-      roleMapImage: "end.png",
-      roleMapImageMobile: "mobile_end.png",
+      bannerImage: "images/banner.png",
+      bannerImageMobile: "images/mobile_banner.png",
+      lineQRCode: "images/qrcode.png",
+      roleMapImage: "images/end.png",
+      roleMapImageMobile: "images/mobile_end.png",
       lineLink: "https://line.me/ti/p/@173eprbj",
       ctaLinks: { register: "https://example.com/register", host: "https://example.com/host" },
       hostBonuses: [
@@ -334,16 +334,16 @@
       prizePools: [
         { 
           title: "🎉 豪華大獎池", people: "30", descSuffix: "人｜整團皆可抽", 
-          borderColor: "border-[#fcd34d]", headerBg: "bg-yellow-200", chestType: "gold", chestImage: "chest_level_3.png",
+          borderColor: "border-[#fcd34d]", headerBg: "bg-yellow-200", chestType: "gold", chestImage: "images/chest_level_3.png",
           items: [
             { name: "Switch 2", price: "$14,800", quantity: "1 台", imgSrc: "images/1.png" }, 
             { name: "Apple iPad 11", price: "$10,900", quantity: "1 台", imgSrc: "images/2.png" }, 
-            { name: "Apple Watch SE 3", price: "$7,900", quantity: "1 台", imgSrc: "images/3.png" }
+            { name: "Apple Watch SE 3 40mm GPS", price: "$7,900", quantity: "1 台", imgSrc: "images/3.png" }
           ] 
         },
         { 
           title: "🎧 歡樂中獎池", people: "15", descSuffix: "人｜整團皆可抽", 
-          borderColor: "border-blue-400", headerBg: "bg-blue-200", chestType: "silver", chestImage: "chest_level_2.png",
+          borderColor: "border-blue-400", headerBg: "bg-blue-200", chestType: "silver", chestImage: "images/chest_level_2.png",
           items: [
             { name: "Apple AirPods 4", price: "$4,990", quantity: "2 台", imgSrc: "images/4.png" }, 
             { name: "Apple HomePod mini", price: "$3,000", quantity: "3 台", imgSrc: "images/5.png" }, 
@@ -352,7 +352,7 @@
         },
         { 
           title: "☕ 小團也有獎池", people: "5", descSuffix: "人｜整團皆可抽", 
-          borderColor: "border-orange-400", headerBg: "bg-orange-200", chestType: "wood", chestImage: "chest_level_1.png",
+          borderColor: "border-orange-400", headerBg: "bg-orange-200", chestType: "wood", chestImage: "images/chest_level_1.png",
           items: [
             { name: "星巴克 星享飲料券", price: "$175", quantity: "20 份", iconClass: "fa-solid fa-mug-hot text-green-700 text-4xl" }, 
             { name: "Uber Eats 好禮即享券", price: "$200", quantity: "20 份", iconClass: "fa-solid fa-burger text-black text-4xl" }, 
@@ -379,8 +379,7 @@
         { q: "揪團獎金什麼時候發？是直接匯款嗎？", a: " 是的！活動結束後，我們會結算你的總戰績（揪了多少人），確認無違規後，將寄發「領獎確認書」到註冊信箱給你，請在規定時間內回傳，資料審核通過後，獎金將直接匯入指定帳戶（限本人帳戶）。" }
       ],
       tickerNews: [
-        "🌸 恭喜「建國中學」陳O明 同學揪團成功，全團獲得抽獎資格！",
-        "🧋 累積入島人數已突破 800 位！剩餘手搖飲額度倒數中...",
+        "🧋 累積入島人數突破 100 位！手搖額度倒數中...立即手刀登島領取！",
         "🎁 5/6 島內佈告欄貼榜，記得回來查看中獎資訊喔！",
         "📢 揪團成功，全團獲得抽獎資格"
       ],
@@ -430,38 +429,102 @@
       </svg>
     );
 
-    const VoucherTicket = ({ isSoldOut = false }) => (
-      <div className="w-full flex justify-center transform hover:scale-105 transition duration-300 shine-effect relative overflow-hidden rounded-[24px]">
-        {isSoldOut && (
-           <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
-              <div className="border-[6px] border-[#ea6558] text-[#ea6558] font-black text-3xl md:text-5xl px-8 py-3 md:px-12 md:py-4 rounded-xl transform -rotate-12 bg-white/95 shadow-2xl tracking-[0.15em] opacity-100 border-double whitespace-nowrap">
-                 數量已發畢
+    // --- 這裡就是為您手繪的「專屬珍奶」SVG 元件 ---
+    // 完全依照您提供的圖片繪製：布丁、珍珠、紫色吸管、可愛微笑
+    // Q版比例調整：更矮胖可愛，珍珠排成愛心，吸管明顯且連貫
+    const BubbleTeaIcon = () => (
+      <svg viewBox="0 0 200 240" className="w-24 h-24 md:w-32 md:h-32 drop-shadow-lg transform -rotate-3 transition-transform hover:scale-105 duration-300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+
+        {/* --- 1. Purple Straw (Back Layer) --- */}
+        <path d="M140 85 L165 20 L180 25 L155 85" fill="#C4B5FD" stroke="#8B5CF6" strokeWidth="2" />
+        
+        {/* --- 2. Cup Body --- */}
+        {/* Use a mask or careful layering to keep it clean */}
+        <path d="M45 85 L60 225 Q65 245 100 245 Q135 245 140 225 L155 85 H45 Z" fill="#D7B49E" stroke="#FFFFFF" strokeWidth="6" strokeLinejoin="round" />
+        
+        {/* Liquid Highlight/Reflection */}
+        <path d="M58 95 L65 215" stroke="white" strokeWidth="4" strokeOpacity="0.3" strokeLinecap="round" />
+
+        {/* --- 3. Face (Cute & Center) --- */}
+        <g transform="translate(0, 15)">
+          {/* Eyes */}
+          <circle cx="78" cy="155" r="7" fill="#4B3621" />
+          <circle cx="122" cy="155" r="7" fill="#4B3621" />
+          {/* Cheeks */}
+          <circle cx="62" cy="165" r="7" fill="#FDA4AF" opacity="0.8" />
+          <circle cx="138" cy="165" r="7" fill="#FDA4AF" opacity="0.8" />
+          {/* Smile */}
+          <path d="M92 160 Q100 168 108 160" stroke="#4B3621" strokeWidth="3" strokeLinecap="round" fill="none" />
+        </g>
+
+        {/* --- 4. Toppings --- */}
+        
+        {/* Pudding (Yellow Mound on Left) */}
+        <path d="M50 85 Q50 55 85 65 Q100 70 95 85 Z" fill="#FCD34D" stroke="#F59E0B" strokeWidth="1" />
+
+        {/* Heart-Shaped Pearls (Center-Right) */}
+        <g transform="translate(115, 65)">
+            {/* Top Left Circle */}
+            <circle cx="-10" cy="-2" r="10" fill="#1F2937" />
+            {/* Top Right Circle */}
+            <circle cx="8" cy="-2" r="10" fill="#1F2937" />
+            {/* Bottom Circle (The Tip) */}
+            <circle cx="0" cy="12" r="10" fill="#1F2937" />
+            {/* Shine on pearls */}
+            <circle cx="-13" cy="-5" r="3" fill="white" opacity="0.3" />
+            <circle cx="5" cy="-5" r="3" fill="white" opacity="0.3" />
+        </g>
+
+        {/* Bottom Tapioca (Inside Cup, semi-transparent) */}
+        <circle cx="75" cy="220" r="10" fill="#5D4037" opacity="0.2" />
+        <circle cx="125" cy="210" r="9" fill="#5D4037" opacity="0.2" />
+        <circle cx="100" cy="190" r="8" fill="#5D4037" opacity="0.2" />
+
+      </svg>
+    );
+
+    const VoucherTicket = ({ isSoldOut = false }) => {
+      // 不再需要 imgError 狀態，因為我們直接用畫好的元件
+      return (
+        <div className="w-full flex justify-center transform hover:scale-105 transition duration-300 shine-effect relative overflow-hidden rounded-[24px]">
+          {isSoldOut && (
+             <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
+                <div className="border-[6px] border-[#ea6558] text-[#ea6558] font-black text-3xl md:text-5xl px-8 py-3 md:px-12 md:py-4 rounded-xl transform -rotate-12 bg-white/95 shadow-2xl tracking-[0.15em] opacity-100 border-double whitespace-nowrap">
+                   數量已發畢
+                </div>
+             </div>
+          )}
+          <div className={`nook-ticket-premium w-full max-w-[480px] flex flex-row flex-nowrap p-3 relative transition-all duration-300 ${isSoldOut ? 'grayscale opacity-60' : ''}`}>
+            <div className="flex-1 p-2 md:p-6 flex flex-col justify-center relative z-10 text-left min-w-0">
+              <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-4">
+                 <div className="bg-white/90 px-3 py-1 md:px-4 md:py-1.5 rounded-full shadow-sm flex items-center gap-2 border border-white/50">
+                    <span className="text-base md:text-lg">🎫</span>
+                    <span className="font-black text-xs md:text-sm lg:text-base text-[#006c64]">新島民限定</span>
+                 </div>
               </div>
-           </div>
-        )}
-        <div className={`nook-ticket-premium w-full max-w-[480px] flex flex-row flex-nowrap p-3 relative transition-all duration-300 ${isSoldOut ? 'grayscale opacity-60' : ''}`}>
-          <div className="flex-1 p-2 md:p-6 flex flex-col justify-center relative z-10 text-left min-w-0">
-            <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-4">
-               <div className="bg-white/90 px-3 py-1 md:px-4 md:py-1.5 rounded-full shadow-sm flex items-center gap-2 border border-white/50">
-                  <span className="text-base md:text-lg">🎫</span>
-                  <span className="font-black text-xs md:text-sm lg:text-base text-[#006c64]">新島民限定</span>
-               </div>
+              <h3 className="text-xl md:text-4xl font-black tracking-tight mb-1 md:mb-2 text-[#006c64] drop-shadow-sm leading-tight">歡迎登島 </h3>
+              <p className="text-sm md:text-xl font-bold text-orange-700 leading-tight">CoCo都可 奶茶三兄弟(大) 電子好禮即享券</p>
             </div>
-            <h3 className="text-xl md:text-4xl font-black tracking-tight mb-1 md:mb-2 text-[#006c64] drop-shadow-sm leading-tight">LTrust 歡迎你</h3>
-            <p className="text-sm md:text-xl font-bold text-orange-700 leading-tight">CoCo都可 奶茶三兄弟(大) 電子好禮即享券</p>
-          </div>
-          <div className="w-[2px] border-r-2 border-dashed border-white/60 my-2 mx-1 flex-shrink-0"></div>
-          <div className="w-[85px] md:w-[150px] flex items-center justify-center bg-white/10 flex-shrink-0 rounded-r-xl">
-              <div className="scale-75 md:scale-100">
-                <img src="images/image_d5105c.png" className="w-16 h-16 object-contain" alt="Bubble Tea" onError={(e) => { e.target.style.display='none'; }} />
-              </div>
-          </div>
-          <div className="absolute top-0 right-0 opacity-10 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
-              <i className="fa-solid fa-plane text-[120px] md:text-[180px]"></i>
+            <div className="w-[2px] border-r-2 border-dashed border-white/60 my-2 mx-1 flex-shrink-0"></div>
+            <div className="w-[85px] md:w-[150px] flex items-center justify-center bg-white/10 flex-shrink-0 rounded-r-xl">
+                <div className="scale-75 md:scale-100">
+                  {/* 直接顯示特製的手繪珍奶圖示 */}
+                  <BubbleTeaIcon />
+                </div>
+            </div>
+            <div className="absolute top-0 right-0 opacity-10 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
+                <i className="fa-solid fa-plane text-[120px] md:text-[180px]"></i>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    };
 
     const Countdown = () => {
       const [timeLeft, setTimeLeft] = useState({ d: '00', h: '00' });
@@ -578,31 +641,11 @@
       );
     };
 
-    const ChestImage = ({ pool }) => {
-      const [error, setError] = useState(false);
-      
-      if (!pool.chestImage) return null;
-
-      if (error) {
-        return (
-          <div className="w-36 h-36 md:w-48 md:h-48 flex flex-col items-center justify-center bg-black/5 rounded-2xl border-2 border-dashed border-black/10 text-[#594d40]/40">
-            <i className="fa-solid fa-box-open text-4xl mb-2"></i>
-            <span className="text-xs font-bold mt-1 max-w-[90%] truncate px-2">{pool.chestImage}</span>
-          </div>
-        );
+    const renderChest = (pool) => {
+      if (pool.chestImage) {
+         return (<div className="relative flex justify-center items-center"><img src={pool.chestImage} alt={pool.title} className="w-36 h-36 md:w-48 md:h-48 object-contain drop-shadow-xl hover:scale-110 transition duration-300 relative z-10" onError={(e) => { e.target.style.display = "none"; }} /><div style={{display: 'none'}}></div></div>);
       }
-
-      return (
-        <div className="relative flex justify-center items-center">
-          <img 
-            src={pool.chestImage} 
-            alt={pool.title} 
-            className="w-36 h-36 md:w-48 md:h-48 object-contain drop-shadow-xl hover:scale-110 transition duration-300 relative z-10" 
-            onError={() => setError(true)} 
-          />
-          <div style={{display: 'none'}}></div>
-        </div>
-      );
+      return null;
     };
 
     const App = () => {
@@ -640,7 +683,7 @@
                   <img src={data.bannerImage} onError={(e) => e.target.src="https://images.unsplash.com/photo-1543253687-c599f9e62f3f?q=80&w=1974"} alt="活動主視覺(電腦版)" className="w-full h-auto hidden md:block min-h-[300px] object-cover object-center" />
                 </div>
                 <div className="absolute inset-0 pointer-events-none">
-                    <div className="pointer-events-auto absolute w-full md:w-auto left-0 md:left-[3%] bottom-6 md:bottom-[15%] flex justify-center md:justify-start gap-4 md:gap-6 lg:gap-10 px-4 md:px-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-none pb-6 pt-10 md:pb-0 md:pt-0">
+                    <div className="pointer-events-auto absolute w-full md:w-auto left-0 md:left-[11%] bottom-6 md:bottom-[15%] flex justify-center md:justify-start gap-4 md:gap-6 lg:gap-10 px-4 md:px-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-none pb-6 pt-10 md:pb-0 md:pt-0">
                         <div className="flex flex-wrap gap-3 md:gap-6 justify-center md:justify-start">
                           <LinkButton href="#" onClick={() => scrollToContent('methods')} colorClass="btn-primary" icon={<DrinkWithStrawIcon />} className="text-xl md:text-2xl">領手搖步驟</LinkButton>
                           <LinkButton href="#" onClick={() => scrollToContent('prizes')} colorClass="btn-secondary" icon={<i className="fa-solid fa-crown"></i>} className="text-xl md:text-2xl">看揪團玩法</LinkButton>
@@ -732,7 +775,7 @@
                                <div key={idx} className={`bg-white rounded-3xl overflow-visible border-4 ${pool.borderColor} shadow-xl`}>
                                   <div className={`${pool.headerBg} rounded-t-[20px] p-4 relative flex flex-col items-center border-b-4 border-dashed border-black/10`}>
                                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/40 rounded-full blur-3xl pointer-events-none"></div>
-                                    <div className="relative z-10 -mt-8 mb-4 transform hover:scale-105 transition duration-300 drop-shadow-lg"><ChestImage pool={pool} /><div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-28 h-3 bg-black/10 rounded-[100%] blur-sm -z-10"></div></div>
+                                    <div className="relative z-10 -mt-8 mb-4 transform hover:scale-105 transition duration-300 drop-shadow-lg">{renderChest(pool)}<div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-28 h-3 bg-black/10 rounded-[100%] blur-sm -z-10"></div></div>
                                     <div className="relative z-10 flex flex-col items-center pb-4"><h4 className="font-black text-xl md:text-2xl text-[#594d40] mb-2 drop-shadow-sm">{pool.title}</h4><div className="bg-white/90 px-6 py-1.5 rounded-full border-2 border-white shadow-sm flex items-center gap-2"><span className="text-lg">🔓</span><p className="text-lg font-bold text-[#8b5e3c]">揪滿 <span className="text-[#ea6558] text-2xl font-black">{pool.people}</span> {pool.descSuffix}</p></div></div>
                                   </div>
                                   <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -792,4 +835,3 @@
   </script>
 </body>
 </html>
-
